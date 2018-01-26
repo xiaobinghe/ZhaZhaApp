@@ -1,0 +1,288 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fillViewport="true"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="450px"
+        android:orientation="horizontal">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_energy_feng_gu_ping"
+            android:layout_width="360px"
+            android:layout_height="360px"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="45px"
+            android:layout_marginRight="45px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_20">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="30px"
+                android:paddingTop="30px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/green_point"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="峰电:"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_feng_eff"
+                    android:layout_width="216px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="6100kWh"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_feng_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="47.3%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="426px"
+                android:layout_height="1px"
+                android:background="@color/black_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="30px"
+                android:paddingTop="30px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/yellow_point"/>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="谷电:"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_gu_eff"
+                    android:layout_width="216px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="2600kWh"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_gu_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20.2%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="426px"
+                android:layout_height="1px"
+                android:background="@color/black_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="30px"
+                android:paddingTop="30px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/red_point"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="平电:"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_ping_eff"
+                    android:layout_width="216px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="4200kWh"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_ping_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="32.5%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="45px"
+        android:layout_marginRight="45px"
+        android:background="@color/black_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_15"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/rg_energy_feng_gu_ping"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_energy_1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_btt_blue_white"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="耗电量累加"
+                    android:textColor="@color/selector_text_color"
+                    android:textSize="10sp"/>
+
+                <RadioButton
+                    android:id="@+id/rb_energy_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_btt_blue_white_right"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="时间对比"
+                    android:textColor="@color/selector_text_color"
+                    android:textSize="10sp"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_energy_feng_gu_ping_time_compare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="45px"
+            android:paddingLeft="45px"
+            android:paddingRight="30px"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用电量(kWh)"
+                android:textColor="@color/font_content"
+                android:textSize="30px"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc_energy_feng_gu_ping"
+                android:layout_width="match_parent"
+                android:layout_height="500px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_energy_feng_gu_ping_electric"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="45px"
+            android:paddingLeft="45px"
+            android:paddingRight="45px"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="用电量(kWh)"
+                    android:textColor="@color/font_content"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小时电价(元/时)"
+                    android:textColor="@color/font_content"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.CombinedChart
+                android:id="@+id/cbc_energy_feng_gu_ping"
+                android:layout_width="match_parent"
+                android:layout_height="500px"/>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

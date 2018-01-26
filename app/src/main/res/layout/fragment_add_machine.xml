@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.locensate.letnetwork.main.ui.addorder.AddMachineFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_machine_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btt_commit_add"
+        android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:background="@drawable/selector_bg_btt"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="确认添加"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+</LinearLayout>

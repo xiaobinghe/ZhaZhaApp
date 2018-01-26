@@ -1,0 +1,167 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="BaseAppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+
+    </style>
+
+    <!--解决启动闪屏的问题-->
+    <style name="LauncherTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>  
+        <item name="android:windowIsTranslucent">true</item>  
+    </style>
+
+    <style name="TitleNormal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">@dimen/text_title_b</item>
+    </style>
+
+    <dimen name="text_title_b">21sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+
+    <style name="BaseToolbarLayout" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!--<style name="BaseToolbarLayout" parent="android:Theme.Holo.Light.NoActionBar">-->
+
+        <item name="android:background">@color/bg_head</item>
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Actionbar color -->
+        <item name="colorPrimary">@color/font_blue_tab</item>
+        <!--Status bar color-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--Window color-->
+        <item name="android:windowBackground">@android:color/white</item>
+
+    </style>
+
+    <!--运维记录运维报警切换button样式-->
+    <style name="order_ring_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_button_background</item>
+        <item name="android:textColor">@color/selector_text_color_indicate</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!-- 左上角popupwindow -->
+    <style name="animationPreview">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+    <!-- 左上角popupwindow -->
+    <style name="animatioPicker">
+        <item name="android:windowEnterAnimation">@anim/fade_up</item>
+        <item name="android:windowExitAnimation">@anim/fade_down</item>
+    </style>
+
+    <style name="animationFilter">
+        <item name="android:windowEnterAnimation">@anim/fade_left</item>
+        <item name="android:windowExitAnimation">@anim/fade_right</item>
+    </style>
+
+    <style name="AppTheme.AppDate" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <!--设置dialog不全屏 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--除去title，如果在代码里面有其他设置会没效果的不过完全没效果-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--除去背景色-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="SpinnerHead">
+        <item name="android:background">@android:color/black</item>
+    </style>
+
+    <style name="MyBottomStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="TabLayoutCustom">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TabLayoutCustom36">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <!--DialogActivity主体风格-->
+    <style name="Theme.ActivityDialogStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>-->
+        <item name="android:windowAnimationStyle">@style/AlertDialog.AppCompat.Light</item>
+    </style>
+
+
+    <style name="CheckBoxStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/font_gray_font</item>
+        <item name="colorControlActivated">@color/font_gray_font</item>
+    </style>
+
+    <style name="custom_dialog_style">
+        <item name="android:windowIsFloating">true</item>    <!--是否浮在界面上-->
+        <item name="android:windowIsTranslucent">true</item> <!--是否半透明-->
+        <item name="android:windowNoTitle">false</item>       <!--是否有标题-->
+        <item name="android:windowBackground">@android:color/transparent</item> <!--窗口背景色透明-->
+        <item name="android:backgroundDimEnabled">false</item> <!--背景是否模糊显示-->
+    </style>
+
+    <style name="dialogAnim" parent="">
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+    </style>
+
+    <style name="PickerViewStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog的windowFrame框为无 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否漂现在activity上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 去除黑色边框的关键设置项 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 屏幕背景是否变暗 -->
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <!--界面淡入淡出的动画-->
+    <style name="MyPickerview_dialogAnim">
+        <item name="android:windowEnterAnimation">@anim/picker_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/picker_fade_out</item>
+    </style>
+
+    <style name="ActivityAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_fade_out</item>
+    </style>
+
+    <style name="AppTheme.Launcher" parent="@style/AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="popupWindowAnimRight">
+        <item name="android:windowEnterAnimation">@anim/page_anima_right_in</item>
+        <item name="android:windowExitAnimation">@anim/page_anima_right_out</item>
+    </style>
+
+</resources>

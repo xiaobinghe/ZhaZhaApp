@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_reset_psw"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_only_back"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="45px"
+        android:paddingRight="45px"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="45px"
+            android:paddingTop="60px"
+            android:text="请输入旧密码"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_old_psw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="请输入旧密码"
+                android:maxLines="1"
+                android:paddingBottom="45px"
+                android:paddingLeft="45px"
+                android:paddingTop="45px"
+                android:textColor="@color/font_et_hint"
+                android:textSize="42px"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="45px"
+            android:paddingTop="60px"
+            android:text="请输入新密码"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_new_psw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="请输入新密码"
+                android:maxLines="1"
+                android:paddingBottom="45px"
+                android:paddingLeft="45px"
+                android:paddingTop="45px"
+                android:textColor="@color/font_et_hint"
+                android:textSize="42px"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="45px"
+                android:layout_marginRight="45px"
+                android:background="@color/gray_line"/>
+
+            <EditText
+                android:id="@+id/et_new_psw_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="请输入新密码"
+                android:maxLines="1"
+                android:paddingBottom="45px"
+                android:paddingLeft="45px"
+                android:paddingTop="45px"
+                android:textColor="@color/font_et_hint"
+                android:textSize="42px"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="match_parent"
+            android:layout_height="135px"
+            android:layout_marginBottom="240px"
+            android:layout_marginLeft="90px"
+            android:layout_marginRight="90px"
+            android:background="@drawable/selector_bg_commit"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="确认修改"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        activeColor="#458bea"
+        badgeBackgroundColor="#ffffff"
+        barColorWhenSelected="#ffffff"
+        icon="@drawable/overview_selected"
+        id="@+id/tab_message"
+        inActiveColor="#b2b2b2"
+        title="概览" />
+    <tab
+        activeColor="#458bea"
+        badgeBackgroundColor="#ffffff"
+        barColorWhenSelected="#ffffff"
+        icon="@drawable/machine_selected"
+        id="@+id/tab_machine"
+        inActiveColor="#b2b2b2"
+        title="设备" />
+    <tab
+        activeColor="#458bea"
+        badgeBackgroundColor="#ffffff"
+        barColorWhenSelected="#ffffff"
+        icon="@drawable/tools_selected"
+        id="@+id/tab_order"
+        inActiveColor="#b2b2b2"
+        title="工具" />
+    <tab
+        activeColor="#458bea"
+        badgeBackgroundColor="#ffffff"
+        barColorWhenSelected="#ffffff"
+        icon="@drawable/mine_selected"
+        id="@+id/tab_mine"
+        inActiveColor="#b2b2b2"
+        title="我的" />
+</tabs>

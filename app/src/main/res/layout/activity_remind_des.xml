@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_remind_des"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="com.locensate.letnetwork.main.ui.RemindDetailActivity">
+
+    <include layout="@layout/layout_title_normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="132px"
+        android:layout_marginBottom="30px"
+        android:gravity="center_horizontal|bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_remind_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30px"
+            android:text="请于今日"
+            android:textColor="@color/font_black_"
+            android:textSize="42px"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_remind_time_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textColor="@color/font_blue_tab"
+            android:textSize="72px"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15px"
+            android:paddingRight="15px"
+            android:text="时"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_remind_time_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"
+            android:textColor="@color/font_blue_tab"
+            android:textSize="72px"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="分"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:typeface="sans" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30px"
+            android:text="巡检设备"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:typeface="sans" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+
+            android:background="@color/black_line" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="45px"
+            android:paddingTop="60px"
+            android:text="相关设备"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_linked_machines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:hint="焦化厂一车间 全部设备"
+                android:maxLines="1"
+                android:paddingBottom="45px"
+                android:paddingLeft="45px"
+                android:paddingTop="45px"
+                android:textColor="@color/font_black"
+                android:textColorHint="@color/font_et_hint"
+                android:textSize="42px" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="45px"
+            android:paddingTop="60px"
+            android:text="提醒内容"
+            android:textColor="@color/font_black"
+            android:textSize="42px"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/input_background_gray"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_remind_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:hint="循环水泵电机柜，电机绝缘监测。"
+                android:maxLines="1"
+                android:paddingBottom="45px"
+                android:paddingLeft="45px"
+                android:paddingTop="45px"
+                android:textColor="@color/font_black"
+                android:textColorHint="@color/font_et_hint"
+                android:textSize="42px" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

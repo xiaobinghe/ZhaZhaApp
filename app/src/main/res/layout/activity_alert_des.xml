@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_alert_des"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.locensate.letnetwork.main.ui.AlertDetailActivity">
+
+    <include layout="@layout/layout_title_only_back" />
+
+    <FrameLayout
+        android:id="@+id/fl_alert_level"
+        android:layout_width="300px"
+        android:layout_height="300px"
+        android:layout_marginBottom="75px"
+        android:layout_marginTop="90px"
+        android:background="@drawable/alert_low_bg">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/exclamatory_mark" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_alert_machine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30px"
+        android:text="一次除尘风机"
+        android:textColor="@color/font_content"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_alert_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="55px"
+        android:text="点位：Atv61"
+        android:textColor="@color/point_gray"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_alert_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="58px"
+        android:text="输入端缺相"
+        android:textColor="@color/point_gray"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="675px"
+        android:layout_height="4px"
+        android:background="@drawable/shape_line_empty" />
+
+
+    <TextView
+        android:id="@+id/tv_alert_machine_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45px"
+        android:layout_marginTop="60px"
+        android:text="所属：烧结厂一车间"
+        android:textColor="@color/font_content"
+        android:textSize="13sp" />
+
+
+    <TextView
+        android:id="@+id/tv_alert_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="报警时间：2017/4/12 12:45"
+        android:textColor="@color/font_content"
+        android:textSize="13sp" />
+
+
+</LinearLayout>

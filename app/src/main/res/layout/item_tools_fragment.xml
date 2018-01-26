@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/bg"
+    android:padding="15dp"
+    >
+
+
+
+    <TextView
+        android:id="@+id/tv_item_tools_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/black_font"
+        android:background="@drawable/card_view_bg"
+        android:textSize="14sp" />
+
+</FrameLayout>

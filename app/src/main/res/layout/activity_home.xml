@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <!-- <android.support.design.widget.AppBarLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:theme="@style/BaseToolbarLayout">
+
+         <android.support.v7.widget.Toolbar
+             android:id="@+id/appbar_toolbar_home"
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:gravity="center_horizontal"
+             app:titleTextColor="@android:color/white">
+
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+
+                 <TextView
+                     android:id="@+id/title_toolbar_home"
+                     style="@style/TitleNormal"
+                     android:layout_centerInParent="true"
+                     android:paddingRight="10dp"
+                     android:text="概览"
+                     android:textSize="22sp" />
+
+                 <ImageButton
+                     android:id="@+id/ib_seacher_head"
+                     android:layout_width="60dp"
+                     android:layout_height="?attr/actionBarSize"
+                     android:layout_alignParentRight="true"
+                     android:background="@android:color/transparent"
+                     android:src="@mipmap/search"
+                     android:visibility="visible" />
+             </RelativeLayout>
+
+
+         </android.support.v7.widget.Toolbar>
+
+     </android.support.design.widget.AppBarLayout>-->
+    <FrameLayout
+        android:id="@+id/fl_home_contain"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/bb_bottom_bar_top_shadow"
+    />
+    <com.roughike.bottombar.BottomBar
+        android:id="@+id/bb_home_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dp_5"
+        app:bb_showShadow="false"
+        app:bb_tabXmlResource="@xml/bb_bottom_tab_machine"
+    />
+
+</LinearLayout>

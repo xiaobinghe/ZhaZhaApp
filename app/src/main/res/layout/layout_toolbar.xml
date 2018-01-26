@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_head"
+    android:orientation="vertical"
+    android:theme="@style/BaseToolbarLayout">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appbar_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="168px"
+        android:gravity="center_horizontal"
+        app:titleTextColor="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/ib_toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/back_white"/>
+
+        <TextView
+            android:id="@+id/title_toolbar"
+            style="@style/TitleNormal"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tv_complete"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/dp_10"
+            android:gravity="center"
+            android:text="完成"
+            android:textSize="@dimen/sp_18"
+            android:visibility="gone"/>
+
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>

@@ -1,0 +1,313 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fillViewport="true"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="106px"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingLeft="45px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前效率："
+            android:textColor="@color/font_content"
+            android:textSize="36px"/>
+
+        <TextView
+            android:id="@+id/tv_energy_current_efficiency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.88"
+            android:textColor="@color/font_blue_deep"
+            android:textSize="42px"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30px"
+            android:text="平均效率："
+            android:textColor="@color/font_content"
+            android:textSize="36px"/>
+
+        <TextView
+            android:id="@+id/tv_energy_average_efficiency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.85"
+            android:textColor="@color/font_blue_deep"
+            android:textSize="42px"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="435px"
+        android:orientation="horizontal">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_energy_efficiency"
+            android:layout_width="360px"
+            android:layout_height="360px"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="45px"
+            android:layout_marginRight="45px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_20">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15px"
+                android:paddingTop="15px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/green_point"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="经济运行："
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_time1"
+                    android:layout_width="182px"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="62px"
+                    android:text="2h"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_percent1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.3%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15px"
+                android:paddingTop="15px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/yellow_point"/>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="合理运行："
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_time2"
+                    android:layout_width="182px"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="62px"
+                    android:text="10h"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_percent2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.4%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15px"
+                android:paddingTop="15px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/red_point"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="非经济运行："
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_time4"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="32px"
+                    android:text="688h"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_percent4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="95.5%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="15px"
+                android:paddingTop="15px">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/gray_point"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="停止运行："
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_time3"
+                    android:layout_width="182px"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="62px"
+                    android:text="20h"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/tv_energy_efficiency_percent3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.8%"
+                    android:textColor="@color/font_gray_white"
+                    android:textSize="30px"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="45px"
+        android:layout_marginRight="45px"
+        android:background="@color/black_line"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="45px">
+
+        <LinearLayout
+            android:id="@+id/ll_energy_lose_electric"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="45px"
+            android:paddingLeft="45px"
+            android:paddingRight="30px"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingRight="45px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实时"
+                    android:textColor="@color/font_light_gray"
+                    android:textSize="36px"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="4px"
+                    android:layout_height="36px"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginRight="30px"
+                    android:background="@color/font_light_gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="平均"
+                    android:textColor="@color/font_light_gray"
+                    android:textSize="36px"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/switch_icon"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30px"
+                android:text="单位  (无)"
+                android:textColor="@color/font_content"
+                android:textSize="30px"
+                android:textStyle="bold"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc_energy_efficiency"
+                android:layout_width="match_parent"
+                android:layout_height="500px"/>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

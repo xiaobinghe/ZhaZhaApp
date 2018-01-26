@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/expanded_recycler_view"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="113dp"
+        android:background="@color/bg_head"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/motor_overview"/>
+
+                <TextView
+                    android:id="@+id/tv_motor_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="30px"
+                    android:text="电机/150台"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_motor_power_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总装机功率/36000kW"
+                    android:textColor="@color/font_dark_blue"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/spread_line"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/machine_overview"/>
+
+                <TextView
+                    android:id="@+id/tv_machine_measure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="10dp"
+                    android:text="计量设备/120台"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_machine_power_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总装机功率/30800kW"
+                    android:textColor="@color/font_dark_blue"
+                    android:textSize="10sp"/>
+            </LinearLayout>
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <com.locensate.letnetwork.view.MyScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <include layout="@layout/layout_time_select"/>
+
+            <FrameLayout
+                android:id="@+id/fl_over_view_content"
+                android:layout_width="match_parent"
+                android:layout_height="573px"
+            >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_overview_contain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15px">
+
+                    <ImageView
+                        android:id="@+id/iv_point1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15px"
+                        android:src="@drawable/page_point"/>
+
+                    <ImageView
+                        android:id="@+id/iv_point2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15px"
+                        android:src="@drawable/page_point_gray"/>
+
+                    <ImageView
+                        android:id="@+id/iv_point3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15px"
+                        android:src="@drawable/page_point_gray"/>
+                </LinearLayout>
+
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="330dp"
+                android:layout_height="2px"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/gray_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180px"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="10000kWh"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="4dp"
+                        android:text="总耗电量"
+                        android:textColor="@color/font_gray"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0.85"
+
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="4dp"
+                        android:text="平均效率"
+
+                        android:textColor="@color/font_gray"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="33%"
+                        android:textSize="15sp"
+
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="4dp"
+                        android:text="平均负载率"
+
+                        android:textColor="@color/font_gray"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="2000kWh"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="4dp"
+                        android:text="空载浪费电量"
+                        android:textColor="@color/font_gray"
+                        android:textSize="30px"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="1dp">
+
+                <FrameLayout
+                    android:id="@+id/fl_alert"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_overview_item">
+
+                    <TextView
+                        android:id="@+id/tv_alert_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/alarm_overview"
+                        android:text="报警"
+                        android:textColor="@color/font_gray_font"
+                        android:textStyle="normal"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_energy"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_overview_item">
+
+                    <TextView
+                        android:id="@+id/tv_energy_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/energy_overview"
+                        android:text="能效"
+                        android:textColor="@color/font_gray_font"
+                        android:textStyle="normal"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_order"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_overview_item">
+
+                    <TextView
+                        android:id="@+id/tv_order_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/order_overview"
+                        android:text="工单"
+                        android:textColor="@color/font_gray_font"
+                        android:textStyle="normal"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_remind"
+                    android:layout_width="0dp"
+                    android:layout_height="75dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_overview_item">
+
+                    <TextView
+                        android:id="@+id/tv_remind_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/remind_overview"
+                        android:text="提醒"
+                        android:textColor="@color/font_gray_font"
+                        android:textStyle="normal"/>
+
+                </FrameLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/bg"/>
+        </LinearLayout>
+    </com.locensate.letnetwork.view.MyScrollView>
+
+
+</LinearLayout>

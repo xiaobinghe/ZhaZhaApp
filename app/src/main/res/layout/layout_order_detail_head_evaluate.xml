@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/bg"
+             android:paddingBottom="@dimen/dp_15"
+             android:paddingLeft="@dimen/dp_15"
+             android:paddingRight="@dimen/dp_15">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dp_15"
+        android:paddingLeft="@dimen/dp_15">
+
+        <LinearLayout
+            android:id="@+id/ll_stars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:text="评分"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/sp_14"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_10">
+
+                <ImageView
+                    android:id="@+id/iv_star1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/star_yellow_"/>
+
+                <ImageView
+                    android:id="@+id/iv_star2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_7"
+                    android:src="@drawable/star_yellow_"/>
+
+                <ImageView
+                    android:id="@+id/iv_star3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_7"
+                    android:src="@drawable/star_yellow_"/>
+
+                <ImageView
+                    android:id="@+id/iv_star4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_7"
+                    android:src="@drawable/star_yellow_"/>
+
+                <ImageView
+                    android:id="@+id/iv_star5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_7"
+                    android:src="@drawable/star_yellow_"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:text="评论"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/sp_14"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_evaluate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_15"
+            android:paddingTop="@dimen/dp_10"
+            android:text="维护数据"
+            android:textColor="#6c6c6c"
+            android:textSize="@dimen/sp_14"/>
+    </LinearLayout>
+</FrameLayout>

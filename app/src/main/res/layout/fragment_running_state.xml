@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_machine_monitor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="监控设备"
+                    android:textColor="@color/title_font"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="当前状态"
+                    android:textColor="@color/title_font"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_current_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cmType"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="数据监测"
+                    android:textColor="@color/title_font"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_running_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="电源电压"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_running_power_dianya"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输出电压"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_out_power"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输入电流"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_input_dianliu"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输出电流"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_output_dianliu"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="给定频率"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_give_cycle"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输出频率"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_output_cycle"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输入功率"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_input_gonglv"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="输出功率"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_output_gonglv"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="运行功率"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_running_gonglv"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="变频器温度"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_temperature_transducer"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:drawableRight="@mipmap/more_litter"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="变频器热状态"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_heat_state_transducer"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="总运行时间"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_running_time_total"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+
+            &lt;!&ndash;<LinearLayout&ndash;&gt;
+                &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="40dp"&ndash;&gt;
+                &lt;!&ndash;android:gravity="center_vertical"&ndash;&gt;
+                &lt;!&ndash;android:orientation="horizontal"&ndash;&gt;
+                &lt;!&ndash;android:paddingLeft="15dp"&ndash;&gt;
+                &lt;!&ndash;android:paddingRight="15dp">&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_weight="1"&ndash;&gt;
+                    &lt;!&ndash;android:text="总停止时间"&ndash;&gt;
+                    &lt;!&ndash;android:textColor="@color/title_font"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="13sp" />&ndash;&gt;
+
+                &lt;!&ndash;<TextView&ndash;&gt;
+                    &lt;!&ndash;android:id="@+id/tv_stop_time_total"&ndash;&gt;
+                    &lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
+                    &lt;!&ndash;android:text="cmType"&ndash;&gt;
+                    &lt;!&ndash;android:textSize="12sp" />&ndash;&gt;
+            &lt;!&ndash;</LinearLayout>&ndash;&gt;
+        </LinearLayout>
+    </LinearLayout>-->
+</LinearLayout>

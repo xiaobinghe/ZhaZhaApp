@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_14"
+        android:paddingTop="@dimen/dp_14">
+
+
+        <FrameLayout
+            android:id="@+id/fl_show_pop"
+            android:layout_width="270px"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_group_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/dp_5"
+                android:drawableRight="@drawable/pull_blue"
+                android:text="一班"
+                android:textColor="@color/bg_blue_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="260px"
+            android:layout_height="match_parent">
+
+            <TextView
+
+                android:id="@+id/tv_work_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="40h"
+                android:textColor="@color/font_content"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="268px"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_running_efficiency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0.85"
+                android:textColor="@color/font_content"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+
+        <FrameLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_energy_used"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1200"
+                android:textColor="@color/font_content"
+                android:textSize="12sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/black_line" />
+</LinearLayout>

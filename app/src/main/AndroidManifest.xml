@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.locensate.letnetwork"
+          android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.locensate.letnetwork"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <meta-data
+            android:name="design_width"
+            android:value="1080"/>
+        <meta-data
+            android:name="design_height"
+            android:value="1920"/>
+
+        <activity
+            android:name=".main.ui.LauncherActivity"
+            android:theme="@style/AppTheme.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".main.ui.login.LoginActivity"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".main.ui.home.HomeActivity"/>
+        <activity android:name=".main.ui.ordermsg.OrderMsgActivity"/>
+        <activity android:name=".main.ui.riplanmsg.RiPlanActivity"/>
+        <activity android:name=".main.ui.smartmsg.SmartMsgActivity"/>
+        <activity
+            android:name=".main.ui.search.SearchActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".main.ui.machineinfo.MachineInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".main.ui.dataanalysis.DataAnalysisActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".main.ui.addorder.AddOrderActivity"/>
+        <activity android:name=".main.ui.CreateRiPlanActivity"/>
+        <activity android:name=".main.ui.tools.toolsorder.ToolsOrderActivity"/>
+        <activity android:name=".main.ui.tools.ToolsAlertActivity"/>
+        <activity android:name=".main.ui.tools.toolsgroupenergy.ToolsEnergyAnalysisActivity"/>
+        <activity android:name=".main.ui.tools.toolsriplan.ToolsRiPlanActivity"/>
+        <activity android:name=".main.ui.message.MessageActivity"/>
+        <activity android:name=".main.ui.AccountInfoActivity"/>
+        <activity android:name=".main.ui.deletemsg.DeleteMessageActivity"/>
+        <activity android:name=".main.ui.AddEvaluateActivity"/>
+        <activity android:name=".main.ui.RemindDetailActivity"/>
+        <activity android:name=".main.ui.RemoteParameterActivity"/>
+        <activity
+            android:name=".main.ui.RemoteParameterDialog"
+            android:theme="@style/Theme.ActivityDialogStyle"/>
+        <activity android:name=".main.ui.orderdetail.OrderDetailActivity"/>
+        <activity android:name=".main.ui.AddCommunicationActivity"/>
+        <activity android:name=".main.ui.AddRemindActivity"/>
+        <activity android:name=".main.ui.AlertDetailActivity"/>
+        <activity android:name=".main.ui.RoutingDetailActivity"/>
+        <activity android:name=".main.ui.tools.ToolsRemindActivity"/>
+        <activity android:name=".main.ui.tools.ToolsRepairActivity"/>
+        <activity android:name=".main.ui.tools.ToolsKanBanActivity"/>
+        <activity android:name=".main.ui.AddRepairActivity"/>
+        <activity android:name=".main.ui.tools.ToolsFengGuPingActivity"/>
+        <activity android:name=".main.ui.RepairDetailActivity"/>
+
+        <!-- 添加UCropActivity -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".main.ui.EnlargeEnergyEfficiency"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".main.ui.HealthDetailActivity"
+            android:theme="@style/Theme.ActivityDialogStyle">
+        </activity>
+        <activity android:name=".main.ui.MachineListActivity">
+        </activity>
+        <activity android:name=".main.ui.ResetPswActivity">
+        </activity>
+        <activity android:name=".main.ui.SettingActivity">
+        </activity>
+        <activity android:name=".main.ui.AddMachine">
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg"
+              android:orientation="vertical">
+
+    <!-- <RadioGroup
+         android:id="@+id/rg_fix_alert"
+         android:layout_width="match_parent"
+         android:layout_height="90px"
+         android:layout_marginTop="15px"
+         android:gravity="center_vertical"
+         android:orientation="horizontal">
+
+
+         <RadioButton
+             android:id="@+id/rb_alert"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="报警"
+             android:textSize="24px" />
+
+         <RadioButton
+             android:id="@+id/rb_order"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="工单"
+             android:textSize="24px" />
+
+         <RadioButton
+             android:id="@+id/rb_riplan"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="巡检"
+             android:textSize="24px" />
+
+         <RadioButton
+             android:id="@+id/rb_fix"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="维修"
+             android:textSize="24px" />
+
+         <RadioButton
+             android:id="@+id/rb_energy"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="能效服务"
+             android:textSize="24px" />
+
+         <RadioButton
+             android:id="@+id/rb_remind"
+             style="@style/order_ring_style"
+             android:layout_weight="1"
+             android:text="提醒"
+             android:textSize="24px" />
+     </RadioGroup>-->
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tl_machine_fix_manager"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="9dp"
+        android:background="@color/ground_line"
+        app:tabBackground="@drawable/selector_tab_switch"
+        app:tabIndicatorHeight="0dp"
+        app:tabMinWidth="@dimen/dp_58"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/font_black"
+        app:tabTextAppearance="@style/TabLayoutCustom"
+        app:tabTextColor="@color/font_deep_blue"/>
+
+
+    <com.locensate.letnetwork.view.SmoothViewPage
+        android:id="@+id/vp_machine_fix_manager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>
