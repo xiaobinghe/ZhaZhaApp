@@ -3,18 +3,18 @@ package com.locensate.letnetwork.main.ui.home;
 import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.LogUtil;
-import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.main.ui.fragments.machine.MachineFragment;
 import com.locensate.letnetwork.main.ui.fragments.mine.MineFragment;
 import com.locensate.letnetwork.main.ui.fragments.overview.OverviewFragment;
 import com.locensate.letnetwork.main.ui.fragments.tools.ToolsFragment;
+import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.ToastUtil;
+import com.locensate.letnetwork.view.NoScrollViewPager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -22,7 +22,6 @@ import butterknife.BindView;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -31,9 +30,12 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     FrameLayout flHomeContain;
     @BindView(R.id.bb_home_bottom)
     BottomBar bbHomeBottom;
+    @BindView(R.id.vp_home)
+    NoScrollViewPager mVpHome;
     private Fragment[] fragments;
     private int currentIndex = 0;
     private long time = 0;
+    private HomePagerAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -45,7 +47,37 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
     @Override
     public void initView() {
         getFragments();
+        mVpHome.setOffscreenPageLimit(4);
+        mAdapter = new HomePagerAdapter(getSupportFragmentManager(), fragments);
+        mVpHome.setAdapter(mAdapter);
+
         bbHomeBottom.setOnTabSelectListener(new OnTabSelectListener() {
+
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.tab_message:
+                        mVpHome.setCurrentItem(0, false);
+                        break;
+                    case R.id.tab_machine:
+                        mVpHome.setCurrentItem(1, false);
+
+                        break;
+                    case R.id.tab_order:
+                        mVpHome.setCurrentItem(2, false);
+
+                        break;
+                    case R.id.tab_mine:
+                        mVpHome.setCurrentItem(3, false);
+
+                        break;
+                    default:
+                        mVpHome.setCurrentItem(0, false);
+                        break;
+                }
+            }
+        });
+      /*  bbHomeBottom.setOnTabSelectListener(new OnTabSelectListener() {
             private int index;
 
             @Override
@@ -77,13 +109,13 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
                     currentIndex = index;
                 }
             }
-        });
+        });*/
     }
 
     @Override
     public void getFragments() {
         fragments = new Fragment[]{new OverviewFragment(), new MachineFragment(), new ToolsFragment(), new MineFragment()};
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_home_contain, fragments[0]).add(R.id.fl_home_contain, fragments[1]).hide(fragments[1]).show(fragments[0]).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.fl_home_contain, fragments[0]).add(R.id.fl_home_contain, fragments[1]).hide(fragments[1]).show(fragments[0]).commit();
     }
 
     @Override
@@ -102,5 +134,4 @@ public class HomeActivity extends BaseActivity<HomePresenter, HomeModel> impleme
             return super.onKeyDown(keyCode, event);
         }
     }
-
 }

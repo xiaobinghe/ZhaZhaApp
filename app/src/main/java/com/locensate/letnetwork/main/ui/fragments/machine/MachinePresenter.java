@@ -20,7 +20,6 @@ import io.reactivex.functions.Consumer;
 public class MachinePresenter extends MachineContract.Presenter {
     @Override
     public void onStart() {
-        mView.fillData(mModel.getMachineList());
     }
 
     @Override
@@ -47,6 +46,8 @@ public class MachinePresenter extends MachineContract.Presenter {
 
     @Override
     public void initData() {
+        // TODO: 2018/1/26 请求设备列表
+        mView.fillData(mModel.getMachineList());
     }
 
     @Override
@@ -72,6 +73,6 @@ public class MachinePresenter extends MachineContract.Presenter {
 
     @Override
     public void sort() {
-
+        // TODO: 2018/1/26 功率排序
     }
 }

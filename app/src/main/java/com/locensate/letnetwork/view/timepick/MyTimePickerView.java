@@ -82,7 +82,7 @@ public class MyTimePickerView extends MyBasePickerView implements View.OnClickLi
         super(builder.context);
         this.timeSelectListener = builder.timeSelectListener;
         this.gravity = builder.gravity;
-        this.type = builder.type;
+        this.type = Builder.type;
         this.Str_Submit = builder.Str_Submit;
         this.Str_Cancel = builder.Str_Cancel;
         this.Str_Title = builder.Str_Title;
@@ -173,7 +173,7 @@ public class MyTimePickerView extends MyBasePickerView implements View.OnClickLi
 
         //Option
         public Builder setType(Type type) {
-            this.type = type;
+            Builder.type = type;
             return this;
         }
 

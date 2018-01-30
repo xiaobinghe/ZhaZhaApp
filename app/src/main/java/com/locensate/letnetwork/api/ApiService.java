@@ -1,12 +1,18 @@
 package com.locensate.letnetwork.api;
 
+import com.locensate.letnetwork.bean.ControlEquipmentEntity;
+import com.locensate.letnetwork.bean.DeviceInfoEntity;
+import com.locensate.letnetwork.bean.FilterCompensationEntity;
 import com.locensate.letnetwork.bean.ImportantMachine;
 import com.locensate.letnetwork.bean.Login;
 import com.locensate.letnetwork.bean.Logout;
 import com.locensate.letnetwork.bean.MachineFilterTag;
+import com.locensate.letnetwork.bean.MonitorEquipment;
 import com.locensate.letnetwork.bean.OnlyMsg;
 import com.locensate.letnetwork.bean.Organizations;
 import com.locensate.letnetwork.bean.OverviewMotor;
+import com.locensate.letnetwork.bean.RemoteParamEntity;
+import com.locensate.letnetwork.bean.RemoteParams;
 import com.locensate.letnetwork.bean.UserInfo;
 import com.locensate.letnetwork.bean._User;
 
@@ -31,7 +37,7 @@ import retrofit2.http.Query;
 
 public interface ApiService {
     /**
-     * request login
+     * 请求登录
      *
      * @param login login of entity
      * @return Observable of User information
@@ -40,7 +46,7 @@ public interface ApiService {
     Observable<_User> login(@Body Login login);
 
     /**
-     * request logout
+     * 请求注销
      *
      * @param logout logout of entity
      * @return msg of success or fail
@@ -49,7 +55,7 @@ public interface ApiService {
     Observable<OnlyMsg> logout(@Body Logout logout);
 
     /**
-     * upload user avatar
+     * 上传头像
      *
      * @param file the path of avatar
      * @return
@@ -59,7 +65,7 @@ public interface ApiService {
     Observable<OnlyMsg> upLoadAvatar(@Part("file\";filename=\"head.jpg\"") RequestBody file);
 
     /**
-     * bind avatar
+     * 绑定头像
      *
      * @param userId user id
      * @param info   user info
@@ -69,7 +75,7 @@ public interface ApiService {
     Observable<UserInfo> bindAvatar(@Path("userId") long userId, @Body UserInfo.DataBean info);
 
     /**
-     * request organizations of user
+     * 请求用户所在的组织结构
      *
      * @param userId user id
      * @return user organizations structures
@@ -102,4 +108,60 @@ public interface ApiService {
      */
     @GET("/tags/filterTags")
     Observable<MachineFilterTag> getFilterTags();
+
+    /**
+     * 根据Id获取关键参数配置
+     *
+     * @param configKeyParamId
+     * @return
+     */
+    @GET("/keyparam/{configKeyParamId} ")
+    Observable<RemoteParamEntity> getKeyParamConfig(@Path("configKeyParamId") long configKeyParamId);
+
+    /**
+     * 获取远程参数列表
+     *
+     * @param deviceType
+     * @param deviceId
+     * @return
+     */
+    @GET("/keyparam/list ")
+    Observable<RemoteParams> getRemoteParams(@Query("deviceType") long deviceType, @Query("deviceId") long deviceId);
+
+
+    /**
+     * 根据控制设备Id获取控制设备信息
+     *
+     * @param controlEquipment
+     * @return
+     */
+    @GET("/controlEquipment/{controlEquipmentId}")
+    Observable<ControlEquipmentEntity> getControlEquipment(@Path("controlEquipmentId") long controlEquipment);
+
+    /**
+     * 根据滤波补偿设备Id获取滤波补偿设备信息
+     *
+     * @param filterCompensationEquipmentId
+     * @return
+     */
+    @GET("/filter-compensation-equipment/{filterCompensationEquipmentId}")
+    Observable<FilterCompensationEntity> getFilterCompensation(@Path("filterCompensationEquipmentId") long filterCompensationEquipmentId);
+
+    /**
+     * 根据监测设备Id获取监测设备信息
+     *
+     * @param monitorEquipmentId
+     * @return
+     */
+    @GET("/monitor-equipment/{monitorEquipmentId} ")
+    Observable<MonitorEquipment> getMonitorEquipment(@Path("monitorEquipmentId") long monitorEquipmentId);
+
+    /**
+     * 根据设备Id获取设备信息
+     *
+     * @param wholeEquipmentId
+     * @return
+     */
+    @GET("/wholeEquipment/{wholeEquipmentId}")
+    Observable<DeviceInfoEntity> getDeviceInfoById(@Path("wholeEquipmentId") long wholeEquipmentId);
 }

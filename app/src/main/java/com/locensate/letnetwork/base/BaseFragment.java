@@ -32,7 +32,7 @@ public abstract class BaseFragment<T extends BasePresenter, V extends BaseModel>
     private View rootView;
     private Unbinder mUnbinder;
     public static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
-    private boolean isInit = false;
+    public boolean isInit = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,9 +108,7 @@ public abstract class BaseFragment<T extends BasePresenter, V extends BaseModel>
      * 可见
      */
     protected void onVisible() {
-        if (isInit) {
-            lazyLoad();
-        }
+        lazyLoad();
     }
 
 

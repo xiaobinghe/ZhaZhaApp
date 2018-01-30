@@ -11,15 +11,42 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:paddingBottom="30px"
-        android:paddingLeft="75px"
-        android:paddingRight="75px"
-        android:paddingTop="30px">
+        android:paddingBottom="10dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="10dp">
 
+        <LinearLayout
+            android:id="@+id/time_value"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_gray_line">
+
+            <TextView
+                android:id="@+id/tv_time_value"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="2017年04月09日15时"
+                android:textColor="@color/font_black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/calendar" />
+        </LinearLayout>
         <FrameLayout
             android:id="@+id/time_type"
-            android:layout_width="240px"
-            android:layout_height="90px"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
             android:background="@drawable/bg_gray_line"
             android:clickable="true">
 
@@ -28,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginRight="30px"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/updown" />
 
             <TextView
@@ -38,39 +65,13 @@
                 android:layout_gravity="center"
                 android:text="小时"
                 android:textColor="@color/font_black"
-                android:textSize="42px"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
 
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/time_value"
-            android:layout_width="wrap_content"
-            android:layout_height="90px"
-            android:layout_marginLeft="30px"
-            android:background="@drawable/bg_gray_line">
 
-            <TextView
-                android:id="@+id/tv_time_value"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginLeft="45px"
-                android:layout_marginRight="45px"
-                android:text="2017年04月09日15时"
-                android:textColor="@color/font_black"
-                android:textSize="42px"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="30px"
-                android:src="@drawable/calendar" />
-        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -79,17 +80,17 @@
             android:orientation="horizontal">
 
             <View
-                android:layout_width="45px"
-                android:layout_height="4px"
+                android:layout_width="15dp"
+                android:layout_height="1dp"
                 android:background="@color/line_yellow" />
 
             <TextView
                 android:id="@+id/tv_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15px"
+                android:paddingLeft="5dp"
                 android:textColor="@color/font_content"
-                android:textSize="42px" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -99,9 +100,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone"
-        android:paddingBottom="30px"
-        android:paddingLeft="126px"
-        android:paddingRight="75px">
+        android:paddingBottom="10dp"
+        android:paddingLeft="42dp"
+        android:paddingRight="25dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,15 +118,15 @@
             android:orientation="horizontal">
 
             <View
-                android:layout_width="45px"
-                android:layout_height="4px"
+                android:layout_width="15dp"
+                android:layout_height="1dp"
                 android:background="@color/line_yellow" />
 
             <TextView
                 android:id="@+id/tv_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15px"
+                android:paddingLeft="5dp"
                 android:text="运行电流"
                 android:textColor="@color/font_content"
                 android:textSize="13sp" />
@@ -136,9 +137,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="75px"
-        android:paddingLeft="75px"
-        android:paddingRight="75px">
+        android:paddingBottom="25dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lc_line_data_analysis"

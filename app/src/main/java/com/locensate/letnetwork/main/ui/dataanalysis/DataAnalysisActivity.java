@@ -18,17 +18,22 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.monitorinfo.RunningStateEntity;
+import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.PickViewUtils;
 import com.locensate.letnetwork.view.MyMarkerView;
+import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
- *  数据分析
+ * 数据分析
+ *
  * @author xiaobinghe
  */
 
@@ -78,7 +83,6 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     protected void onDestroy() {
         super.onDestroy();
         LogUtil.e(TAG, "DataAnalysis destroy!");
-
     }
 
     private void fillLineData(List<Entry> data) {
@@ -139,8 +143,9 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
         leftAxis.setTextColor(getResources().getColor(R.color.font_content));
         float temp = 0f;
         for (int i = 0; i < data.size(); i++) {
-            if (temp < data.get(i).getY())
+            if (temp < data.get(i).getY()) {
                 temp = data.get(i).getY();
+            }
         }
         leftAxis.setAxisMaximum(temp + temp / 5);
         leftAxis.setDrawAxisLine(true);
@@ -215,5 +220,28 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     @Override
     public void onNothingSelected() {
 
+    }
+
+    @OnClick({R.id.tv_title_only_back, R.id.time_value, R.id.time_type})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_title_only_back:
+                finish();
+                break;
+            case R.id.time_value:
+                // TODO: 2018/1/30 时间选择
+                PickViewUtils.getInstance().getYMDHMPicker(this, null, null, new MyTimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+
+                    }
+                }).show();
+                break;
+            case R.id.time_type:
+                // TODO: 2018/1/30 查询类型
+                break;
+            default:
+                break;
+        }
     }
 }

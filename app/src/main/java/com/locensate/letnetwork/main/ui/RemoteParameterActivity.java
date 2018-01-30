@@ -12,20 +12,24 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.ToastUtil;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.bean.RemoteParams;
 import com.locensate.letnetwork.entity.RemoteParameterBean;
 import com.locensate.letnetwork.entity.RemoteParameterEntity;
+import com.locensate.letnetwork.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -48,6 +52,7 @@ public class RemoteParameterActivity extends BaseActivity {
     @Override
     public void initView() {
         tvTitleOnlyBack.setText("远程参数");
+        initData();
         rvRemoteParameter.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         rvRemoteParameter.setAdapter(new RemoteParameterRVAdapter(R.layout.item_remote_parameter, 0, getData()));
         rvRemoteParameter.addOnItemTouchListener(new OnItemClickListener() {
@@ -60,6 +65,22 @@ public class RemoteParameterActivity extends BaseActivity {
                 intent.putExtra("parameterId", parameterBean.getId());
                 intent.putExtra("parameterLabel", parameterBean.getLabel());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void initData() {
+        Api.getInstance().service.getRemoteParams(18, 18).compose(RxSchedulers.<RemoteParams>applyObservableAsync()).subscribe(new Consumer<RemoteParams>() {
+            @Override
+            public void accept(RemoteParams remoteParams) throws Exception {
+                // TODO: 2018/1/30 解析数据
+
+
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtil.show(App.getApplication().getString(R.string.load_fail));
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.machinedesinfo;
 
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -165,6 +167,8 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
     LinearLayout mLlMachineControlInfo;
     @BindView(R.id.ll_machine_monitoring_machine)
     LinearLayout mLlMachineMonitoringMachine;
+    private RotateAnimation mRotateUp;
+    private RotateAnimation mRotateDown;
 
     /*public static MachineInfoDataFragment getInstance() {
         if (null == instance) {
@@ -197,6 +201,7 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
         tvMachinePath.setText("烧结厂/一车间");
         tvMachineInstallTime.setText("2010年6月");
         tvMachineInstallPlace.setText("配电室1");
+        initAnimation();
 
 //        tvMachineAgeDes.setText("5年");
 //        tvMachineDianliuDes.setText("15A");
@@ -209,17 +214,32 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
 //        tvMachineTypeDes.setText("测试设备");
     }
 
+
+    private void initAnimation() {
+        mRotateUp = new RotateAnimation(0f, 180f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mRotateDown = new RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mRotateUp.setDuration(300L);
+        mRotateUp.setFillAfter(true);
+        mRotateDown.setDuration(300L);
+        mRotateDown.setFillAfter(true);
+    }
+
     @OnClick({R.id.iv_machine_monitor_info, R.id.iv_machine_control_info, R.id.iv_machine_monitoring_machine_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_machine_monitor_info:
+                ivMachineMonitorInfo.startAnimation(mLlMachineMonitorInfo.getVisibility() == View.VISIBLE ? mRotateUp : mRotateDown);
                 mLlMachineMonitorInfo.setVisibility(mLlMachineMonitorInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 break;
             case R.id.iv_machine_control_info:
+                ivMachineControlInfo.startAnimation(mLlMachineControlInfo.getVisibility() == View.VISIBLE ? mRotateUp : mRotateDown);
                 mLlMachineControlInfo.setVisibility(mLlMachineControlInfo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 break;
             case R.id.iv_machine_monitoring_machine_info:
+                ivMachineMonitoringMachineInfo.startAnimation(mLlMachineMonitoringMachine.getVisibility() == View.VISIBLE ? mRotateUp : mRotateDown);
                 mLlMachineMonitoringMachine.setVisibility(mLlMachineMonitoringMachine.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                break;
+            default:
                 break;
         }
     }

@@ -34,6 +34,7 @@ import com.locensate.letnetwork.bean.MachineFilterTag;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 import com.locensate.letnetwork.main.ui.search.SearchActivity;
 import com.locensate.letnetwork.utils.DateUtils;
+import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
 import com.locensate.letnetwork.utils.SpUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
@@ -103,6 +104,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     private ModernDialog dialog;
     private OptionsPickerView mTimeTypePicker;
     private RightSideslipLay mFilterView;
+    private ArrayList<MachineDataBean> mMachines;
 
 
     @Override
@@ -148,22 +150,14 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         timeTypes.add("周");
         timeTypes.add("月");
 
-    }
 
-
-    @Override
-    protected void lazyLoad() {
-        ToastUtil.show("yes!");
-        mPresenter.initData();
-        mPresenter.refreshFilter();
-    }
-
-    @Override
-    public void fillData(List<MachineDataBean> machines) {
+        /*初始化fragments*/
         rvMachineList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MachineListAdapter(getContext(), R.layout.item_machine_list, machines);
+        mMachines = new ArrayList<>();
+        adapter = new MachineListAdapter(getContext(), R.layout.item_machine_list, mMachines);
         rvMachineList.setAdapter(adapter);
 
+        /*添加点击和长按监听*/
         if (!isAddListener) {
             rvMachineList.addOnItemTouchListener(new OnItemLongClickListener() {
                 @Override
@@ -187,6 +181,29 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
             });
             isAddListener = true;
         }
+
+    }
+
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+    }
+
+    @Override
+    protected void lazyLoad() {
+        LogUtil.e("MachineFragment", "--------------lazyLoad()");
+        mPresenter.initData();
+        mPresenter.refreshFilter();
+    }
+
+    @Override
+    public void fillData(List<MachineDataBean> machines) {
+        if (mMachines.size() > 0) {
+            mMachines.clear();
+        }
+        mMachines.addAll(machines);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

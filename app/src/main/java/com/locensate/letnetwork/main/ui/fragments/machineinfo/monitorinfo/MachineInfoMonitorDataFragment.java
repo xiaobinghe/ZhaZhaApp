@@ -89,8 +89,6 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
                         bundle.putSerializable("parameter", data);
                         skipHistoryData(bundle);
                     }
-
-
                     //                AppManager.skipActivityWithData(DataAnalysisActivity.class, bundle, getActivity());
                 }
             });

@@ -54,7 +54,6 @@ import okhttp3.RequestBody;
 import static android.app.Activity.RESULT_OK;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -121,7 +120,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter, MineFragme
                 startActivity(new Intent(App.getApplication(), AccountInfoActivity.class));
                 break;
             case R.id.rl_setting:
-                startActivity(new Intent(App.getApplication(),SettingActivity.class));
+                startActivity(new Intent(App.getApplication(), SettingActivity.class));
                 break;
         }
     }
@@ -189,6 +188,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter, MineFragme
     }
 
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.e(TAG, "onActivityResult: +==========" + requestCode, null);
         if (resultCode == RESULT_OK) {
@@ -312,7 +312,7 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter, MineFragme
        /* This sets max size for bitmap that will be decoded from source Uri.
         More size - more memory allocation, default implementation uses screen diagonal.
 */
-        options.setMaxBitmapSize(240);
+//        options.setMaxBitmapSize(240);
 
 
 //        Tune everything (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
@@ -353,7 +353,9 @@ public class MineFragment extends BaseFragment<MineFragmentPresenter, MineFragme
     }
 
     public static Bitmap decodeUriAsBitmap(Context context, Uri uri) {
-        if (context == null || uri == null) return null;
+        if (context == null || uri == null) {
+            return null;
+        }
         Bitmap bitmap;
         try {
             bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
