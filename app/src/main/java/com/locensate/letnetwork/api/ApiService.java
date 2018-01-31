@@ -1,8 +1,13 @@
 package com.locensate.letnetwork.api;
 
+import com.locensate.letnetwork.bean.ControlDeviceLatest;
+import com.locensate.letnetwork.bean.ControlDeviceReadParams;
 import com.locensate.letnetwork.bean.ControlEquipmentEntity;
 import com.locensate.letnetwork.bean.DeviceInfoEntity;
 import com.locensate.letnetwork.bean.FilterCompensationEntity;
+import com.locensate.letnetwork.bean.FilterCompensationHistory;
+import com.locensate.letnetwork.bean.FilterCompensationLatestData;
+import com.locensate.letnetwork.bean.HistoryData;
 import com.locensate.letnetwork.bean.ImportantMachine;
 import com.locensate.letnetwork.bean.Login;
 import com.locensate.letnetwork.bean.Logout;
@@ -148,6 +153,28 @@ public interface ApiService {
     Observable<FilterCompensationEntity> getFilterCompensation(@Path("filterCompensationEquipmentId") long filterCompensationEquipmentId);
 
     /**
+     * 根据设备Id查看某一项数据的历史数据
+     *
+     * @param filterCompensationEquipmentId
+     * @param tagName
+     * @param rangType
+     * @return
+     */
+    @GET("/filter-compensation-equipment/{filterCompensationEquipmentId}/historyData")
+    Observable<FilterCompensationHistory> getFilterCompensationHistoryData(@Path("filterCompensationEquipmentId") long filterCompensationEquipmentId, @Query("tagName") String tagName, @Query("rangeType") String rangType
+            , @Query("start") long start, @Query("end") long end);
+
+
+    /**
+     * 获取滤波补偿设备的最新数据
+     *
+     * @param filterCompensationEquipmentId
+     * @return
+     */
+    @GET("/filter-compensation-equipment/{filterCompensationEquipmentId}/lastInfo")
+    Observable<FilterCompensationLatestData> getFilterCompensationLatestData(@Path("filterCompensationEquipmentId") long filterCompensationEquipmentId);
+
+    /**
      * 根据监测设备Id获取监测设备信息
      *
      * @param monitorEquipmentId
@@ -157,6 +184,20 @@ public interface ApiService {
     Observable<MonitorEquipment> getMonitorEquipment(@Path("monitorEquipmentId") long monitorEquipmentId);
 
     /**
+     *
+     * 获取监测设备历史数据
+     * @param monitorEquipmentId
+     * @param tagName
+     * @param rangType
+     * @param start
+     * @param end
+     * @return
+     */
+    @GET("/monitor-equipment/{monitorEquipmentId}/historyData")
+    Observable<MonitorEquipmentHistoryData> getMonitorEquipmentHistoryData(@Path("monitorEquipmentId") long monitorEquipmentId, @Query("tagName") String tagName,
+                                                @Query("rangType") String rangType, @Query("start") long start, @Query("end") long end);
+
+    /**
      * 根据设备Id获取设备信息
      *
      * @param wholeEquipmentId
@@ -164,4 +205,36 @@ public interface ApiService {
      */
     @GET("/wholeEquipment/{wholeEquipmentId}")
     Observable<DeviceInfoEntity> getDeviceInfoById(@Path("wholeEquipmentId") long wholeEquipmentId);
+
+    /**
+     * 获取控制设备的某项数据的历史数据
+     *
+     * @param controlEquipmentId
+     * @param tagName
+     * @param rangType
+     * @param start
+     * @param end
+     * @return
+     */
+    @GET("/controlEquipment/{controlEquipmentId}/historyData ")
+    Observable<HistoryData> getControlEquipmentHistory(@Path("controlEquipmentId") long controlEquipmentId, @Query("tagName") String tagName, @Query("rangeType") String rangType, @Query("start") long start, @Query("end") long end);
+
+    /**
+     * 获取控制设备的最新数据
+     *
+     * @param controlEquipmentId
+     * @return
+     */
+    @GET("/controlEquipment/{controlEquipmentId}/lastInfo")
+    Observable<ControlDeviceLatest> getControlDeviceLatestData(@Path("controlEquipmentId") long controlEquipmentId);
+
+    /**
+     * 获取控制设备的可读取参数列表
+     *
+     * @param controlEquipmentId
+     * @return
+     */
+    @GET("/controlEquipment/{controlEquipmentId}/readParams")
+    Observable<ControlDeviceReadParams> getControlDeviceReadableParams(@Path("controlEquipmentId") long controlEquipmentId);
+
 }

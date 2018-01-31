@@ -41,6 +41,7 @@ public class LauncherActivity extends BaseActivity {
         anim.setDuration(100);
         animationSet.addAnimation(anim);
         LogUtil.e(TAG, "===================" + TAG + "4");
+        LogUtil.e(TAG, "===================" +System.currentTimeMillis());
         ivFlash.startAnimation(animationSet);
         LogUtil.e(TAG, "===================" + TAG + "5");
         AnimationUtil.setAnimationListener(anim, new AnimationUtil.AnimListener() {

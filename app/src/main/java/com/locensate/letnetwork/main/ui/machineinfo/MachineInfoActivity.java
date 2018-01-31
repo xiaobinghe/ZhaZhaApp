@@ -45,7 +45,6 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
     private String machineId;
 
     private MachineInfoPop machineInfoPop;
-    private static final String TAG = "MachineInfoActivity";
     private Bundle mExtras;
 
     @Override

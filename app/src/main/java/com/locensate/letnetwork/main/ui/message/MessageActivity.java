@@ -40,7 +40,7 @@ public class MessageActivity extends BaseActivity<MessagePresenter, MessageModel
     TextView tvDelete;
     private int selected;
     private int page = 0;
-    //    private String[] titles = {"报警", "能效", "工单", "提醒"};
+    //private String[] titles = {"报警", "能效", "工单", "提醒"};
 
     @Override
     public int getLayoutId() {
