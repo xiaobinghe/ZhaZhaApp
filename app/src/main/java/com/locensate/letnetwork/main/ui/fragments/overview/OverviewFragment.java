@@ -129,6 +129,8 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
 
     @Override
     protected void lazyLoad() {
+
+
     }
 
     @Override

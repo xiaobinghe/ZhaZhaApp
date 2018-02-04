@@ -1,4 +1,4 @@
-package com.locensate.letnetwork.main.ui.addorder;
+package com.locensate.letnetwork.main.ui.addorder.addmachine;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

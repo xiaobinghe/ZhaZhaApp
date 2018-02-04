@@ -12,9 +12,6 @@ import com.locensate.letnetwork.Constant;
  */
 
 public class LogUtil {
-
-    private static final int JSON_INDENT = 4;
-
     public static void d(String tag, String data) {
         if (!Constant.DEBUG) {
             return;
@@ -27,15 +24,19 @@ public class LogUtil {
             return;
         }
         Log.e(tag, data);
+    }
 
-//        try {
-//            Log.d(tag, new JSONObject(data).toString(JSON_INDENT));
-//        } catch (JSONException e) {
-//            try {
-//                Log.d(tag, new JSONArray(data).toString(JSON_INDENT));
-//            } catch (JSONException ei) {
-//                Log.d(tag, data);
-//            }
-//        }
+    public static void w(String tag, String data) {
+        if (!Constant.DEBUG) {
+            return;
+        }
+        Log.w(tag, data);
+    }
+
+    public static void i(String tag, String data) {
+        if (!Constant.DEBUG) {
+            return;
+        }
+        Log.i(tag, data);
     }
 }

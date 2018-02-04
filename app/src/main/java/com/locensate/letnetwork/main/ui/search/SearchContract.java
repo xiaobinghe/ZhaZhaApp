@@ -15,7 +15,6 @@ public interface SearchContract {
 
     interface Model extends BaseModel{
 
-
     }
 
     interface View extends BaseView{

@@ -1,4 +1,4 @@
-package com.locensate.letnetwork.main.ui.addorder;
+package com.locensate.letnetwork.main.ui.addorder.addmachine;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,7 +20,7 @@ public class AddMachineGroupViewHolder extends RecyclerView.ViewHolder {
 
     public AddMachineGroupViewHolder(View itemView) {
         super(itemView);
-        tvGroup = (TextView) itemView.findViewById(R.id.tv_machine_group);
-        llGroup = (LinearLayout) itemView.findViewById(R.id.ll_machine_group);
+        tvGroup = itemView.findViewById(R.id.tv_machine_group);
+        llGroup = itemView.findViewById(R.id.ll_machine_group);
     }
 }

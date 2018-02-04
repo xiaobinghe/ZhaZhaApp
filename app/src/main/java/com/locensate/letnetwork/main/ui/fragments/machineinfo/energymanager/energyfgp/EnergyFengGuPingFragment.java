@@ -130,7 +130,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         combinedChart.setDrawGridBackground(false);
         combinedChart.setDrawBarShadow(true);
         combinedChart.setHighlightFullBarEnabled(false);
-
+        combinedChart.setPinchZoom(true);
         // draw bars behind lines
         combinedChart.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE

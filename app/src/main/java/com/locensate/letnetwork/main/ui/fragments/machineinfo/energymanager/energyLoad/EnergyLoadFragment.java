@@ -34,7 +34,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.view.MyMarkerView;
+import com.locensate.letnetwork.view.markView.CommonMarkerView;
 
 import java.util.ArrayList;
 
@@ -411,7 +411,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
         // "def", "ghj", "ikl", "mno" });
 
-        MyMarkerView mv = new MyMarkerView(getContext(), R.layout.custom_marker_view);
+        CommonMarkerView mv = new CommonMarkerView(getContext(), R.layout.custom_marker_view);
         mv.setChartView(mBarChart); // For bounds control
         mBarChart.setMarker(mv); // Set the marker to the charts
 

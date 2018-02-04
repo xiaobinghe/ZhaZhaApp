@@ -10,9 +10,17 @@ import android.widget.TextView;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.base.RxBus;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.entity.MachineEntity;
 import com.locensate.letnetwork.utils.LogUtil;
 
+import org.reactivestreams.Subscription;
+
 import butterknife.BindView;
+import butterknife.OnClick;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 
 /**
  * 添加工单
@@ -29,6 +37,7 @@ public class AddOrderActivity extends BaseActivity {
     @BindView(R.id.fl_contain)
     FrameLayout mFlContain;
     private OnHideKeyboardListener listener;
+    private Flowable<MachineEntity> mRegister;
 
     @Override
     public int getLayoutId() {
@@ -39,12 +48,33 @@ public class AddOrderActivity extends BaseActivity {
     public void initView() {
         String machineName = getIntent().getStringExtra("machineName");
         mTvTitleOnlyBack.setText("创建工单");
-
         AddOrderFragment addOrderFragment = new AddOrderFragment();
         Bundle bundle = new Bundle();
         bundle.putString("machineName", machineName);
         addOrderFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_contain, addOrderFragment).show(addOrderFragment).commit();
+        mRegister = RxBus.get().register(MachineEntity.class);
+        mRegister.compose(RxSchedulers.<MachineEntity>applyFlowableMainThread()).subscribe(new FlowableSubscriber<MachineEntity>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+
+            }
+
+            @Override
+            public void onNext(MachineEntity machineEntity) {
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     /**
@@ -80,5 +110,10 @@ public class AddOrderActivity extends BaseActivity {
 
     public void setOnHideKeyboardListener(OnHideKeyboardListener listener) {
         this.listener = listener;
+    }
+
+    @OnClick(R.id.iv_title_only_back)
+    public void onViewClicked() {
+        finish();
     }
 }

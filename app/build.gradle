@@ -6,12 +6,12 @@ targetCompatibility = '1.7'
 
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.locensate.letnetwork"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,14 @@ android {
     compileOptions {
 
     }
+
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+
+    }
 }
 
 
@@ -42,14 +50,14 @@ buildscript {
     }
 }
 
+
+
 // make sure this line comes *after* you apply the Android plugin
 apply plugin: 'com.getkeepsafe.dexcount'
 
 dependencies {
     compile project(':annotation')
     annotationProcessor project(':apt')
-
-
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.gyf.barlibrary:barlibrary:2.2.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.6.0'
@@ -59,10 +67,10 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'org.litepal.android:core:1.4.1'
     compile 'com.github.yalantis:ucrop:2.2.1-native'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:support-v13:25.3.1'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:support-v13:27.0.2'
     compile 'com.jakewharton:butterknife:8.6.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
@@ -74,10 +82,23 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.2'
     compile 'org.reactivestreams:reactive-streams:1.0.0'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:27.0.2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    compile files('libs/jpush-android-3.1.1.jar')
+    compile files('libs/jcore-android-1.1.9.jar')
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.0.2'//默认使用的版本
+            }
+        }
+    }
 }

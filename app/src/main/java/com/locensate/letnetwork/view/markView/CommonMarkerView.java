@@ -1,4 +1,4 @@
-package com.locensate.letnetwork.view;
+package com.locensate.letnetwork.view.markView;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -12,17 +12,15 @@ import com.github.mikephil.charting.utils.Utils;
 import com.locensate.letnetwork.R;
 
 /**
- *
  * @author xiaobinghe
  */
 
-public class MyMarkerView extends MarkerView {
+public class CommonMarkerView extends MarkerView {
 
     private TextView tvContent;
 
-    public MyMarkerView(Context context, int layoutResource) {
+    public CommonMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
-
         tvContent = (TextView) findViewById(R.id.tvContent);
     }
 

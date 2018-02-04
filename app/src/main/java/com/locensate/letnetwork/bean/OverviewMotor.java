@@ -9,7 +9,10 @@ import java.io.Serializable;
  */
 
 public class OverviewMotor implements Serializable{
-
+    public OverviewMotor(int operCode, DataBean data) {
+        this.operCode = operCode;
+        this.data = data;
+    }
 
     /**
      * operCode : 1
@@ -36,6 +39,13 @@ public class OverviewMotor implements Serializable{
     }
 
     public static class DataBean {
+        public DataBean(int motorCount, double powerCount, double measurePowerCount, int measureCount) {
+            this.motorCount = motorCount;
+            this.powerCount = powerCount;
+            this.measurePowerCount = measurePowerCount;
+            this.measureCount = measureCount;
+        }
+
         /**
          * motorCount : 18
          * powerCount : 884.5

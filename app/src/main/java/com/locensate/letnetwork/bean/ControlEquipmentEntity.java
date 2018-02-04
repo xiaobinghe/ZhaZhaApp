@@ -8,5 +8,10 @@ import java.io.Serializable;
  * @author xiaobinghe
  */
 
-public class ControlEquipmentEntity implements Serializable {
+public class ControlEquipmentEntity extends BaseSubEquipment implements Serializable {
+    private long mId;
+
+    public long getId() {
+        return mId;
+    }
 }

@@ -33,17 +33,6 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
     private Bundle mMachineInfo;
     private String machineName;
     private String machineId;
-/*
-    public static Fragment getInstance(String machineData) {
-        if (instance == null) {
-            instance = new MachineInfoMonitorDataFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("MachineName", machineData);
-            instance.setArguments(bundle);
-        }
-        return instance;
-    }*/
-
     @Override
     protected void initView() {
 
@@ -69,7 +58,6 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
         monitorRVAdapter = new MachineMonitorRvAdapter(R.layout.item_section_content, R.layout.item_section_head, datas, getContext());
         rvMachineMonitor.setAdapter(monitorRVAdapter);
 
-
         if (!isAddListener) {
             rvMachineMonitor.addOnItemTouchListener(new OnItemClickListener() {
                 @Override
@@ -77,8 +65,6 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
                     MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(position);
                     skipRemoteParameter();
                 }
-
-
                 @Override
                 public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                     Bundle bundle = new Bundle();

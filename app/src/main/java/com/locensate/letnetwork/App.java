@@ -10,9 +10,10 @@ import com.zhy.autolayout.config.AutoLayoutConifg;
 
 import org.litepal.LitePalApplication;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -20,6 +21,7 @@ import org.litepal.LitePalApplication;
 public class App extends LitePalApplication {
 
     private static Application mApp;
+    public static boolean isMock = true;
 
     @Override
     public void onCreate() {
@@ -33,6 +35,8 @@ public class App extends LitePalApplication {
         mRefWatcher = LeakCanary.install(this);*/
         AutoLayoutConifg.getInstance().useDeviceSize();
         DisplayUtil.init(this);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
    /* public static RefWatcher getRefWatcher(Context context) {

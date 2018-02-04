@@ -7,12 +7,14 @@ import com.locensate.letnetwork.bean.DeviceInfoEntity;
 import com.locensate.letnetwork.bean.FilterCompensationEntity;
 import com.locensate.letnetwork.bean.FilterCompensationHistory;
 import com.locensate.letnetwork.bean.FilterCompensationLatestData;
-import com.locensate.letnetwork.bean.HistoryData;
+import com.locensate.letnetwork.bean.ControlDeviceHistoryData;
 import com.locensate.letnetwork.bean.ImportantMachine;
 import com.locensate.letnetwork.bean.Login;
 import com.locensate.letnetwork.bean.Logout;
 import com.locensate.letnetwork.bean.MachineFilterTag;
-import com.locensate.letnetwork.bean.MonitorEquipment;
+import com.locensate.letnetwork.bean.MonitorEquipmentEntity;
+import com.locensate.letnetwork.bean.MonitorEquipmentHistoryData;
+import com.locensate.letnetwork.bean.MonitorEquipmentLatestData;
 import com.locensate.letnetwork.bean.OnlyMsg;
 import com.locensate.letnetwork.bean.Organizations;
 import com.locensate.letnetwork.bean.OverviewMotor;
@@ -181,21 +183,30 @@ public interface ApiService {
      * @return
      */
     @GET("/monitor-equipment/{monitorEquipmentId} ")
-    Observable<MonitorEquipment> getMonitorEquipment(@Path("monitorEquipmentId") long monitorEquipmentId);
+    Observable<MonitorEquipmentEntity> getMonitorEquipment(@Path("monitorEquipmentId") long monitorEquipmentId);
 
     /**
-     *
      * 获取监测设备历史数据
+     *
      * @param monitorEquipmentId
      * @param tagName
-     * @param rangType
+     * @param rangeType
      * @param start
      * @param end
      * @return
      */
     @GET("/monitor-equipment/{monitorEquipmentId}/historyData")
     Observable<MonitorEquipmentHistoryData> getMonitorEquipmentHistoryData(@Path("monitorEquipmentId") long monitorEquipmentId, @Query("tagName") String tagName,
-                                                @Query("rangType") String rangType, @Query("start") long start, @Query("end") long end);
+                                                                           @Query("rangeType") String rangeType, @Query("start") long start, @Query("end") long end);
+
+    /**
+     * 获取监测设备的最新数据
+     *
+     * @param monitorEquipmentId
+     * @return
+     */
+    @GET("/monitor-equipment/{monitorEquipmentId}/lastInfo")
+    Observable<MonitorEquipmentLatestData> getMonitorEquipmentLatestData(@Path("monitorEquipmentId") long monitorEquipmentId);
 
     /**
      * 根据设备Id获取设备信息
@@ -217,7 +228,7 @@ public interface ApiService {
      * @return
      */
     @GET("/controlEquipment/{controlEquipmentId}/historyData ")
-    Observable<HistoryData> getControlEquipmentHistory(@Path("controlEquipmentId") long controlEquipmentId, @Query("tagName") String tagName, @Query("rangeType") String rangType, @Query("start") long start, @Query("end") long end);
+    Observable<ControlDeviceHistoryData> getControlEquipmentHistory(@Path("controlEquipmentId") long controlEquipmentId, @Query("tagName") String tagName, @Query("rangeType") String rangType, @Query("start") long start, @Query("end") long end);
 
     /**
      * 获取控制设备的最新数据

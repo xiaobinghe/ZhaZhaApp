@@ -7,8 +7,10 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
+import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.main.ui.home.HomeActivity;
 import com.locensate.letnetwork.main.ui.login.LoginActivity;
 import com.locensate.letnetwork.utils.AnimationUtil;
 import com.locensate.letnetwork.utils.LogUtil;
@@ -16,7 +18,6 @@ import com.locensate.letnetwork.utils.LogUtil;
 import butterknife.BindView;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -41,14 +42,18 @@ public class LauncherActivity extends BaseActivity {
         anim.setDuration(100);
         animationSet.addAnimation(anim);
         LogUtil.e(TAG, "===================" + TAG + "4");
-        LogUtil.e(TAG, "===================" +System.currentTimeMillis());
+        LogUtil.e(TAG, "===================" + System.currentTimeMillis());
         ivFlash.startAnimation(animationSet);
         LogUtil.e(TAG, "===================" + TAG + "5");
         AnimationUtil.setAnimationListener(anim, new AnimationUtil.AnimListener() {
             @Override
             public void onAnimFinish() {
-                startActivity(new Intent(mContext, LoginActivity.class));
-//                startActivity(new Intent(mContext, HomeActivity.class));
+                if (App.isMock) {
+                    startActivity(new Intent(mContext, HomeActivity.class));
+                } else {
+                    startActivity(new Intent(mContext, LoginActivity.class));
+                }
+
                 finish();
             }
         });

@@ -3,13 +3,13 @@ package com.locensate.letnetwork.main.ui.search;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Environment;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,10 +18,10 @@ import android.widget.TextView;
 
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.database.SearchHistoryDb;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.KeyBoardUtils;
 import com.locensate.letnetwork.utils.ToastUtil;
-import com.locensate.letnetwork.database.SearchHistoryDb;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -43,11 +43,9 @@ import butterknife.OnClick;
 public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> implements SearchContract.View {
 
     @BindView(R.id.et_search_view)
-    EditText etSearchView;
+    AppCompatAutoCompleteTextView mSerchView;
     @BindView(R.id.btt_search)
     TextView bttSearch;
-    @BindView(R.id.lv_search_below)
-    ListView lvSearchBelow;
     @BindView(R.id.lv_search_history)
     ListView lvSearchHistory;
     @BindView(R.id.iv_search_back)
@@ -73,10 +71,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
         flCancelContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etSearchView.setText("");
+                mSerchView.setText("");
             }
         });
-        etSearchView.addTextChangedListener(new TextWatcher() {
+        mSerchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -92,11 +90,11 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
 
             }
         });
-        etSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSerchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    KeyBoardUtils.closeKeybord(etSearchView, getApplicationContext());
+                    KeyBoardUtils.closeKeybord(mSerchView, getApplicationContext());
                     //// TODO: 2017/5/3 开始搜索的逻辑代码
                     searchData();
                     return true;
@@ -104,7 +102,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
                 return false;
             }
         });
-        etSearchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mSerchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -127,7 +125,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
                 onBackPressed();
                 break;
             case R.id.btt_search:
-                KeyBoardUtils.closeKeybord(etSearchView, getApplicationContext());
+                KeyBoardUtils.closeKeybord(mSerchView, getApplicationContext());
                 searchData();
                 break;
         }
@@ -135,7 +133,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
 
     private void searchData() {
         // TODO: 2017/2/20 搜索业务
-        if (TextUtils.isEmpty(etSearchView.getText())) {
+        if (TextUtils.isEmpty(mSerchView.getText())) {
             ToastUtil.show("请输入设备名称");
             return;
         }
@@ -143,7 +141,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
         SearchHistoryDb searchHistoryDb = new SearchHistoryDb();
         searchHistoryDb.setId(DateUtils.getCurrentTimeMillis());
         searchHistoryDb.setTime((String) DateUtils.getData("2017-02-23 09:37", DateUtils.getCurrentTimeMillis()));
-        searchHistoryDb.setCont(etSearchView.getText().toString());
+        searchHistoryDb.setCont(mSerchView.getText().toString());
         searchHistoryDb.setType("");
         searchHistoryDb.save();
         //2、执行搜索业务

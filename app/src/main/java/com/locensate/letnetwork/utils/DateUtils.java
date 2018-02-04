@@ -202,6 +202,9 @@ public class DateUtils {
             case "月":
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM");
                 break;
+            case "":
+                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                break;
             default:
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 break;

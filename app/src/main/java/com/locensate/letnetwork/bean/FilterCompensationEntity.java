@@ -8,5 +8,10 @@ import java.io.Serializable;
  * @author xiaobinghe
  */
 
-public class FilterCompensationEntity implements Serializable {
+public class FilterCompensationEntity  extends BaseSubEquipment implements Serializable {
+    private long mId;
+
+    public long getId() {
+        return mId;
+    }
 }

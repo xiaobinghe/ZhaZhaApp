@@ -27,7 +27,7 @@
             android:src="@drawable/back_white" />
 
 
-        <EditText
+        <android.support.v7.widget.SearchView.SearchAutoComplete
             android:id="@+id/et_search_view"
             android:layout_width="790px"
             android:layout_height="90px"
@@ -85,13 +85,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/lv_search_below"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_search_history"

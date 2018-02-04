@@ -57,6 +57,7 @@ public interface OverviewContract {
     interface View extends BaseView {
         /**
          * 初始化数据
+         *
          * @param overviewMotor
          */
         void initData(OverviewMotor overviewMotor);

@@ -6,25 +6,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.monitorinfo.RunningStateEntity;
+import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
-import com.locensate.letnetwork.view.MyMarkerView;
+import com.locensate.letnetwork.view.markView.MyMarkerView;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,22 +48,28 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     ImageView ivTitleOnlyBack;
     @BindView(R.id.tv_title_only_back)
     TextView tvTitleOnlyBack;
-    @BindView(R.id.up_down)
-    ImageView upDown;
     @BindView(R.id.time_type_content)
-    TextView timeTypeContent;
-    @BindView(R.id.time_type)
-    FrameLayout timeType;
+    TextView tvTimeType;
+    @BindView(R.id.fl_time_type)
+    FrameLayout flTimeType;
     @BindView(R.id.tv_time_value)
     TextView tvTimeValue;
-    @BindView(R.id.time_value)
-    LinearLayout timeValue;
+    @BindView(R.id.ll_time_value)
+    LinearLayout llTimeValue;
     @BindView(R.id.tv_label)
     TextView tvLabel;
     @BindView(R.id.lc_line_data_analysis)
-    LineChart lcLineDataAnalysis;
-    private LineDataSet dataSetByIndex;
+    LineChart mChart;
+    private LineDataSet dataSet;
     private RunningStateEntity parameter;
+    private List<String> timeTypes = new ArrayList<>();
+    private long deviceId = 9L;
+    private String tagName;
+    private Calendar mCurrentDate;
+    private Calendar mStartCalendar;
+    private Date startDate;
+    private MyTimePickerView mTimePickerView;
+    private OptionsPickerView mTimeTypePicker;
 
     @Override
     public int getLayoutId() {
@@ -70,13 +81,174 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     public void initView() {
         parameter = (RunningStateEntity) getIntent().getExtras().getSerializable("parameter");
         tvTitleOnlyBack.setText(parameter.getKey());
-        ivTitleOnlyBack.setOnClickListener(new View.OnClickListener() {
+        tagName = "MC-P1";
+        tvLabel.setText(tagName);
+        mCurrentDate = Calendar.getInstance();
+        mCurrentDate.setTime(new Date(System.currentTimeMillis() - 600000L));
+        mStartCalendar = Calendar.getInstance();
+        mStartCalendar.set(2017, 0, 1);
+        initLineChart();
+    }
+
+    private void initLineChart() {
+        // 设置描述是否可用
+        mChart.getDescription().setEnabled(false);
+        // 设置触摸手势可用
+        mChart.setTouchEnabled(true);
+        //滑动摩擦系数
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+
+       /*設置允许被拖动*/
+        mChart.setDragEnabled(true);
+        /*设置是否允许被缩放*/
+        mChart.setScaleEnabled(true);
+        /*设置网格背景*/
+        mChart.setDrawGridBackground(false);
+        /*设置视图绘制动画*/
+        mChart.animateX(2000);
+        /*如果设置为true，x,y轴用手指可以同时缩放，如果为假，他们可以独立缩放，默认为false*/
+        mChart.setPinchZoom(true);
+        mChart.setBackgroundColor(getResources().getColor(R.color.white));
+        mChart.setContentDescription("无数据");
+        /*图例*/
+        Legend l = mChart.getLegend();
+        /*图例是否被显示*/
+        l.setEnabled(false);
+        /*x轴对象*/
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(getResources().getColor(R.color.font_content));
+        xAxis.setDrawGridLines(true);
+        xAxis.setDrawAxisLine(true);
+        /*在缩放时设置轴的最小间隔。不允许轴向下方限制。这可以用于在缩放时避免标签复制。*/
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
+
             @Override
-            public void onClick(View v) {
-                finish();
+            public String getFormattedValue(float value, AxisBase axis) {
+                long m = (long) (mModel.getStartTime() + value);
+                LogUtil.e("MILLISECONDS", "------" + m + "++++++++" + value);
+                return mFormat.format(new Date(m));
             }
         });
-        tvLabel.setText(parameter.getKey());
+
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setDrawAxisLine(true);
+
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setTextColor(getResources().getColor(R.color.font_content));
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
+
+    }
+
+    @Override
+    public void fillChartData(List<Entry> data) {
+        mChart.resetTracking();
+        // create a dataset and give it a type
+        dataSet = new LineDataSet(data, parameter.getKey());
+        dataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        // set the line to be drawn like this "- - - - - -"
+        dataSet.setLineWidth(1.5f);
+        dataSet.setDrawCircles(false);
+        dataSet.setHighLightColor(getResources().getColor(R.color.line_yellow));
+        dataSet.setDrawValues(false);
+        dataSet.setColor(getResources().getColor(R.color.line_yellow));
+        dataSet.setDrawCircleHole(false);
+        dataSet.setMode(LineDataSet.Mode.LINEAR);
+
+        LineData lineData = new LineData(dataSet);
+        // set data
+        mChart.setData(lineData);
+        mChart.invalidate();
+        mChart.animateX(2000);
+        MyMarkerView mv = new MyMarkerView(this, R.layout.layout_my_marker_view, mModel.getStartTime());
+        mv.setChartView(mChart);
+        mChart.setMarker(mv);
+    }
+
+    @Override
+    public void initData() {
+
+        timeTypes.add("十分钟");
+        timeTypes.add("一小时");
+        timeTypes.add("一天");
+        timeTypes.add("一周");
+        timeTypes.add("一月");
+        startDate = new Date(System.currentTimeMillis() - 600000L);
+        tvTimeValue.setText(DateUtils.getTime(startDate, ""));
+        mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, startDate);
+
+
+    }
+
+    private String getRangeType(String text) {
+        switch (text) {
+            case "十分钟":
+                return "minute";
+            case "一小时":
+                return "hour";
+            case "一天":
+                return "day";
+            case "一周":
+                return "week";
+            case "一月":
+                return "mouth";
+            default:
+                return "mouth";
+        }
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
+
+    @OnClick({R.id.tv_title_only_back, R.id.ll_time_value, R.id.fl_time_type})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_title_only_back:
+                finish();
+                break;
+            case R.id.ll_time_value:
+                if (mTimePickerView == null) {
+                    mTimePickerView = PickViewUtils.getInstance().getYMDHMPicker(this, mStartCalendar, mCurrentDate, new MyTimePickerView.OnTimeSelectListener() {
+                        @Override
+                        public void onTimeSelect(Date date, View v) {
+                            startDate = date;
+                            tvTimeValue.setText(DateUtils.getTime(date, ""));
+                            mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, date);
+                        }
+                    });
+                }
+                mTimePickerView.show();
+                break;
+            case R.id.fl_time_type:
+                if (mTimeTypePicker == null) {
+                    mTimeTypePicker = PickViewUtils.getInstance().getTimeType(this, timeTypes, new OptionsPickerView.OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                            LogUtil.e("pickview ", "--------option1" + options1 + "---option2---" + options2 + "-----option3----" + options3);
+                            tvTimeType.setText(timeTypes.get(options1));
+                            if (startDate != null) {
+                                mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, startDate);
+                            }
+                        }
+                    });
+                }
+                mTimeTypePicker.show();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -85,163 +257,8 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
         LogUtil.e(TAG, "DataAnalysis destroy!");
     }
 
-    private void fillLineData(List<Entry> data) {
-        // 设置描述是否可用
-        lcLineDataAnalysis.getDescription().setEnabled(false);
-
-        // 设置触摸手势可用
-        lcLineDataAnalysis.setTouchEnabled(true);
-
-        //滑动摩擦系数
-        lcLineDataAnalysis.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        lcLineDataAnalysis.setDragEnabled(true);
-        lcLineDataAnalysis.setScaleEnabled(true);
-        lcLineDataAnalysis.setDrawGridBackground(false);
-        lcLineDataAnalysis.setHighlightPerDragEnabled(true);
-
-        lcLineDataAnalysis.animateX(2000);
-        // if disabled, scaling can be done on x- and y-axis separately
-        lcLineDataAnalysis.setPinchZoom(true);
-
-        // set an alternative background color
-        lcLineDataAnalysis.setBackgroundColor(getResources().getColor(R.color.white));
-
-        // add data
-        setLineData(data);
-
-        lcLineDataAnalysis.animateX(2500);
-
-        // get the legend (only possible after setting data)图例
-        Legend l = lcLineDataAnalysis.getLegend();
-
-        l.setEnabled(false);
-        // modify the legend ...
-        l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(mTfLight);
-        l.setTextSize(10f);
-        l.setTextColor(getResources().getColor(R.color.font_content));
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-//        l.setYOffset(11f);
-
-        XAxis xAxis = lcLineDataAnalysis.getXAxis();
-//        xAxis.setTypeface(mTfLight);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(10f);
-        xAxis.setAxisMaximum(data.size());
-        xAxis.setAxisMinimum(1);
-        xAxis.setTextColor(getResources().getColor(R.color.font_content));
-        xAxis.setDrawGridLines(true);
-        xAxis.setDrawAxisLine(true);
-
-        YAxis leftAxis = lcLineDataAnalysis.getAxisLeft();
-//        leftAxis.setTypeface(mTfLight);
-        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
-        float temp = 0f;
-        for (int i = 0; i < data.size(); i++) {
-            if (temp < data.get(i).getY()) {
-                temp = data.get(i).getY();
-            }
-        }
-        leftAxis.setAxisMaximum(temp + temp / 5);
-        leftAxis.setDrawAxisLine(true);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);
-
-        YAxis rightAxis = lcLineDataAnalysis.getAxisRight();
-//        rightAxis.setTypeface(mTfLight);
-        rightAxis.setTextColor(getResources().getColor(R.color.font_content));
-        rightAxis.setAxisMaximum(0f);
-        rightAxis.setAxisMinimum(0f);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setDrawZeroLine(false);
-        rightAxis.setGranularityEnabled(false);
-    }
-
-
-    private void setLineData(List<Entry> data) {
-
-
-        if (lcLineDataAnalysis.getData() != null &&
-                lcLineDataAnalysis.getData().getDataSetCount() > 0) {
-            dataSetByIndex = (LineDataSet) lcLineDataAnalysis.getData().getDataSetByIndex(0);
-            dataSetByIndex.setValues(data);
-            lcLineDataAnalysis.getData().notifyDataChanged();
-            lcLineDataAnalysis.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            dataSetByIndex = new LineDataSet(data, parameter.getKey());
-            // set the line to be drawn like this "- - - - - -"
-            dataSetByIndex.setLineWidth(1.5f);
-            dataSetByIndex.setDrawCircles(false);
-            dataSetByIndex.setHighLightColor(getResources().getColor(R.color.line_yellow));
-            dataSetByIndex.setDrawValues(false);
-            dataSetByIndex.setColor(getResources().getColor(R.color.line_yellow));
-            dataSetByIndex.setDrawCircleHole(false);
-            dataSetByIndex.setMode(LineDataSet.Mode.LINEAR);
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(dataSetByIndex); // add the datasets
-
-            // create a data object with the datasets
-            LineData lineData = new LineData(dataSets);
-
-            // set data
-            lcLineDataAnalysis.setData(lineData);
-            lcLineDataAnalysis.animateX(3000);
-            lcLineDataAnalysis.getDescription().setEnabled(false);
-            MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
-            mv.setChartView(lcLineDataAnalysis); // For bounds control
-            lcLineDataAnalysis.setMarker(mv); // Set the marker to the chart
-
-            // TODO: 2017/1/10 设置x轴在下方展示
-            XAxis xAxis = lcLineDataAnalysis.getXAxis();
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        }
-
-
-    }
-
-    @Override
-    public void initData(List<Entry> data) {
-        fillLineData(data);
-
-    }
-
     @Override
     public void onValueSelected(Entry e, Highlight h) {
 
-    }
-
-    @Override
-    public void onNothingSelected() {
-
-    }
-
-    @OnClick({R.id.tv_title_only_back, R.id.time_value, R.id.time_type})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_title_only_back:
-                finish();
-                break;
-            case R.id.time_value:
-                // TODO: 2018/1/30 时间选择
-                PickViewUtils.getInstance().getYMDHMPicker(this, null, null, new MyTimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {
-
-                    }
-                }).show();
-                break;
-            case R.id.time_type:
-                // TODO: 2018/1/30 查询类型
-                break;
-            default:
-                break;
-        }
     }
 }

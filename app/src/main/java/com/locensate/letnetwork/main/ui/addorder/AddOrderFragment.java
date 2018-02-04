@@ -21,6 +21,7 @@ import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
 import com.locensate.letnetwork.bean.EntpBean;
+import com.locensate.letnetwork.main.ui.addorder.addmachine.AddMachineFragment;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
 
@@ -113,7 +114,7 @@ public class AddOrderFragment extends BaseFragment {
      * 添加设备
      */
     private void addMachine() {
-        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_anima_right_in,R.anim.page_anima_right_out).addToBackStack("addOrder").replace(R.id.fl_contain, new AddMachineFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_anima_right_in,R.anim.page_anima_right_out).addToBackStack("addOrder").add(R.id.fl_contain, new AddMachineFragment()).commit();
     }
 
     private void createEnterprisePop(View view) {
