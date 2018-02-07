@@ -1,6 +1,8 @@
 package com.locensate.letnetwork.main.ui.tools;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +15,13 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.locensate.letnetwork.App;
+import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.entity.RealTimeEntity;
 import com.locensate.letnetwork.main.ui.search.SearchActivity;
+import com.locensate.letnetwork.utils.SpUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.expandableview.Level0Item;
 import com.locensate.letnetwork.view.expandableview.Level1Item;
@@ -29,7 +34,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -50,6 +54,7 @@ public class ToolsKanBanActivity extends BaseActivity {
     @BindView(R.id.activity_kan_ban)
     LinearLayout activityKanBan;
     private ExpandablePopWindow expandablePopwindow;
+    private String mGroupName;
 
     @Override
     public int getLayoutId() {
@@ -67,6 +72,7 @@ public class ToolsKanBanActivity extends BaseActivity {
         });
         rvKanBan.setLayoutManager(new LinearLayoutManager(this));
         rvKanBan.setAdapter(new KanBanRVAdapter(R.layout.layout_item_kan_ban, getData()));
+        tvMachinePath.setText(SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂"));
     }
 
     @OnClick({R.id.iv_title_only_back, R.id.tv_machine_path, R.id.iv_search})
@@ -79,7 +85,13 @@ public class ToolsKanBanActivity extends BaseActivity {
                 showPop(getGroupTree());
                 break;
             case R.id.iv_search:
-                startActivity(SearchActivity.class);
+                Intent intent = new Intent(App.getApplication(), SearchActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("target", "tools_kanban");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            default:
                 break;
         }
     }
@@ -87,14 +99,17 @@ public class ToolsKanBanActivity extends BaseActivity {
     private void showPop(ArrayList<MultiItemEntity> groupTree) {
         if (null == expandablePopwindow) {
             expandablePopwindow = new ExpandablePopWindow(this, groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
         }
         expandablePopwindow.showPopupWindow(tvMachinePath);
-//        WindowOptionUtil.darkBackGround(0.4f, this);
         expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-//                WindowOptionUtil.darkBackGround(1f, ToolsKanBanActivity.this);
-                tvMachinePath.setText(expandablePopwindow.getPath());
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    mGroupName = temp;
+                }
+                tvMachinePath.setText(mGroupName);
             }
         });
     }
@@ -173,10 +188,15 @@ public class ToolsKanBanActivity extends BaseActivity {
         private int selectColor(RealTimeEntity realTimeEntity) {
             String status = realTimeEntity.getStatus();
             Resources resources = getResources();
-            if ("stop".equals(status)) return resources.getColor(R.color.alert_stop);
-            else if ("high".equals(status)) return resources.getColor(R.color.alert_high);
-            else if ("low".equals(status)) return resources.getColor(R.color.alert_low);
-            else return resources.getColor(R.color.normal_green);
+            if ("stop".equals(status)) {
+                return resources.getColor(R.color.alert_stop);
+            } else if ("high".equals(status)) {
+                return resources.getColor(R.color.alert_high);
+            } else if ("low".equals(status)) {
+                return resources.getColor(R.color.alert_low);
+            } else {
+                return resources.getColor(R.color.normal_green);
+            }
         }
     }
 }

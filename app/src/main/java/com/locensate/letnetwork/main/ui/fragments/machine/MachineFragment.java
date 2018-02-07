@@ -290,7 +290,9 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
 
     private void startSearch() {
         Intent intent = new Intent(getContext(), SearchActivity.class);
-        intent.putExtra("search_type", "machine_list");
+        Bundle bundle = new Bundle();
+        bundle.putString("target", "machines");
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

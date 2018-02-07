@@ -26,6 +26,7 @@ import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.database.SearchHistoryDb;
 import com.locensate.letnetwork.main.ui.MachineListActivity;
+import com.locensate.letnetwork.main.ui.tools.ToolsKanBanActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.KeyBoardUtils;
 import com.locensate.letnetwork.utils.ToastUtil;
@@ -74,6 +75,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
     private HistorySearchAdapter historySearchAdapter;
     private ArrayAdapter<String> mArrayAdapter;
     private ArrayList<String> mHistories;
+    private String mTarget;
 
     @Override
     public int getLayoutId() {
@@ -82,6 +84,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
 
     @Override
     public void initView() {
+        mTarget = getIntent().getExtras().getString("target");
+
         flCancelContent.setVisibility(View.INVISIBLE);
         flCancelContent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +176,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean) {
-                    Intent intent = new Intent(App.getApplication(), MachineListActivity.class);
+                    Intent intent = null;
+                    if (mTarget.equals("machines")) {
+                        intent = new Intent(App.getApplication(), MachineListActivity.class);
+                    }else if (mTarget.equals("tools_kanban")){
+                        intent = new Intent(App.getApplication(), ToolsKanBanActivity.class);
+                    }
                     Bundle bundle = new Bundle();
                     bundle.putString("filter", "");
                     bundle.putString("ranges", "某钢厂");
