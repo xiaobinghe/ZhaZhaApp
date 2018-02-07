@@ -169,6 +169,7 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
     LinearLayout mLlMachineMonitoringMachine;
     private RotateAnimation mRotateUp;
     private RotateAnimation mRotateDown;
+    private boolean initComplete = false;
 
     /*public static MachineInfoDataFragment getInstance() {
         if (null == instance) {
@@ -179,7 +180,7 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
 
     @Override
     protected void initView() {
-
+        initComplete=true;
     }
 
     @Override
@@ -189,7 +190,9 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
 
     @Override
     protected void lazyLoad() {
-
+        if (initComplete) {
+            mPresenter.initData();
+        }
     }
 
     @Override

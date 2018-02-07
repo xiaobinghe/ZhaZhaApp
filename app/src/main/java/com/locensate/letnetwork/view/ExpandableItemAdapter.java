@@ -25,6 +25,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
     public static final int TYPE_LEVEL_1 = 1;
     public static final int TYPE_LEVEL_2 = 2;
     private String path;
+    private int organizationId;
     private SelectComplete selectComplete;
 
 
@@ -67,7 +68,8 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                     @Override
                     public void onClick(View view) {
                         path = lv0.title;
-                        selectComplete.onSelectComplete(path);
+                        organizationId = lv0.getOrganizationId();
+                        selectComplete.onSelectComplete(path, organizationId);
                     }
                 });
                 break;
@@ -93,7 +95,8 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                     @Override
                     public void onClick(View view) {
                         path = new StringBuilder(lv1.subTitle).append("/").append(lv1.title).toString();
-                        selectComplete.onSelectComplete(path);
+                        organizationId = lv1.getOrgnizationId();
+                        selectComplete.onSelectComplete(path,organizationId);
                     }
                 });
                 break;
@@ -105,7 +108,9 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                     public void onClick(View view) {
                         int pos = holder.getAdapterPosition();
                         path = new StringBuilder(level2Item.subtitle).append("/").append(level2Item.title).toString();
-                        selectComplete.onSelectComplete(path);
+                        organizationId = level2Item.getOrganizationId();
+
+                        selectComplete.onSelectComplete(path,organizationId);
                     }
                 });
                 break;
@@ -121,7 +126,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
          *
          * @param path
          */
-        void onSelectComplete(String path);
+        void onSelectComplete(String path,int organization);
     }
 
     public void setSelectComplete(SelectComplete selectComplete) {

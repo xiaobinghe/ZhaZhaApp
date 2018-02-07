@@ -31,9 +31,11 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
     private Bundle mMachineInfo;
     private String machineName;
     private String machineId;
+    private boolean initComplete = false;
+
     @Override
     protected void initView() {
-
+        initComplete=true;
     }
 
     @Override
@@ -43,6 +45,9 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
 
     @Override
     protected void lazyLoad() {
+        if (initComplete) {
+            mPresenter.initData();
+        }
 
     }
 
@@ -59,7 +64,6 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 Bundle bundle = new Bundle();
                 MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
-//                LogUtil.e(TAG, "--------------position===" + i);
                 if (!item.isHeader && i != 1) {
                     RunningStateEntity data = (RunningStateEntity) item.t;
                     bundle.putSerializable("parameter", data);

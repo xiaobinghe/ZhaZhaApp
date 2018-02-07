@@ -54,7 +54,7 @@ public class ToolsKanBanActivity extends BaseActivity {
     @BindView(R.id.activity_kan_ban)
     LinearLayout activityKanBan;
     private ExpandablePopWindow expandablePopwindow;
-    private String mGroupName;
+    private String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
 
     @Override
     public int getLayoutId() {
@@ -72,7 +72,7 @@ public class ToolsKanBanActivity extends BaseActivity {
         });
         rvKanBan.setLayoutManager(new LinearLayoutManager(this));
         rvKanBan.setAdapter(new KanBanRVAdapter(R.layout.layout_item_kan_ban, getData()));
-        tvMachinePath.setText(SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂"));
+        tvMachinePath.setText(mGroupName);
     }
 
     @OnClick({R.id.iv_title_only_back, R.id.tv_machine_path, R.id.iv_search})
@@ -101,7 +101,7 @@ public class ToolsKanBanActivity extends BaseActivity {
             expandablePopwindow = new ExpandablePopWindow(this, groupTree);
             expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
         }
-        expandablePopwindow.showPopupWindow(tvMachinePath);
+        expandablePopwindow.showAsDropDown(tvMachinePath,20,0);
         expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

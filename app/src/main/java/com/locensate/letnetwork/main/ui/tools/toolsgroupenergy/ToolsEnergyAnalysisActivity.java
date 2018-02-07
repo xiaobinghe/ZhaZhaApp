@@ -16,12 +16,15 @@ import com.bigkoo.pickerview.lib.WheelView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.locensate.letnetwork.App;
+import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.entity.GroupEnergyEntity;
 import com.locensate.letnetwork.utils.Constance;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
+import com.locensate.letnetwork.utils.SpUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.expandableview.Level0Item;
 import com.locensate.letnetwork.view.expandableview.Level1Item;
@@ -37,7 +40,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -73,6 +75,8 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
     private GroupEnergyRVAdapter mGroupEnergyRVAdapter;
+    private String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
+
 
     @Override
     public int getLayoutId() {
@@ -103,7 +107,6 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
         });
     }
 
-
     @OnClick({R.id.iv_title_only_back, R.id.ll_circle_type, R.id.ll_circle_time, R.id.tv_group})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -111,46 +114,7 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_circle_type:
-                if (null == mTimeTypePicker) {
-                    final List<String> timeTypes = Constance.array2List(Constance.timeType);
-                    mTimeTypePicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                        @Override
-                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                            tvCircleType.setText(timeTypes.get(options1));
-                        }
-                    }).setLayoutRes(R.layout.layout_time_type_select, new CustomListener() {
-                        @Override
-                        public void customLayout(View v) {
-                            Button cancel = (Button) v.findViewById(R.id.btt_cancel);
-                            Button okay = (Button) v.findViewById(R.id.btt_okay);
-                            (v.findViewById(R.id.pick_head)).setVisibility(View.GONE);
-                            okay.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mTimeTypePicker.returnData();
-                                }
-                            });
-                            cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mTimeTypePicker.dismiss();
-                                }
-                            });
-                        }
-                    })
-                            .setSubmitColor(getResources().getColor(R.color.font_deep_blue))
-                            .setCancelColor(getResources().getColor(R.color.font_deep_blue))
-                            .setDividerType(WheelView.DividerType.FILL)
-                            .setTitleBgColor(getResources().getColor(R.color.bg))
-                            .setLineSpacingMultiplier(2.0f)
-                            .setSubCalSize(16)
-                            .setContentTextSize(16)
-                            .setDividerColor(getResources().getColor(R.color.font_deep_blue))
-                            .setTextColorCenter(getResources().getColor(R.color.font_deep_blue))
-                            .isDialog(true).build();
-                    mTimeTypePicker.setPicker(timeTypes);
-                }
-                mTimeTypePicker.show();
+                showTimeTypePicker();
                 break;
             case R.id.ll_circle_time:
                 timeShow = tvCircleType.getText().toString();
@@ -159,7 +123,52 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
             case R.id.tv_group:
                 showPop(getGroupTree());
                 break;
+            default:
+                break;
         }
+    }
+
+    private void showTimeTypePicker() {
+        if (null == mTimeTypePicker) {
+            final List<String> timeTypes = Constance.array2List(Constance.timeType);
+            mTimeTypePicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    tvCircleType.setText(timeTypes.get(options1));
+                }
+            }).setLayoutRes(R.layout.layout_time_type_select, new CustomListener() {
+                @Override
+                public void customLayout(View v) {
+                    Button cancel = (Button) v.findViewById(R.id.btt_cancel);
+                    Button okay = (Button) v.findViewById(R.id.btt_okay);
+                    (v.findViewById(R.id.pick_head)).setVisibility(View.GONE);
+                    okay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mTimeTypePicker.returnData();
+                        }
+                    });
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mTimeTypePicker.dismiss();
+                        }
+                    });
+                }
+            })
+                    .setSubmitColor(getResources().getColor(R.color.font_deep_blue))
+                    .setCancelColor(getResources().getColor(R.color.font_deep_blue))
+                    .setDividerType(WheelView.DividerType.FILL)
+                    .setTitleBgColor(getResources().getColor(R.color.bg))
+                    .setLineSpacingMultiplier(2.0f)
+                    .setSubCalSize(16)
+                    .setContentTextSize(16)
+                    .setDividerColor(getResources().getColor(R.color.font_deep_blue))
+                    .setTextColorCenter(getResources().getColor(R.color.font_deep_blue))
+                    .isDialog(true).build();
+            mTimeTypePicker.setPicker(timeTypes);
+        }
+        mTimeTypePicker.show();
     }
 
     private void showPicker() {
@@ -217,14 +226,17 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
     private void showPop(ArrayList<MultiItemEntity> groupTree) {
         if (null == expandablePopwindow) {
             expandablePopwindow = new ExpandablePopWindow(this, groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
         }
         expandablePopwindow.showPopupWindow(mTvGroup);
-//        WindowOptionUtil.darkBackGround(0.4f, this);
         expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-//                WindowOptionUtil.darkBackGround(1f, ToolsEnergyAnalysisActivity.this);
-                mTvGroup.setText(expandablePopwindow.getPath());
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    mGroupName = temp;
+                }
+                mTvGroup.setText(mGroupName);
             }
         });
     }

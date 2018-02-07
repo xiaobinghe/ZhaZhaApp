@@ -41,6 +41,11 @@ public class MachineInfoFixRoutingFragment extends BaseFixManagerFragment {
     }
 
     @Override
+    protected void lazyLoad() {
+
+    }
+
+    @Override
     protected void refreshData(OnRefreshComplete onRefreshComplete) {
         onRefreshComplete.complete();
     }

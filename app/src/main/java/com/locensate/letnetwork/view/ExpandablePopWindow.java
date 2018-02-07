@@ -25,6 +25,7 @@ public class ExpandablePopWindow extends PopupWindow {
 
     private RecyclerView rvExpandable;
     private String mGroupName;
+    private int organizationId;
 
     public ExpandablePopWindow(final Activity context, List<MultiItemEntity> entities) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -60,8 +61,8 @@ public class ExpandablePopWindow extends PopupWindow {
 
         adapter.setSelectComplete(new ExpandableItemAdapter.SelectComplete() {
             @Override
-            public void onSelectComplete(String path) {
-                resetPath(path);
+            public void onSelectComplete(String path,int organizationId) {
+                resetPath(path,organizationId);
                 dismiss();
             }
         });
@@ -71,8 +72,10 @@ public class ExpandablePopWindow extends PopupWindow {
 
     }
 
-    private void resetPath(String path) {
+    private void resetPath(String path, int organizationId) {
         this.mGroupName = path;
+        this.organizationId=organizationId;
+
     }
 
 
@@ -97,5 +100,9 @@ public class ExpandablePopWindow extends PopupWindow {
 
     public String getPath() {
         return mGroupName;
+    }
+
+    public int getOrganizationId() {
+        return organizationId;
     }
 }

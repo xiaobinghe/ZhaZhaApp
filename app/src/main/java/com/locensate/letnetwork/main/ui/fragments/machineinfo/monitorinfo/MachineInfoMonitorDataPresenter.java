@@ -10,6 +10,12 @@ public class MachineInfoMonitorDataPresenter extends MachineInfoMonitorDataContr
     @Override
     public void onStart() {
 
+
+
+    }
+
+    @Override
+    void initData() {
         if (App.isMock) {
             mView.fillData(mModel.getMonitorData());
             mModel.getMonitorData();
@@ -48,7 +54,6 @@ public class MachineInfoMonitorDataPresenter extends MachineInfoMonitorDataContr
         *//*3、获取可读取参数的最新值*//*
 
         *//*4、*/
-
 
     }
 }

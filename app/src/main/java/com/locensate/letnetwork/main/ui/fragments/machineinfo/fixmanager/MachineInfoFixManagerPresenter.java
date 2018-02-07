@@ -9,6 +9,11 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager;
 public class MachineInfoFixManagerPresenter extends MachineInfoFixManagerContract.Presenter{
     @Override
     public void onStart() {
+    }
+
+
+    @Override
+    void initData() {
         mView.fillData(mModel.getFragments());
     }
 }

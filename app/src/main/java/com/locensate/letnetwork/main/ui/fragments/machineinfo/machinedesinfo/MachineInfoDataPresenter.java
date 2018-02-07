@@ -9,6 +9,11 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.machinedesinfo;
 public class MachineInfoDataPresenter extends MachineInfoDataContract.Presenter {
     @Override
     public void onStart() {
+    }
+
+
+    @Override
+    void initData() {
         mView.initView(mModel.getData());
     }
 }

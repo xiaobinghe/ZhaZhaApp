@@ -1,26 +1,19 @@
 package com.locensate.letnetwork.main.ui.addorder;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.base.RxBus;
-import com.locensate.letnetwork.base.RxSchedulers;
-import com.locensate.letnetwork.entity.MachineEntity;
+import com.locensate.letnetwork.main.ui.addorder.addmachine.AddMachineFragment;
 import com.locensate.letnetwork.utils.LogUtil;
-
-import org.reactivestreams.Subscription;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableSubscriber;
 
 /**
  * 添加工单
@@ -37,7 +30,8 @@ public class AddOrderActivity extends BaseActivity {
     @BindView(R.id.fl_contain)
     FrameLayout mFlContain;
     private OnHideKeyboardListener listener;
-    private Flowable<MachineEntity> mRegister;
+    private AddMachineFragment mAddMachineFragment;
+    private AddOrderFragment mAddOrderFragment;
 
     @Override
     public int getLayoutId() {
@@ -48,50 +42,12 @@ public class AddOrderActivity extends BaseActivity {
     public void initView() {
         String machineName = getIntent().getStringExtra("machineName");
         mTvTitleOnlyBack.setText("创建工单");
-        AddOrderFragment addOrderFragment = new AddOrderFragment();
+        mAddOrderFragment = new AddOrderFragment();
         Bundle bundle = new Bundle();
         bundle.putString("machineName", machineName);
-        addOrderFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_contain, addOrderFragment).show(addOrderFragment).commit();
-        mRegister = RxBus.get().register(MachineEntity.class);
-        mRegister.compose(RxSchedulers.<MachineEntity>applyFlowableMainThread()).subscribe(new FlowableSubscriber<MachineEntity>() {
-            @Override
-            public void onSubscribe(Subscription s) {
-
-            }
-
-            @Override
-            public void onNext(MachineEntity machineEntity) {
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
-
-    /**
-     * 返回数据
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REQUEST_ADD_MACHINE_FROM_ADD_ORDER && resultCode == Constant.RESULT_ADD_MACHINE_TO_ADD_ORDER) {
-            // TODO: 2018/1/22 取出返回的设备
-
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+        mAddOrderFragment.setArguments(bundle);
+        mAddMachineFragment = new AddMachineFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_contain, getFragmentByTag("addOrder"), "addOrder").add(R.id.fl_contain, getFragmentByTag("addMachine"), "addMachine").hide(mAddMachineFragment).show(mAddOrderFragment).commit();
     }
 
     @Override
@@ -115,5 +71,13 @@ public class AddOrderActivity extends BaseActivity {
     @OnClick(R.id.iv_title_only_back)
     public void onViewClicked() {
         finish();
+    }
+
+    public Fragment getFragmentByTag(String tag) {
+        if ("addOrder".equals(tag)) {
+            return mAddOrderFragment;
+        } else {
+            return mAddMachineFragment;
+        }
     }
 }

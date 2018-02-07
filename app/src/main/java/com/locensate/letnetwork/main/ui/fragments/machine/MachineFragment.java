@@ -96,11 +96,12 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     private MyTimePickerView mouthPicker;
     private MyTimePickerView weekPicker;
     private MyTimePickerView dayPicker;
-    private ExpandablePopWindow popWindow;
+    private ExpandablePopWindow expandablePopwindow;
     private ModernDialog dialog;
     private OptionsPickerView mTimeTypePicker;
     private RightSideslipLay mFilterView;
     private ArrayList<MachineDataBean> mMachines;
+    private String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
 
 
     @Override
@@ -300,15 +301,19 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     @Override
     public void showPop(List<MultiItemEntity> groupTree) {
         adapter.loadMoreComplete();
-        if (null == popWindow) {
-            popWindow = new ExpandablePopWindow(getActivity(), groupTree);
-            popWindow.setAnimationStyle(R.style.MyPopAnim);
+        if (null == expandablePopwindow) {
+            expandablePopwindow = new ExpandablePopWindow(getActivity(), groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
         }
-        popWindow.showPopupWindow(ivRootFile);
-        popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        expandablePopwindow.showPopupWindow(ivRootFile);
+        expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                tvRootFile.setText(popWindow.getPath());
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    mGroupName = temp;
+                }
+                tvRootFile.setText(mGroupName);
             }
         });
     }

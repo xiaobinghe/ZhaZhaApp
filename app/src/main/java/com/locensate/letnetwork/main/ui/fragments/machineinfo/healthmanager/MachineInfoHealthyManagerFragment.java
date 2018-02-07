@@ -43,7 +43,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  设备-健康管理
+ * 设备-健康管理
  *
  * @author xiaobinghe
  */
@@ -126,6 +126,7 @@ public class MachineInfoHealthyManagerFragment extends BaseFragment<MachineInfoH
     private MyTimePickerView mMouthPicker;
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
+    private boolean initComplete = false;
 
 
     @Override
@@ -135,12 +136,14 @@ public class MachineInfoHealthyManagerFragment extends BaseFragment<MachineInfoH
 
     @Override
     public void initView() {
-
+        initComplete=true;
     }
 
     @Override
     protected void lazyLoad() {
-
+        if (initComplete) {
+            mPresenter.initData();
+        }
     }
 
     @Override

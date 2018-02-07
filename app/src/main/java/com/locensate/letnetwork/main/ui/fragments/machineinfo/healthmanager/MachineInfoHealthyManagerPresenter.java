@@ -10,6 +10,11 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.healthmanager;
 public class MachineInfoHealthyManagerPresenter extends MachineInfoHealthyManagerContract.Presenter {
     @Override
     public void onStart() {
+
+    }
+
+    @Override
+    void initData() {
         mView.fillData(mModel.getPieTempData(), mModel.getPieSharkData(), mModel.getPieElectHotterData(), mModel.getPieStartCountData(), mModel.getPieCurrentOverData());
     }
 }

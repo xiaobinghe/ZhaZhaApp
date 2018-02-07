@@ -63,6 +63,7 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
     private MyTimePickerView mMouthPicker;
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
+    private boolean initComplete = false;
 
     @Override
     public int getInflaterView() {
@@ -70,15 +71,22 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
     }
 
     @Override
-    protected void lazyLoad() {
+    protected void onVisible() {
+        super.onVisible();
+    }
 
+    @Override
+    protected void lazyLoad() {
+        if (initComplete) {
+
+        }
     }
 
     @Override
     public void initView() {
         mTimeTypeContent.setText("月");
         tvTimeValue.setText("2017-07");
-
+        initComplete = true;
     }
 
     @Override
@@ -232,5 +240,15 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
     public void onDestroyView() {
         vpMachineEnergyAnalysis.setAdapter(null);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

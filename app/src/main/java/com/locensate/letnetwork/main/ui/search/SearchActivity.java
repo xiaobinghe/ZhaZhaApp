@@ -2,8 +2,6 @@ package com.locensate.letnetwork.main.ui.search;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
@@ -20,13 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.database.SearchHistoryDb;
-import com.locensate.letnetwork.main.ui.MachineListActivity;
-import com.locensate.letnetwork.main.ui.tools.ToolsKanBanActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.KeyBoardUtils;
 import com.locensate.letnetwork.utils.ToastUtil;
@@ -175,21 +170,22 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
         }).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
-                if (aBoolean) {
-                    Intent intent = null;
-                    if (mTarget.equals("machines")) {
-                        intent = new Intent(App.getApplication(), MachineListActivity.class);
-                    }else if (mTarget.equals("tools_kanban")){
-                        intent = new Intent(App.getApplication(), ToolsKanBanActivity.class);
-                    }
-                    Bundle bundle = new Bundle();
-                    bundle.putString("filter", "");
-                    bundle.putString("ranges", "某钢厂");
-                    bundle.putString("status", "");
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    finish();
-                }
+
+//                if (aBoolean) {
+//                    Intent intent = null;
+//                    if (mTarget.equals("machines")) {
+//                        intent = new Intent(App.getApplication(), MachineListActivity.class);
+//                    }else if (mTarget.equals("tools_kanban")){
+//                        intent = new Intent(App.getApplication(), ToolsKanBanActivity.class);
+//                    }
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("filter", "");
+//                    bundle.putString("ranges", "某钢厂");
+//                    bundle.putString("status", "");
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
+//                }
+                finish();
             }
         });
         //1、添加搜索记录

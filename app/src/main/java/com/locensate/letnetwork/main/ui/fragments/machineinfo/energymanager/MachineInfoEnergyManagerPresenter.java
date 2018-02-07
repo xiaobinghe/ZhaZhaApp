@@ -9,6 +9,12 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager;
 public class MachineInfoEnergyManagerPresenter extends MachineInfoEnergyManagerContract.Presenter {
     @Override
     public void onStart() {
-      mView.initData(mModel.getFragments());
+        mView.initData(mModel.getFragments());
+    }
+
+
+    @Override
+    void initData() {
+
     }
 }

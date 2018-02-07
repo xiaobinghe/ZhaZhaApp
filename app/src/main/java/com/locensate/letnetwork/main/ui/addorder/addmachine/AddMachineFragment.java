@@ -1,5 +1,6 @@
 package com.locensate.letnetwork.main.ui.addorder.addmachine;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
 import com.locensate.letnetwork.base.RxBus;
 import com.locensate.letnetwork.entity.MachineEntity;
+import com.locensate.letnetwork.main.ui.addorder.AddOrderActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,9 @@ public class AddMachineFragment extends BaseFragment {
     @BindView(R.id.btt_commit_add)
     Button mBttCommitAdd;
 
-    private List<MachineEntity> data=new ArrayList<>();
+    private List<MachineEntity> data = new ArrayList<>();
     private AddMachineRvAdapter mRvAdapter;
+    private FragmentTransaction mTransaction;
 
     @Override
     public int getInflaterView() {
@@ -45,11 +48,11 @@ public class AddMachineFragment extends BaseFragment {
     }
 
     private void mockData() {
-        data.add(new MachineEntity("01","中央空分电机"));
-        data.add(new MachineEntity("01","皮带机"));
-        data.add(new MachineEntity("01","循环风机"));
-        data.add(new MachineEntity("01","空冷壁风机"));
-        data.add(new MachineEntity("01","二次空冷风机"));
+        data.add(new MachineEntity("01", "中央空分电机"));
+        data.add(new MachineEntity("01", "皮带机"));
+        data.add(new MachineEntity("01", "循环风机"));
+        data.add(new MachineEntity("01", "空冷壁风机"));
+        data.add(new MachineEntity("01", "二次空冷风机"));
     }
 
     @Override
@@ -59,6 +62,8 @@ public class AddMachineFragment extends BaseFragment {
 
     @OnClick(R.id.btt_commit_add)
     public void onViewClicked() {
-        RxBus.get().post( mRvAdapter.getSelecedMachine());
+        RxBus.get().post(mRvAdapter.getSelecedMachine());
+        mTransaction = ((AddOrderActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+        mTransaction.hide(this).show(((AddOrderActivity) getActivity()).getFragmentByTag("addOrder")).commit();
     }
 }

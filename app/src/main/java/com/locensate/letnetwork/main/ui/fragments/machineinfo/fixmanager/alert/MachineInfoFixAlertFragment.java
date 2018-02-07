@@ -23,21 +23,21 @@ import java.util.List;
  */
 
 public class MachineInfoFixAlertFragment extends BaseFixManagerFragment {
-    private boolean isAddListener = false;
+    private boolean initComplete = false;
+
+    @Override
+    protected void initView() {
+        super.initView();
+        initComplete = true;
+    }
+
+    @Override
+    protected void lazyLoad() {
+
+    }
+
     private FixAlertRvAdapter mRvAdapter;
 
-
-    /*
-        public static Fragment getInstance(String machineName) {
-            if (machineInfoFixAlertFragment == null) {
-                machineInfoFixAlertFragment = new MachineInfoFixAlertFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("machineName", machineName);
-                machineInfoFixAlertFragment.setArguments(bundle);
-            }
-            return machineInfoFixAlertFragment;
-        }
-    */
     @Override
     protected void refreshData(OnRefreshComplete onRefreshComplete) {
         // TODO: 2017/7/19 refresh data!

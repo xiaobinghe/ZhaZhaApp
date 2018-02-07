@@ -50,8 +50,9 @@ public interface OverviewContract {
          * 获取电机概览数据
          *
          * @return
+         * @param organizationId
          */
-        Observable<OverviewMotor> getBaseDate();
+        Observable<OverviewMotor> getBaseDate(int organizationId);
     }
 
     interface View extends BaseView {

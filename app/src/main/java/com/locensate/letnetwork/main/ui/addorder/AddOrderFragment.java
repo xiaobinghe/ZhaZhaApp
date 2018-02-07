@@ -20,8 +20,9 @@ import android.widget.TextView;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
+import com.locensate.letnetwork.base.RxBus;
 import com.locensate.letnetwork.bean.EntpBean;
-import com.locensate.letnetwork.main.ui.addorder.addmachine.AddMachineFragment;
+import com.locensate.letnetwork.entity.MachineEntity;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
 
@@ -30,6 +31,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import static android.content.ContentValues.TAG;
 
@@ -103,6 +107,20 @@ public class AddOrderFragment extends BaseFragment {
                     }
                 }
         );
+
+        RxBus.get().register(MachineEntity.class).map(new Function<MachineEntity, String>() {
+            @Override
+            public String apply(@NonNull MachineEntity o) throws Exception {
+                return o.getName();
+            }
+        }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                if (s != null) {
+                    mTvAddMachine.setText(s);
+                }
+            }
+        });
     }
 
     @Override
@@ -114,7 +132,7 @@ public class AddOrderFragment extends BaseFragment {
      * 添加设备
      */
     private void addMachine() {
-        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_anima_right_in,R.anim.page_anima_right_out).addToBackStack("addOrder").add(R.id.fl_contain, new AddMachineFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.page_anima_right_in, R.anim.page_anima_right_out).hide(this).show(((AddOrderActivity)getActivity()).getFragmentByTag("addMachine")).commit();
     }
 
     private void createEnterprisePop(View view) {
@@ -147,7 +165,7 @@ public class AddOrderFragment extends BaseFragment {
         return entpBeen;
     }
 
-    @OnClick({ R.id.iv_enterprise, R.id.iv_add_machine, R.id.btn_commit_create_order})
+    @OnClick({R.id.iv_enterprise, R.id.iv_add_machine, R.id.btn_commit_create_order})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_enterprise:
@@ -161,7 +179,7 @@ public class AddOrderFragment extends BaseFragment {
                     ToastUtil.show("工单描述不能为空");
                 } else {
                     // TODO: 2018/1/22 提交工单
-
+                    getActivity().finish();
                 }
                 break;
             default:
@@ -173,4 +191,9 @@ public class AddOrderFragment extends BaseFragment {
         return TextUtils.isEmpty(mEtCreateOrderContent.getText().toString());
     }
 
+    @Override
+    public void onDestroyView() {
+        RxBus.get().unRegister();
+        super.onDestroyView();
+    }
 }

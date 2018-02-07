@@ -84,9 +84,8 @@ public class OverviewModel implements OverviewContract.Model {
     }
 
     @Override
-    public Observable<OverviewMotor> getBaseDate() {
-        _User user = new Gson().fromJson(SpUtil.getString(App.getApplication(), Constant.USER, ""), _User.class);
-        return Api.getInstance().service.getMotorOverview(user.getData().getOrganization().getOrganizationId());
+    public Observable<OverviewMotor> getBaseDate(int organizationId) {
+        return Api.getInstance().service.getMotorOverview(organizationId);
     }
 
     @Override

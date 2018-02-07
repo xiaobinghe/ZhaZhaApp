@@ -32,6 +32,6 @@ public interface MachineInfoDataContract {
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
-
+            abstract void initData();
     }
 }

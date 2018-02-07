@@ -115,6 +115,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
         points[0] = ivPoint1;
         points[1] = ivPoint2;
         points[2] = ivPoint3;
+        tvRootFile.setText(mGroupName);
         startDate.set(2010, 0, 1);
         initTimeType();
     }
@@ -188,10 +189,12 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
             @Override
             public void onDismiss() {
                 String temp = expandablePopwindow.getPath();
+                int organizationId = expandablePopwindow.getOrganizationId();
                 if (temp != null) {
                     mGroupName = temp;
                 }
                 tvRootFile.setText(mGroupName);
+                mPresenter.fillMonitorOverviewData(organizationId);
             }
         });
     }

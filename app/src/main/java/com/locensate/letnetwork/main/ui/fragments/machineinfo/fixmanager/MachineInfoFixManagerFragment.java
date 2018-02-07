@@ -16,7 +16,6 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -30,20 +29,13 @@ public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixMa
     private String machineName;
     private Bundle mMachineInfo;
     private String machineId;
+    private boolean initComplete = false;
+    private boolean loadC=false;
 
-    /*public static Fragment getInstance(String machineData) {
-        if (fixRecord == null) {
-            fixRecord = new MachineInfoFixManagerFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("machineName", machineData);
-            fixRecord.setArguments(bundle);
-        }
-
-        return fixRecord;
-    }*/
 
     @Override
     protected void initView() {
+        initComplete = true;
 
     }
 
@@ -54,7 +46,10 @@ public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixMa
 
     @Override
     protected void lazyLoad() {
-
+        if (initComplete&&!loadC) {
+            mPresenter.initData();
+            loadC=true;
+        }
     }
 
     @Override

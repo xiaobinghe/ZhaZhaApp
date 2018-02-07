@@ -72,4 +72,8 @@ public class MachineInfoFixEnergyEfficiencyFragment extends BaseFixManagerFragme
         return energys;
     }
 
+    @Override
+    protected void lazyLoad() {
+
+    }
 }

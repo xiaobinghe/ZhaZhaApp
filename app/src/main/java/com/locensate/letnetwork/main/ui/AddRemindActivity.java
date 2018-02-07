@@ -28,7 +28,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -205,6 +204,8 @@ public class AddRemindActivity extends BaseActivity {
             case R.id.btn_commit:
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
@@ -250,7 +251,7 @@ public class AddRemindActivity extends BaseActivity {
                 mWhm.show();
                 break;
             case "每月":
-                if (null==mDhm) {
+                if (null == mDhm) {
                     mDhm = PickViewUtils.getInstance().getWHM(this, dayLaybels, new OptionsPickerView.OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int options2, int options3, View v) {

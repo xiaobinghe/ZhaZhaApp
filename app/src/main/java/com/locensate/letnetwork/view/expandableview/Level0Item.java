@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  */
 
 public class Level0Item extends AbstractExpandableItem<Level1Item> implements MultiItemEntity {
-    private final int organizationId;
+    private  int organizationId;
     public String title;
     public String subTitle;
 
@@ -18,6 +18,10 @@ public class Level0Item extends AbstractExpandableItem<Level1Item> implements Mu
         this.subTitle = subTitle;
         this.title = title;
         this.organizationId = organizationId;
+    }
+
+    public int getOrganizationId() {
+        return organizationId;
     }
 
     @Override

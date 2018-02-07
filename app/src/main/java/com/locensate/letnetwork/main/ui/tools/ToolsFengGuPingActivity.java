@@ -25,14 +25,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.CustomBarData;
+import com.locensate.letnetwork.main.ui.fragments.overview.OverviewModel;
 import com.locensate.letnetwork.utils.Constance;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
-import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.CustomBarData;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
-import com.locensate.letnetwork.view.expandableview.Level0Item;
-import com.locensate.letnetwork.view.expandableview.Level1Item;
-import com.locensate.letnetwork.view.expandableview.Level2Item;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
 import java.util.ArrayList;
@@ -44,7 +42,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -72,12 +69,13 @@ public class ToolsFengGuPingActivity extends BaseActivity {
     @BindView(R.id.tv_group)
     TextView mTvGroup;
     private String timeShow;
-    private ExpandablePopWindow popWindow;
+    private ExpandablePopWindow expandablePopwindow;
     private OptionsPickerView mTimeTypePicker;
     private MyTimePickerView mHourPicker;
     private MyTimePickerView mMouthPicker;
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
+    private String mGroupName;
 
     @Override
     public int getLayoutId() {
@@ -114,13 +112,13 @@ public class ToolsFengGuPingActivity extends BaseActivity {
 
         YAxis rightAxis = combinedChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinimum(0f);
         rightAxis.setAxisMaximum(1.3f);
         rightAxis.setDrawTopYLabelEntry(true);
         rightAxis.setTextColor(getResources().getColor(R.color.font_content));
 
         YAxis leftAxis = combinedChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0f);
         // TODO: 2017/8/29 获取最大值动态设置数值
         leftAxis.setAxisMaximum(60f);
         leftAxis.setTextColor(getResources().getColor(R.color.font_content));
@@ -206,8 +204,8 @@ public class ToolsFengGuPingActivity extends BaseActivity {
         List<BarDataSet> barDataSets = new ArrayList<>();
         barDataSets.add(set1);
         float groupSpace = 0.06f;
-        float barSpace = 0.120f; // x2 dataset
-        float barWidth = 0.65f; // x2 dataset
+        float barSpace = 0.120f;
+        float barWidth = 0.65f;
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
 
         //自定义的bardata，为单个数据源
@@ -215,7 +213,7 @@ public class ToolsFengGuPingActivity extends BaseActivity {
         d.addDataSet(set1);
         d.setBarWidth(barWidth);
         // make this BarData object grouped
-        d.barsSpace(0.0f, barSpace); // start at x = 0
+        d.barsSpace(0.0f, barSpace);
         d.setDrawValues(true);
         return d;
     }
@@ -239,9 +237,13 @@ public class ToolsFengGuPingActivity extends BaseActivity {
 
         float val;
         for (int i = 0; i < 24; i++) {
-            if (i < 6 | i > 20) val = 0.4f;
-            else if ((i > 5 && i < 8) || (i > 10 && i < 18)) val = 0.8f;
-            else val = 1.2f;
+            if (i < 6 | i > 20) {
+                val = 0.4f;
+            } else if ((i > 5 && i < 8) || (i > 10 && i < 18)) {
+                val = 0.8f;
+            } else {
+                val = 1.2f;
+            }
             data2.add(new Entry(i, val));
         }
         return data2;
@@ -255,70 +257,80 @@ public class ToolsFengGuPingActivity extends BaseActivity {
                 break;
             case R.id.ll_circle_type:
 
-                if (null == mTimeTypePicker) {
-                    final List<String> timeTypes = Constance.array2List(Constance.timeType);
-                    mTimeTypePicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                        @Override
-                        public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                            tvCircleType.setText(timeTypes.get(options1));
-                        }
-                    }).setLayoutRes(R.layout.layout_time_type_select, new CustomListener() {
-                        @Override
-                        public void customLayout(View v) {
-                            Button cancel = (Button) v.findViewById(R.id.btt_cancel);
-                            Button okay = (Button) v.findViewById(R.id.btt_okay);
-                            (v.findViewById(R.id.pick_head)).setVisibility(View.GONE);
-                            okay.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mTimeTypePicker.returnData();
-                                }
-                            });
-                            cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mTimeTypePicker.dismiss();
-                                }
-                            });
-                        }
-                    })
-                            .setSubmitColor(getResources().getColor(R.color.font_deep_blue))
-                            .setCancelColor(getResources().getColor(R.color.font_deep_blue))
-                            .setDividerType(WheelView.DividerType.FILL)
-                            .setTitleBgColor(getResources().getColor(R.color.bg))
-                            .setLineSpacingMultiplier(2.0f)
-                            .setSubCalSize(16)
-                            .setContentTextSize(16)
-                            .setDividerColor(getResources().getColor(R.color.font_deep_blue))
-                            .setTextColorCenter(getResources().getColor(R.color.font_deep_blue))
-                            .isDialog(true).build();
-                    mTimeTypePicker.setPicker(timeTypes);
-                }
-                mTimeTypePicker.show();
-
-                mTimeTypePicker.show();
+                showTimeTypePicker();
                 break;
             case R.id.ll_circle_time:
                 timeShow = tvCircleType.getText().toString();
                 showPicker();
                 break;
             case R.id.tv_group:
-                if (null == popWindow) {
-                    popWindow = new ExpandablePopWindow(this, getGroupTree());
-                }
-//                WindowOptionUtil.darkBackGround(0.4f, this);
-                popWindow.showPopupWindow(mTvGroup);
-                popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        mTvGroup.setText(popWindow.getPath());
-//                        WindowOptionUtil.darkBackGround(1.0f, ToolsFengGuPingActivity.this);
-                    }
-                });
+                showPop(new OverviewModel().getGroupTree());
+                break;
+            default:
                 break;
         }
     }
 
+    private void showTimeTypePicker() {
+        if (null == mTimeTypePicker) {
+            final List<String> timeTypes = Constance.array2List(Constance.timeType);
+            mTimeTypePicker = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+                @Override
+                public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                    tvCircleType.setText(timeTypes.get(options1));
+                }
+            }).setLayoutRes(R.layout.layout_time_type_select, new CustomListener() {
+                @Override
+                public void customLayout(View v) {
+                    Button cancel = (Button) v.findViewById(R.id.btt_cancel);
+                    Button okay = (Button) v.findViewById(R.id.btt_okay);
+                    (v.findViewById(R.id.pick_head)).setVisibility(View.GONE);
+                    okay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mTimeTypePicker.returnData();
+                        }
+                    });
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mTimeTypePicker.dismiss();
+                        }
+                    });
+                }
+            })
+                    .setSubmitColor(getResources().getColor(R.color.font_deep_blue))
+                    .setCancelColor(getResources().getColor(R.color.font_deep_blue))
+                    .setDividerType(WheelView.DividerType.FILL)
+                    .setTitleBgColor(getResources().getColor(R.color.bg))
+                    .setLineSpacingMultiplier(2.0f)
+                    .setSubCalSize(16)
+                    .setContentTextSize(16)
+                    .setDividerColor(getResources().getColor(R.color.font_deep_blue))
+                    .setTextColorCenter(getResources().getColor(R.color.font_deep_blue))
+                    .isDialog(true).build();
+            mTimeTypePicker.setPicker(timeTypes);
+        }
+        mTimeTypePicker.show();
+    }
+
+    private void showPop(ArrayList<MultiItemEntity> groupTree) {
+        if (null == expandablePopwindow) {
+            expandablePopwindow = new ExpandablePopWindow(this, groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
+        }
+        expandablePopwindow.showPopupWindow(mTvGroup);
+        expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    mGroupName = temp;
+                }
+                mTvGroup.setText(mGroupName);
+            }
+        });
+    }
 
     private void showPicker() {
         Calendar instance = Calendar.getInstance();
@@ -369,35 +381,8 @@ public class ToolsFengGuPingActivity extends BaseActivity {
                 }
                 mDayPicker.show();
                 break;
+            default:
+                break;
         }
     }
-
-
-    private ArrayList<MultiItemEntity> getGroupTree() {
-        int lv0Count = 5;
-        int lv1Count = 3;
-        int personCount = 4;
-
-        String[] nameList = {"焦化厂", "炼钢厂", "烧结厂", "不锈钢厂", "国际贸易公司"};
-        String[] lv0List = {"一车间", "二车间", "三车间"};
-        String[] lv1List = {"一班", "二班", "三班", "四班"};
-        ArrayList<MultiItemEntity> res = new ArrayList<>();
-        res.add(new Level0Item("全部", "全部", 0));
-        for (int i = 0; i < lv0Count; i++) {
-            Level0Item lv0 = new Level0Item(nameList[i], nameList[i], 0);
-
-            for (int j = 0; j < lv1Count; j++) {
-                Level1Item lv1 = new Level1Item(lv0List[j], "", 0);
-                for (int k = 0; k < personCount; k++) {
-                    lv1.addSubItem(new Level2Item(lv1List[k], null, false, 0));
-                }
-                lv0.addSubItem(lv1);
-            }
-            res.add(lv0);
-        }
-
-        return res;
-    }
-
-
 }

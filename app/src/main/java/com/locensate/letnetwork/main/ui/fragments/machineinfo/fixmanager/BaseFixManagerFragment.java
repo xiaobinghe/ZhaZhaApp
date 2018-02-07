@@ -127,13 +127,6 @@ public abstract class BaseFixManagerFragment extends BaseFragment {
      * @param rvFixOrder recyclerView
      */
     protected abstract void addClickListener(RecyclerView rvFixOrder);
-
-
-    @Override
-    protected void lazyLoad() {
-
-    }
-
   /*  @OnClick({R.id.ll_fix_time_select, R.id.ll_fix_order_time_start, R.id.ll_fix_order_time_end, R.id.ll_fix_order_selected})
     public void onClick(View view) {
         Calendar instance = Calendar.getInstance();

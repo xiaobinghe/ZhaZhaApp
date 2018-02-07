@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  */
 
 public class Level2Item implements MultiItemEntity {
+    private  int organizationId;
     public String title;
     public String subtitle;
     public boolean selected;
@@ -16,6 +17,15 @@ public class Level2Item implements MultiItemEntity {
         this.title = title;
         this.subtitle = subtitle;
         this.selected = selected;
+        this.organizationId=organizationId;
+    }
+
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(int organizationId) {
+        this.organizationId = organizationId;
     }
 
     @Override
