@@ -7,18 +7,16 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.MessageEntity;
 import com.locensate.letnetwork.main.ui.AlertDetailActivity;
 import com.locensate.letnetwork.main.ui.message.MessageBaseFragment;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -36,26 +34,20 @@ public class AlertMessageFragment extends MessageBaseFragment {
     }
 
     @Override
-    protected void addClickListener(RecyclerView rvAlertMessage) {
-        if (!isAddListener) {
-            rvAlertMessage.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    MessageEntity item = (MessageEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(getActivity(), AlertDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("alertMsg", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
-    }
-
-    @Override
     public RecyclerView.Adapter getAdapter() {
-        return new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
+        AlertMessageAdapter adapter = new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                MessageEntity item = (MessageEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), AlertDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("alertMsg", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
@@ -66,10 +58,10 @@ public class AlertMessageFragment extends MessageBaseFragment {
     public List<MessageEntity> getItems() {
         ArrayList<MessageEntity> initDate = new ArrayList<>();
         initDate.add(new MessageEntity("", "输入端缺相", "一车间/烧结厂/某钢厂", "通风机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()), "high", 1, false));
-        initDate.add(new MessageEntity("", "启动限流", "一车间/烧结厂/某钢厂", "冲压机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()-5600000L), "low", 4, false));
-        initDate.add(new MessageEntity("", "温度过高", "一车间/烧结厂/某钢厂", "卷板机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()-7200000L), "high", 1, false));
-        initDate.add(new MessageEntity("", "三相不平衡", "一车间/烧结厂/某钢厂", "通风机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()-10800000L), "low", 3, false));
-        initDate.add(new MessageEntity("", "输入端缺相", "一车间/烧结厂/某钢厂", "空调设备", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()-13600000L), "low", 2, false));
+        initDate.add(new MessageEntity("", "启动限流", "一车间/烧结厂/某钢厂", "冲压机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis() - 5600000L), "low", 4, false));
+        initDate.add(new MessageEntity("", "温度过高", "一车间/烧结厂/某钢厂", "卷板机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis() - 7200000L), "high", 1, false));
+        initDate.add(new MessageEntity("", "三相不平衡", "一车间/烧结厂/某钢厂", "通风机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis() - 10800000L), "low", 3, false));
+        initDate.add(new MessageEntity("", "输入端缺相", "一车间/烧结厂/某钢厂", "空调设备", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis() - 13600000L), "low", 2, false));
         return initDate;
     }
 

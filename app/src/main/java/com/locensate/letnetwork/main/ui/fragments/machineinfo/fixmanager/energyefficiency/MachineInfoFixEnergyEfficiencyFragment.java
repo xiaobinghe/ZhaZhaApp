@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.entity.OrderMsgEntity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager.BaseFixManagerFragment;
@@ -44,25 +43,22 @@ public class MachineInfoFixEnergyEfficiencyFragment extends BaseFixManagerFragme
     @Override
     protected RecyclerView.Adapter getAdapter() {
         mAdapter = new FixOrderAdapter(R.layout.item_fix_order_msg, getEnergys());
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order",item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
         return mAdapter;
     }
 
     @Override
     protected void addClickListener(RecyclerView rvFixOrder) {
-        if (!isAddListener) {
-            rvFixOrder.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("order",item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
     }
 
 

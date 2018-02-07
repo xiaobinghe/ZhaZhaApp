@@ -1,6 +1,5 @@
 package com.locensate.letnetwork.main.ui.fragments.machine;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.gson.Gson;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.Constant;
@@ -15,9 +14,6 @@ import com.locensate.letnetwork.entity.MultiSection;
 import com.locensate.letnetwork.entity.MultiSectionEntity;
 import com.locensate.letnetwork.entity.RangeChildEntity;
 import com.locensate.letnetwork.utils.SpUtil;
-import com.locensate.letnetwork.view.expandableview.Level0Item;
-import com.locensate.letnetwork.view.expandableview.Level1Item;
-import com.locensate.letnetwork.view.expandableview.Level2Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -231,34 +227,6 @@ public class MachineModel implements MachineContract.Model {
 
 
     @Override
-    public ArrayList<MultiItemEntity> getGroupTree() {
-        int lv0Count = 5;
-        int lv1Count = 3;
-        int personCount = 4;
-
-        String[] nameList = {"焦化厂", "炼钢厂", "烧结厂", "不锈钢厂", "国际贸易公司"};
-        String[] lv0List = {"一车间", "二车间", "三车间"};
-        String[] lv1List = {"一班", "二班", "三班", "四班"};
-        ArrayList<MultiItemEntity> res = new ArrayList<>();
-        res.add(new Level0Item("全部", "全部", 0));
-        for (int i = 0; i < lv0Count; i++) {
-            Level0Item lv0 = new Level0Item(nameList[i], nameList[i], 0);
-
-            for (int j = 0; j < lv1Count; j++) {
-                Level1Item lv1 = new Level1Item(lv0List[j], "", 0);
-                for (int k = 0; k < personCount; k++) {
-                    lv1.addSubItem(new Level2Item(lv1List[k], null, false, 0));
-                }
-                lv0.addSubItem(lv1);
-            }
-            res.add(lv0);
-        }
-
-        return res;
-    }
-
-
-    @Override
     public Observable<Organizations> getOrganizations() {
         _User user = new Gson().fromJson(SpUtil.getString(App.getApplication(), Constant.USER, ""), _User.class);
         return Api.getInstance().service.getOrganizations(user.getData().getUserId());
@@ -274,13 +242,12 @@ public class MachineModel implements MachineContract.Model {
         return Api.getInstance().service.getFilterTags();
     }
 
+    @Override
     public MachineFilterTag getFilterDefault() {
         String str = "{\"operCode\": 1,\"data\": [{\"isOpen\": true,\"single_check\": 0,\"key\": \"运行效率\", \"vals\": [ { \"val\": \"经济运行\"}, {\"val\": \"非经济运行\" }, {\"val\": \"合理运行\" }]},{\"single_check\": 0,\"key\": \"平均负载\", \"vals\": [{ \"val\": \"空载\"},{ \"val\": \"轻载\"},{ \"val\": \"半载\"},{ \"val\": \"重载\"},{ \"val\": \"过载\"}],\"open\": true}," +
                 "{\"isOpen\": false,\"single_check\": 0,\"key\": \"健康分析\", \"vals\": [{ \"val\": \"好\"},{ \"val\": \"较好\"},{ \"val\": \"较差\"},{ \"val\": \"差\"}],\"open\": false}," +
                 "{\"isOpen\": false,\"single_check\": 0,\"key\": \"能效等级\", \"vals\": [{\"val\": \"一级能效\"},{\"val\": \"二级能效\"},{\"val\": \"三级能效\"},{\"val\": \"普通能效\"},{\"val\": \"低效\"},{\"val\": \"其他\"}],\"open\": false},{\"isOpen\": false, \"single_check\": 0, \"key\": \"控制类型\",\"vals\": [{\"val\": \"变频器\" },{\"val\": \"软启动器\" },{\"val\": \"直接启动\" },{\"val\": \"星角启动\" },{\"val\": \"其他\" }],\"open\": false}," +
                 "{\"isOpen\": false,\"single_check\": 0,\"key\": \"功率范围\", \"vals\": [{ \"val\": \"0-90\"},{ \"val\": \"90-180\"},{ \"val\": \"180-250\"},{ \"val\": \"250-380\"},{ \"val\": \"380以上\"}],\"open\": false},{\"isOpen\": false,\"single_check\": 0,\"key\": \"电压等级\", \"vals\": [{ \"val\": \"9kv\"},{ \"val\": \"6kv\"},{ \"val\": \"3kv\"},{ \"val\": \"380v\"},{ \"val\": \"220v\"}],\"open\": false},{\"isOpen\": false,\"single_check\": 0,\"key\": \"设备类型\", \"vals\": [{ \"val\": \"风机\"},{ \"val\": \"水泵\"},{ \"val\": \"压缩机\"},{ \"val\": \"其他\"}],\"open\": false},{\"isOpen\": false,\"single_check\": 0,\"key\": \"安装时间\", \"vals\": [{ \"val\": \"1年内\"},{ \"val\": \"2-5年\"},{ \"val\": \"6-10年\"},{ \"val\": \"10年以上\"}],\"open\": false}]}";
-
-
         return new Gson().fromJson(str,MachineFilterTag.class);
     }
 

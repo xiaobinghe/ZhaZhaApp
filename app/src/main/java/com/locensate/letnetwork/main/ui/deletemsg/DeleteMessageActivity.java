@@ -11,12 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.entity.MessageEntity;
 import com.locensate.letnetwork.entity.OrderMsgEntity;
+import com.locensate.letnetwork.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  删除消息
+ * 删除消息
+ *
  * @author xiaobinghe
  */
 
@@ -109,12 +109,15 @@ public class DeleteMessageActivity extends BaseActivity<DeleteMessagePresenter, 
         }
         alertAdapter = new RvDeleteAlertAdapter(this, R.layout.item_message_fragment, messages, tvCheckedNum, page);
         rvDeleteMessage.setAdapter(alertAdapter);
-        rvDeleteMessage.addOnItemTouchListener(new OnItemChildClickListener() {
+        alertAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 MessageEntity messageEntity = messages.get(i);
-                if (messageEntity.isChecked()) messageEntity.setChecked(false);
-                else messageEntity.setChecked(true);
+                if (messageEntity.isChecked()) {
+                    messageEntity.setChecked(false);
+                } else {
+                    messageEntity.setChecked(true);
+                }
                 alertAdapter.notifyDataSetChanged();
                 setCheckedNum();
             }
@@ -125,8 +128,9 @@ public class DeleteMessageActivity extends BaseActivity<DeleteMessagePresenter, 
     private void setCheckedNum() {
         int checkedNm = 0;
         for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).isChecked())
+            if (messages.get(i).isChecked()) {
                 checkedNm++;
+            }
         }
         tvCheckedNum.setText(String.valueOf(checkedNm));
     }
@@ -137,10 +141,11 @@ public class DeleteMessageActivity extends BaseActivity<DeleteMessagePresenter, 
             messages.get(i).setChecked(b);
             LogUtil.e("setIsCheckedAll", "++++++++==========" + messages.get(i).isChecked());
         }
-        if (b)
+        if (b) {
             tvCheckedNum.setText(String.valueOf(messages.size()));
-        else
+        } else {
             tvCheckedNum.setText(String.valueOf(0));
+        }
         alertAdapter.notifyDataSetChanged();
 
     }

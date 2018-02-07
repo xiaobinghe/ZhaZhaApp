@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.api.Api;
@@ -43,6 +42,7 @@ public class RemoteParameterActivity extends BaseActivity {
     ImageView ivTitleOnlyBack;
     @BindView(R.id.tv_title_only_back)
     TextView tvTitleOnlyBack;
+    private RemoteParameterRVAdapter mRVAdapter;
 
     @Override
     public int getLayoutId() {
@@ -54,10 +54,11 @@ public class RemoteParameterActivity extends BaseActivity {
         tvTitleOnlyBack.setText("远程参数");
         initData();
         rvRemoteParameter.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        rvRemoteParameter.setAdapter(new RemoteParameterRVAdapter(R.layout.item_remote_parameter, 0, getData()));
-        rvRemoteParameter.addOnItemTouchListener(new OnItemClickListener() {
+        mRVAdapter = new RemoteParameterRVAdapter(R.layout.item_remote_parameter, 0, getData());
+        rvRemoteParameter.setAdapter(mRVAdapter);
+        mRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 RemoteParameterEntity item = (RemoteParameterEntity) baseQuickAdapter.getItem(i);
                 RemoteParameterBean parameterBean = item.t;
                 ToastUtil.show(parameterBean.getLabel() + ":" + parameterBean.getValue());

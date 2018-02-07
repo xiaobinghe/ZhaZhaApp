@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.entity.FilterMark;
@@ -43,7 +42,19 @@ public class ToolsOrderActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        return new ToolsOrderRVAdapter(R.layout.item_tools_order, mOrderType.equals("order") ? getOrderData() : getEnergyData());
+        ToolsOrderRVAdapter adapter=  new ToolsOrderRVAdapter(R.layout.item_tools_order, mOrderType.equals("order") ? getOrderData() : getEnergyData());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getApplication(), OrderDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
@@ -65,22 +76,6 @@ public class ToolsOrderActivity extends BaseToolsActivity {
             }
         });
     }
-
-    @Override
-    protected void setItemClickListener(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
-                Intent intent = new Intent(getApplication(), OrderDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("order", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-    }
-
     /**
      * @author xiaobinghe
      * @time

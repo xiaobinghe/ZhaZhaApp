@@ -10,20 +10,18 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.entity.MachineEntity;
 import com.locensate.letnetwork.entity.RepairEntity;
 import com.locensate.letnetwork.main.ui.RepairDetailActivity;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -40,7 +38,19 @@ public class ToolsRepairActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        return new ToolsRepairRVAdapter(R.layout.item_tools_order, getData());
+        ToolsRepairRVAdapter adapter = new ToolsRepairRVAdapter(R.layout.item_tools_order, getData());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RepairEntity item = (RepairEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(App.getApplication(), RepairDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("repair", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
@@ -59,21 +69,6 @@ public class ToolsRepairActivity extends BaseToolsActivity {
                         });
                     }
                 };
-            }
-        });
-    }
-
-    @Override
-    protected void setItemClickListener(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                RepairEntity item = (RepairEntity) baseQuickAdapter.getItem(i);
-                Intent intent = new Intent(App.getApplication(), RepairDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("repair", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
             }
         });
     }
@@ -107,9 +102,11 @@ public class ToolsRepairActivity extends BaseToolsActivity {
             List<MachineEntity> machines = repairEntity.getMachines();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < machines.size(); i++) {
-                if (i == machines.size() - 1)
+                if (i == machines.size() - 1) {
                     builder.append(machines.get(i).getName());
-                else builder.append(machines.get(i).getName()).append(",");
+                } else {
+                    builder.append(machines.get(i).getName()).append(",");
+                }
             }
             baseViewHolder.setText(R.id.tv_order_machine, builder.toString())
                     .setText(R.id.tv_order_machine_path, repairEntity.getPath())

@@ -32,10 +32,7 @@ public abstract class MessageBaseFragment extends BaseFragment {
     protected void initView() {
         mRvAlertMessage.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvAlertMessage.setAdapter(getAdapter());
-        addClickListener(mRvAlertMessage);
     }
-
-    protected abstract void addClickListener(RecyclerView rvMessage);
 
     public abstract RecyclerView.Adapter getAdapter();
 

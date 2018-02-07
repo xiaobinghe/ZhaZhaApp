@@ -1,42 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_expand_item_lv2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:background="@drawable/select_bg_trans"
         android:orientation="horizontal"
-        android:background="@color/bg_trans"
-        >
+    >
 
-        <ImageView
-            android:id="@+id/iv_level2_head"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:src="@null" />
 
         <TextView
             android:id="@+id/tv_level2_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical"
             android:maxLines="1"
+            android:paddingLeft="@dimen/dp_40"
             android:textColor="@color/font_black"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_12"/>
 
         <TextView
             android:id="@+id/tv_level2_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/font_black"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
 
         <ImageView
             android:id="@+id/iv_level2_foot"
@@ -44,7 +40,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:src="@null" />
+            android:src="@null"/>
     </LinearLayout>
 
     <View

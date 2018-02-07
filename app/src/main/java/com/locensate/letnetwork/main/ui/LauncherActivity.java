@@ -15,6 +15,8 @@ import com.locensate.letnetwork.main.ui.login.LoginActivity;
 import com.locensate.letnetwork.utils.AnimationUtil;
 import com.locensate.letnetwork.utils.LogUtil;
 
+import java.lang.reflect.Field;
+
 import butterknife.BindView;
 
 /**
@@ -61,6 +63,24 @@ public class LauncherActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+
+
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, sbar = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            sbar = getResources().getDimensionPixelSize(x);
+
+            LogUtil.e("status_bar_size", "---------" + sbar);
+        } catch (Exception e1) {
+            LogUtil.e("Ec", "get status bar height fail");
+            e1.printStackTrace();
+        }
         super.onResume();
     }
 }

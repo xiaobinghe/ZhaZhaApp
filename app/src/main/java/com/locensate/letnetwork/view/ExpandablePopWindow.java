@@ -12,12 +12,10 @@ import android.widget.PopupWindow;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.utils.DisplayUtil;
-import com.locensate.letnetwork.view.expandableview.ExpandableItemAdapter;
 
 import java.util.List;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -26,6 +24,7 @@ public class ExpandablePopWindow extends PopupWindow {
 
 
     private RecyclerView rvExpandable;
+    private String mGroupName;
 
     public ExpandablePopWindow(final Activity context, List<MultiItemEntity> entities) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -36,13 +35,11 @@ public class ExpandablePopWindow extends PopupWindow {
         // 设置SelectPicPopupWindow的View
         this.setContentView(conentView);
         // 设置SelectPicPopupWindow弹出窗体的宽
-//        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         int width = DisplayUtil.SCREEN_WIDTH_PIXELS * 2 / 3;
         this.setWidth(width);
         // 设置SelectPicPopupWindow弹出窗体的高
         int height = DisplayUtil.SCREEN_HEIGHT_PIXELS * 2 / 3;
 
-//        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         this.setHeight(height);
         // 设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
@@ -59,10 +56,23 @@ public class ExpandablePopWindow extends PopupWindow {
 
         rvExpandable = (RecyclerView) conentView.findViewById(R.id.rv_expandable_view);
         rvExpandable.setLayoutManager(new LinearLayoutManager(context));
-        ExpandableItemAdapter adapter = new ExpandableItemAdapter(entities, context);
-        rvExpandable.setAdapter(adapter);
-        adapter.expand(0, false, true);
+        ExpandableItemAdapter adapter = new ExpandableItemAdapter(entities);
 
+        adapter.setSelectComplete(new ExpandableItemAdapter.SelectComplete() {
+            @Override
+            public void onSelectComplete(String path) {
+                resetPath(path);
+                dismiss();
+            }
+        });
+        rvExpandable.setAdapter(adapter);
+
+//        adapter.expand(0, false, true);
+
+    }
+
+    private void resetPath(String path) {
+        this.mGroupName = path;
     }
 
 
@@ -86,8 +96,6 @@ public class ExpandablePopWindow extends PopupWindow {
     }
 
     public String getPath() {
-        ExpandableItemAdapter adapter = (ExpandableItemAdapter) rvExpandable.getAdapter();
-        adapter.getsGroupName();
-        return adapter.getsGroupName();
+        return mGroupName;
     }
 }

@@ -9,13 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.entity.RoutingEntity;
 import com.locensate.letnetwork.main.ui.RoutingDetailActivity;
 import com.locensate.letnetwork.main.ui.tools.BaseToolsActivity;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,19 @@ public class ToolsRiPlanActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        return new ToolsRiPlanRvAdapter(R.layout.item_tools_order, getData());
+        ToolsRiPlanRvAdapter adapter= new ToolsRiPlanRvAdapter(R.layout.item_tools_order, getData());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RoutingEntity item = (RoutingEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getApplication(), RoutingDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("routing", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
@@ -76,21 +87,6 @@ public class ToolsRiPlanActivity extends BaseToolsActivity {
                         });
                     }
                 };
-            }
-        });
-    }
-
-    @Override
-    protected void setItemClickListener(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                RoutingEntity item = (RoutingEntity) baseQuickAdapter.getItem(i);
-                Intent intent = new Intent(getApplication(), RoutingDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("routing", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
             }
         });
     }

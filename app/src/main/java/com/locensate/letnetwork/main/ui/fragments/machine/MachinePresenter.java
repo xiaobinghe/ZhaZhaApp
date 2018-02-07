@@ -7,9 +7,14 @@ import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.bean.MachineFilterTag;
 import com.locensate.letnetwork.bean.Organizations;
+import com.locensate.letnetwork.main.ui.fragments.overview.OverviewModel;
 import com.locensate.letnetwork.utils.OrganizationsOption;
 import com.locensate.letnetwork.utils.ToastUtil;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -20,12 +25,15 @@ import io.reactivex.functions.Consumer;
 public class MachinePresenter extends MachineContract.Presenter {
     @Override
     public void onStart() {
+
     }
 
     @Override
     public void showPop() {
-//        mView.showPop(mModel.getGroupTree());
-        // TODO: 2018/1/23 加载组织结构
+        if (App.isMock) {
+            mView.showPop(new OverviewModel().getGroupTree());
+            return;
+        }
         mModel.getOrganizations().compose(RxSchedulers.<Organizations>applyObservableAsync()).subscribe(new Consumer<Organizations>() {
             @Override
             public void accept(@NonNull Organizations organizations) throws Exception {
@@ -48,10 +56,16 @@ public class MachinePresenter extends MachineContract.Presenter {
     public void initData() {
         // TODO: 2018/1/26 请求设备列表
         mView.fillData(mModel.getMachineList());
+
     }
 
     @Override
     public void refreshFilter() {
+        if (App.isMock) {
+            mView.fillFilter(mModel.getFilterDefault());
+            return;
+        }
+
         mModel.getFilterTags().compose(RxSchedulers.<MachineFilterTag>applyObservableAsync()).subscribe(new Consumer<MachineFilterTag>() {
             @Override
             public void accept(MachineFilterTag machineFilterTag) throws Exception {
@@ -74,5 +88,11 @@ public class MachinePresenter extends MachineContract.Presenter {
     @Override
     public void sort() {
         // TODO: 2018/1/26 功率排序
+        Observable.just("1").delay(2000, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                mView.sortComplete(mModel.getMachineList());
+            }
+        });
     }
 }

@@ -8,7 +8,6 @@ import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.bean.MachineFilterTag;
 import com.locensate.letnetwork.bean.Organizations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -26,7 +25,8 @@ public interface MachineContract {
 
         List<MachineDataBean> getMachineList();
 
-        ArrayList<MultiItemEntity> getGroupTree();
+
+        MachineFilterTag getFilterDefault();
 
         /**
          * 获取组织结构
@@ -74,6 +74,11 @@ public interface MachineContract {
         void showPop(List<MultiItemEntity> groupTree);
 
 
+        /**
+         * 排序完成
+         * @param machineList
+         */
+        void sortComplete(List<MachineDataBean> machineList);
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {

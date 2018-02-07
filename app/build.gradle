@@ -60,7 +60,7 @@ dependencies {
     annotationProcessor project(':apt')
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.gyf.barlibrary:barlibrary:2.2.3'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.6.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.contrarywind:Android-PickerView:3.2.4'
     compile 'com.zhy:autolayout:1.4.5'
     compile 'com.roughike:bottom-bar:2.0.2'

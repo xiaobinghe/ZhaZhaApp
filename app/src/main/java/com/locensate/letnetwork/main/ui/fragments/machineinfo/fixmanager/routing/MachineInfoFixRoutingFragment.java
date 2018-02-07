@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.RoutingEntity;
 import com.locensate.letnetwork.main.ui.RoutingDetailActivity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager.BaseFixManagerFragment;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,25 +47,24 @@ public class MachineInfoFixRoutingFragment extends BaseFixManagerFragment {
 
     @Override
     protected FixRoutingRvAdapter getAdapter() {
-        return new FixRoutingRvAdapter(R.layout.item_fix_order_msg, getData());
+        FixRoutingRvAdapter adapter=new FixRoutingRvAdapter(R.layout.item_fix_order_msg, getData());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RoutingEntity item = (RoutingEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(App.getApplication(), RoutingDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("routing", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
     protected void addClickListener(RecyclerView rvFixOrder) {
-        if (!isAddListener) {
-            rvFixOrder.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    RoutingEntity item = (RoutingEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(App.getApplication(), RoutingDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("routing", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
+
     }
 
     private List<RoutingEntity> getData() {

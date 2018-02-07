@@ -3,7 +3,6 @@ package com.locensate.letnetwork.main.ui.fragments.machine;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.HandlerThread;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,8 +22,6 @@ import com.bigkoo.pickerview.lib.WheelView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
@@ -37,7 +34,6 @@ import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
 import com.locensate.letnetwork.utils.SpUtil;
-import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.ModernDialog;
 import com.locensate.letnetwork.view.filterview.ui.RightSideslipLay;
@@ -144,6 +140,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                 srlMachineListMachine.setRefreshing(false);
             }
         });
+
         /*初始化时间筛选器数据*/
         timeTypes.add("小时");
         timeTypes.add("天");
@@ -158,29 +155,28 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         rvMachineList.setAdapter(adapter);
 
         /*添加点击和长按监听*/
-        if (!isAddListener) {
-            rvMachineList.addOnItemTouchListener(new OnItemLongClickListener() {
-                @Override
-                public void SimpleOnItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    final MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
-                    isMarkImportantMachine(item);
-                }
-            });
-            rvMachineList.addOnItemTouchListener(new OnItemChildClickListener() {
-                @Override
-                public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
 
-                    MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(App.getApplication(), MachineInfoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("machineId", item.getId());
-                    bundle.putString("machineName", item.getName());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
+        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                final MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
+                isMarkImportantMachine(item);
+                return false;
+            }
+        });
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(App.getApplication(), MachineInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("machineId", item.getId());
+                bundle.putString("machineName", item.getName());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+        });
 
     }
 
@@ -221,15 +217,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                 startSearch();
                 break;
             case R.id.tv_machine_head_power_sort:
-
                 powerSort();
-                ToastUtil.show("sort");
-                try {
-                    HandlerThread.sleep(2000);
-                    srlMachineListMachine.setRefreshing(false);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.tv_machine_head_filter:
                 openMenu();
@@ -312,6 +300,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         adapter.loadMoreComplete();
         if (null == popWindow) {
             popWindow = new ExpandablePopWindow(getActivity(), groupTree);
+            popWindow.setAnimationStyle(R.style.MyPopAnim);
         }
         popWindow.showPopupWindow(ivRootFile);
         popWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -320,6 +309,12 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                 tvRootFile.setText(popWindow.getPath());
             }
         });
+    }
+
+    @Override
+    public void sortComplete(List<MachineDataBean> machineList) {
+        fillData(machineList);
+        srlMachineListMachine.setRefreshing(false);
     }
 
     private void showPicker() {

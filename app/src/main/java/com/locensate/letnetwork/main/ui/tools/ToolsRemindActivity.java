@@ -10,19 +10,17 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.entity.MachineEntity;
 import com.locensate.letnetwork.main.ui.RemindDetailActivity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager.remind.RemindEntity;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -40,7 +38,20 @@ public class ToolsRemindActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        return new RemindRVAdapter(R.layout.item_tools_remind, getData());
+        RemindRVAdapter adapter = new RemindRVAdapter(R.layout.item_tools_remind, getData());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RemindEntity item = (RemindEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getApplication(), RemindDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("remind", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        return adapter;
     }
 
     @Override
@@ -62,21 +73,6 @@ public class ToolsRemindActivity extends BaseToolsActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void setItemClickListener(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                RemindEntity item = (RemindEntity) baseQuickAdapter.getItem(i);
-                Intent intent = new Intent(getApplication(), RemindDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("remind", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -112,9 +108,11 @@ public class ToolsRemindActivity extends BaseToolsActivity {
             List<MachineEntity> machines = remindEntity.getMachines();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < machines.size(); i++) {
-                if (i == machines.size() - 1)
+                if (i == machines.size() - 1) {
                     builder.append(machines.get(i).getName());
-                else builder.append(machines.get(i).getName()).append(",");
+                } else {
+                    builder.append(machines.get(i).getName()).append(",");
+                }
             }
             baseViewHolder.setText(R.id.tv_remind_machine, builder.toString())
                     .setText(R.id.tv_remind_machine_path, remindEntity.getPath())

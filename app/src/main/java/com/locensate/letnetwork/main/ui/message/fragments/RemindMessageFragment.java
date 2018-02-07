@@ -6,19 +6,17 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.OrderMsgEntity;
 import com.locensate.letnetwork.main.ui.RemindDetailActivity;
 import com.locensate.letnetwork.main.ui.message.MessageBaseFragment;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -28,28 +26,24 @@ public class RemindMessageFragment extends MessageBaseFragment {
     private boolean isAddClick = false;
 
     public static RemindMessageFragment getInstance() {
-        if (null == instance) instance = new RemindMessageFragment();
+        if (null == instance) {
+            instance = new RemindMessageFragment();
+        }
         return instance;
     }
-
-    @Override
-    protected void addClickListener(RecyclerView rvMessage) {
-        if (!isAddClick) {
-            rvMessage.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    Intent intent = new Intent(getActivity(), RemindDetailActivity.class);
-                    intent.putExtra("remindId", "");
-                    startActivity(intent);
-                }
-            });
-            isAddClick = true;
-        }
-    }
-
     @Override
     public RecyclerView.Adapter getAdapter() {
-        return new RemindMessageAdapter(R.layout.item_message_fragment, getItems());
+        RemindMessageAdapter adapter =
+                new RemindMessageAdapter(R.layout.item_message_fragment, getItems());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                Intent intent = new Intent(getActivity(), RemindDetailActivity.class);
+                intent.putExtra("remindId", "");
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     private List<OrderMsgEntity> getItems() {

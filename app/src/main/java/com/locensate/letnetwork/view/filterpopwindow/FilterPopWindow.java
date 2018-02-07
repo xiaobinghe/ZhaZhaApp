@@ -10,17 +10,15 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.utils.DisplayUtil;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
-import com.locensate.letnetwork.entity.FilterEntity;
 
 import java.util.List;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -31,8 +29,8 @@ public class FilterPopWindow extends PopupWindow implements View.OnClickListener
     private final List<FilterEntity> datas;
     private StringBuffer buffer = new StringBuffer();
     private final FilterRVAdapter filterRVAdapter;
-    private  Button bttOkay;
-    private  Button bttReset;
+    private Button bttOkay;
+    private Button bttReset;
 
     public FilterPopWindow(Activity context, final List<FilterEntity> mData) {
         this.datas = mData;
@@ -66,16 +64,18 @@ public class FilterPopWindow extends PopupWindow implements View.OnClickListener
         bttOkay.setOnClickListener(this);
         bttReset.setOnClickListener(this);
         rvFilter.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        filterRVAdapter = new FilterRVAdapter(context,R.layout.layout_grid_item, R.layout.layout_grid_section, datas);
+        filterRVAdapter = new FilterRVAdapter(context, R.layout.layout_grid_item, R.layout.layout_grid_section, datas);
         rvFilter.setAdapter(filterRVAdapter);
-        rvFilter.addOnItemTouchListener(new OnItemClickListener() {
+        filterRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 FilterEntity entity = datas.get(i);
                 if (!entity.isHeader) {
                     entity.t.setChecked(!entity.t.isChecked());
                     baseQuickAdapter.notifyItemChanged(i);
-                    if (entity.t.isChecked()) buffer.append(entity.t.getDes()).append("/");
+                    if (entity.t.isChecked()) {
+                        buffer.append(entity.t.getDes()).append("/");
+                    }
                 }
             }
         });
@@ -103,6 +103,8 @@ public class FilterPopWindow extends PopupWindow implements View.OnClickListener
                 ToastUtil.show("Reset");
                 resetData();
                 break;
+            default:
+                break;
         }
     }
 
@@ -116,6 +118,8 @@ public class FilterPopWindow extends PopupWindow implements View.OnClickListener
             }
         }
         filterRVAdapter.notifyDataSetChanged();
-        if (buffer.length() != 0) buffer.delete(0, buffer.length());
+        if (buffer.length() != 0) {
+            buffer.delete(0, buffer.length());
+        }
     }
 }

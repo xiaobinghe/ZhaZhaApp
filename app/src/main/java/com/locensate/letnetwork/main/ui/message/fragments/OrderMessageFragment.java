@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.entity.OrderMsgEntity;
 import com.locensate.letnetwork.main.ui.message.MessageBaseFragment;
@@ -36,26 +35,21 @@ public class OrderMessageFragment extends MessageBaseFragment {
     }
 
     @Override
-    protected void addClickListener(RecyclerView rvMessage) {
-        if (!isAddListener) {
-            rvMessage.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("order", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
-    }
-
-    @Override
     public RecyclerView.Adapter getAdapter() {
-        return new OrderMessageAdapter(item_message_fragment, getItems());
+        OrderMessageAdapter adapter=  new OrderMessageAdapter(item_message_fragment, getItems());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                OrderMsgEntity item = (OrderMsgEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        return  adapter;
     }
 
     private List<OrderMsgEntity> getItems() {

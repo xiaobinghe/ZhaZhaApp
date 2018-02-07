@@ -31,7 +31,6 @@ import butterknife.OnClick;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -81,7 +80,6 @@ public abstract class BaseToolsActivity extends BaseActivity {
         setRefreshListener(mSrlToolsOrder);
         mRvToolsOrderList.setLayoutManager(new LinearLayoutManager(this));
         mRvToolsOrderList.setAdapter(setRVAdapter());
-        setItemClickListener(mRvToolsOrderList);
     }
 
     @OnClick({R.id.iv_normal_title_back, R.id.iv_normal_title_more, R.id.ll_time_start, R.id.ll_time_end})
@@ -97,13 +95,13 @@ public abstract class BaseToolsActivity extends BaseActivity {
                 break;
             case R.id.ll_time_start:
                 // TODO: 2017/8/1 refresh data and UI
-                if (null==mStartPicker) {
+                if (null == mStartPicker) {
                     mStartPicker = PickViewUtils.getInstance().getYMDPicker(this, instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            if (DateUtils.compareDate(date, endDate) != -1)
+                            if (DateUtils.compareDate(date, endDate) != -1) {
                                 ToastUtil.show(R.string.remind_time_select_before);
-                            else {
+                            } else {
                                 startDate = date;
                                 mTvTimeContentStart.setText(DateUtils.getTime(date, "天"));
                                 // TODO: 2017/8/1 refresh data and UI
@@ -116,13 +114,13 @@ public abstract class BaseToolsActivity extends BaseActivity {
                 break;
             case R.id.ll_time_end:
                 // TODO: 2017/8/1 refresh data and UI
-                if (null==mEndPicker) {
+                if (null == mEndPicker) {
                     mEndPicker = PickViewUtils.getInstance().getYMDPicker(this, instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            if (DateUtils.compareDate(date, startDate) != 1)
+                            if (DateUtils.compareDate(date, startDate) != 1) {
                                 ToastUtil.show(R.string.remind_time_select);
-                            else {
+                            } else {
                                 endDate = date;
                                 mTvTimeContentEnd.setText(DateUtils.getTime(date, "天"));
                                 // TODO: 2017/8/1 refresh data and UI
@@ -132,6 +130,8 @@ public abstract class BaseToolsActivity extends BaseActivity {
                     });
                 }
                 mEndPicker.show();
+                break;
+            default:
                 break;
         }
     }
@@ -173,9 +173,6 @@ public abstract class BaseToolsActivity extends BaseActivity {
 
     /*设置刷新监听*/
     protected abstract void setRefreshListener(SwipeRefreshLayout swipeRefreshLayout);
-
-    /*设置item点击监听*/
-    protected abstract void setItemClickListener(RecyclerView recyclerView);
 
     /*获取筛选的数据标签*/
     protected abstract List<FilterEntity> getFilterData();

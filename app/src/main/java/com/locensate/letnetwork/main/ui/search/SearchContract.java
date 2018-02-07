@@ -25,5 +25,7 @@ public interface SearchContract {
     abstract class Presenter extends BasePresenter<Model,View> {
 
         public abstract void clearData();
+
+        public abstract void currentlySearch(String s);
     }
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.entity.MachineEntity;
 import com.locensate.letnetwork.main.ui.RemindDetailActivity;
@@ -48,25 +47,24 @@ public class MachineInfoFixRemindFragment extends BaseFixManagerFragment{
 
     @Override
     protected void addClickListener(RecyclerView rvFixOrder) {
-        if (!isAddListener) {
-            rvFixOrder.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    RemindEntity item = (RemindEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(getActivity(), RemindDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("remind", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
+
     }
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        return new FixRemindRvAdapter(R.layout.item_fix_remind_msg, getRemindList());
+        FixRemindRvAdapter adapter=    new FixRemindRvAdapter(R.layout.item_fix_remind_msg, getRemindList());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RemindEntity item = (RemindEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), RemindDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("remind", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override

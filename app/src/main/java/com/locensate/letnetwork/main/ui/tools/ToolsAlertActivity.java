@@ -9,13 +9,12 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.entity.FilterMark;
 import com.locensate.letnetwork.entity.MessageEntity;
 import com.locensate.letnetwork.main.ui.AlertDetailActivity;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,19 @@ public class ToolsAlertActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        return new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
+        AlertMessageAdapter adapter=  new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                MessageEntity item = (MessageEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(getActivity(), AlertDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("alertMsg", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     @Override
@@ -49,6 +60,7 @@ public class ToolsAlertActivity extends BaseToolsActivity {
             @Override
             public void onRefresh() {
                 Runnable runnable = new Runnable() {
+                    @Override
                     public void run() {
                         try {
                             Thread.sleep(2000);
@@ -70,22 +82,6 @@ public class ToolsAlertActivity extends BaseToolsActivity {
             }
         });
     }
-
-    @Override
-    protected void setItemClickListener(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                MessageEntity item = (MessageEntity) baseQuickAdapter.getItem(i);
-                Intent intent = new Intent(getActivity(), AlertDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("alertMsg", item);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-    }
-
     private List<MessageEntity> getItems() {
         ArrayList<MessageEntity> initDate = new ArrayList<>();
         initDate.add(new MessageEntity("", "输入端缺相", "中石化/北京分公司/储油车间", "通风机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()), "high", 1, false));

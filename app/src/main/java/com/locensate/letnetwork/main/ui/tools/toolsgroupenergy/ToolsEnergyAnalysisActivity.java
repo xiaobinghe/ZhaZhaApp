@@ -16,13 +16,12 @@ import com.bigkoo.pickerview.lib.WheelView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.entity.GroupEnergyEntity;
 import com.locensate.letnetwork.utils.Constance;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
-import com.locensate.letnetwork.entity.GroupEnergyEntity;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.expandableview.Level0Item;
 import com.locensate.letnetwork.view.expandableview.Level1Item;
@@ -73,6 +72,7 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
     private MyTimePickerView mMouthPicker;
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
+    private GroupEnergyRVAdapter mGroupEnergyRVAdapter;
 
     @Override
     public int getLayoutId() {
@@ -83,10 +83,11 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
     public void initView() {
         tvTitleOnlyBack.setText("工具-班组能效");
         rvGroupEnergy.setLayoutManager(new LinearLayoutManager(this));
-        rvGroupEnergy.setAdapter(new GroupEnergyRVAdapter(R.layout.item_group_energy, getData()));
-        rvGroupEnergy.addOnItemTouchListener(new OnItemChildClickListener() {
+        mGroupEnergyRVAdapter = new GroupEnergyRVAdapter(R.layout.item_group_energy, getData());
+        rvGroupEnergy.setAdapter(mGroupEnergyRVAdapter);
+        mGroupEnergyRVAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 GroupEnergyEntity item = (GroupEnergyEntity) baseQuickAdapter.getItem(i);
                 View inflate = View.inflate(mContext, R.layout.layout_class_group_pop, null);
                 TextView classBelong = (TextView) inflate.findViewById(R.id.tv_class_belong);

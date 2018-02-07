@@ -10,15 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.main.ui.fragments.machine.MachineListAdapter;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
+import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.view.ModernDialog;
 
 import java.util.ArrayList;
@@ -66,19 +64,18 @@ public class MachineListActivity extends BaseActivity {
         });
         mRvMachineList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MachineListAdapter(this, R.layout.item_machine_list, getMachines());
-        mRvMachineList.setAdapter(adapter);
         if (!isAddListener) {
-            mRvMachineList.addOnItemTouchListener(new OnItemLongClickListener() {
+            adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
                 @Override
-                public void SimpleOnItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                public boolean onItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                     final MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
                     isMarkImportantMachine(item);
+                    return false;
                 }
             });
-            mRvMachineList.addOnItemTouchListener(new OnItemChildClickListener() {
+            adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
-                public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-//                    ToastUtil.show("i");
+                public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                     MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
                     Intent intent = new Intent(App.getApplication(), MachineInfoActivity.class);
                     intent.putExtra("machineId", item.getId());
@@ -88,6 +85,8 @@ public class MachineListActivity extends BaseActivity {
             });
             isAddListener = true;
         }
+        mRvMachineList.setAdapter(adapter);
+
     }
 
     private void isMarkImportantMachine(final MachineDataBean item) {
@@ -96,9 +95,11 @@ public class MachineListActivity extends BaseActivity {
         dialog.show();
 
 
-        if (!item.isImportant())
+        if (!item.isImportant()) {
             dialog.setMessage("将 " + item.getName() + " 标记为我关注的设备");
-        else dialog.setMessage("取消关注" + item.getName());
+        } else {
+            dialog.setMessage("取消关注" + item.getName());
+        }
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {

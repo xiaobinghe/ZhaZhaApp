@@ -7,14 +7,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
 import com.locensate.letnetwork.main.ui.RemoteParameterActivity;
 import com.locensate.letnetwork.main.ui.dataanalysis.DataAnalysisActivity;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
-import com.locensate.letnetwork.utils.LogUtil;
 
 import java.util.List;
 
@@ -56,30 +54,27 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
         machineId = mMachineInfo.getString("machineId");
         rvMachineMonitor.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         monitorRVAdapter = new MachineMonitorRvAdapter(R.layout.item_section_content, R.layout.item_section_head, datas, getContext());
+        monitorRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                Bundle bundle = new Bundle();
+                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
+//                LogUtil.e(TAG, "--------------position===" + i);
+                if (!item.isHeader && i != 1) {
+                    RunningStateEntity data = (RunningStateEntity) item.t;
+                    bundle.putSerializable("parameter", data);
+                    skipHistoryData(bundle);
+                }
+            }
+        });
+        monitorRVAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
+                skipRemoteParameter();
+            }
+        });
         rvMachineMonitor.setAdapter(monitorRVAdapter);
-
-        if (!isAddListener) {
-            rvMachineMonitor.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(position);
-                    skipRemoteParameter();
-                }
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    Bundle bundle = new Bundle();
-                    MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
-                    LogUtil.e(TAG, "--------------position===" + i);
-                    if (!item.isHeader && i != 1) {
-                        RunningStateEntity data = (RunningStateEntity) item.t;
-                        bundle.putSerializable("parameter", data);
-                        skipHistoryData(bundle);
-                    }
-                    //                AppManager.skipActivityWithData(DataAnalysisActivity.class, bundle, getActivity());
-                }
-            });
-            isAddListener = true;
-        }
     }
 
     private void skipHistoryData(Bundle bundle) {

@@ -26,7 +26,6 @@ import io.reactivex.Observable;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -70,12 +69,12 @@ public class OverviewModel implements OverviewContract.Model {
         ArrayList<MultiItemEntity> res = new ArrayList<>();
         res.add(new Level0Item("全部", "全部", 0));
         for (int i = 0; i < lv0Count; i++) {
-            Level0Item lv0 = new Level0Item(nameList[i], nameList[i], 0);
+            Level0Item lv0 = new Level0Item(nameList[i], "", 0);
 
             for (int j = 0; j < lv1Count; j++) {
-                Level1Item lv1 = new Level1Item(lv0List[j], "", 0);
+                Level1Item lv1 = new Level1Item(lv0List[j], nameList[i], 0);
                 for (int k = 0; k < personCount; k++) {
-                    lv1.addSubItem(new Level2Item(lv1List[k], null, false, 0));
+                    lv1.addSubItem(new Level2Item(lv1List[k], new StringBuilder(nameList[i]).append("/").append(lv0List[j]).toString(), false, 0));
                 }
                 lv0.addSubItem(lv1);
             }

@@ -27,7 +27,7 @@
             android:src="@drawable/back_white" />
 
 
-        <android.support.v7.widget.SearchView.SearchAutoComplete
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
             android:id="@+id/et_search_view"
             android:layout_width="790px"
             android:layout_height="90px"

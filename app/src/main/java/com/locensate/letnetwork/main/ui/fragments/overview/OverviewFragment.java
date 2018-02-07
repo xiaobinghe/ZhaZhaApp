@@ -180,14 +180,17 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
     public void showPop(List<MultiItemEntity> groupTree) {
         if (null == expandablePopwindow) {
             expandablePopwindow = new ExpandablePopWindow(getActivity(), groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
         }
         fitPopupWindowOverStatusBar(true);
         expandablePopwindow.showPopupWindow(ivRootFile);
         expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-
-                mGroupName = expandablePopwindow.getPath();
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    mGroupName = temp;
+                }
                 tvRootFile.setText(mGroupName);
             }
         });

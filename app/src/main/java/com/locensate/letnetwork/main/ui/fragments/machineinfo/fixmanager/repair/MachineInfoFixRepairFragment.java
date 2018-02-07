@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
-import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.entity.RepairEntity;
 import com.locensate.letnetwork.main.ui.RepairDetailActivity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager.BaseFixManagerFragment;
+import com.locensate.letnetwork.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,25 +48,24 @@ public class MachineInfoFixRepairFragment extends BaseFixManagerFragment {
 
     @Override
     protected void addClickListener(RecyclerView rvFixOrder) {
-        if (!isAddListener) {
-            rvFixOrder.addOnItemTouchListener(new OnItemClickListener() {
-                @Override
-                public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                    RepairEntity item = (RepairEntity) baseQuickAdapter.getItem(i);
-                    Intent intent = new Intent(App.getApplication(), RepairDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("repair", item);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            isAddListener = true;
-        }
+
     }
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        return new FixRepairRvAdapter(R.layout.item_fix_order_msg, getFixRepairList());
+        FixRepairRvAdapter adapter= new FixRepairRvAdapter(R.layout.item_fix_order_msg, getFixRepairList());
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                RepairEntity item = (RepairEntity) baseQuickAdapter.getItem(i);
+                Intent intent = new Intent(App.getApplication(), RepairDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("repair", item);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        return adapter;
     }
 
     public List<RepairEntity> getFixRepairList() {

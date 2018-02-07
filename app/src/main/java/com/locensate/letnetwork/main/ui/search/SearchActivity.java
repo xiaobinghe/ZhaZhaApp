@@ -2,6 +2,8 @@ package com.locensate.letnetwork.main.ui.search;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
@@ -10,15 +12,20 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.database.SearchHistoryDb;
+import com.locensate.letnetwork.main.ui.MachineListActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.KeyBoardUtils;
 import com.locensate.letnetwork.utils.ToastUtil;
@@ -29,14 +36,20 @@ import org.litepal.tablemanager.Connector;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -50,7 +63,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
     ListView lvSearchHistory;
     @BindView(R.id.iv_search_back)
     ImageView ivSearchBack;
-    private static String cacheLine;
+    private String cacheLine;
     @BindView(R.id.fl_cancel_content)
     FrameLayout flCancelContent;
     @BindView(R.id.ll_search_history)
@@ -59,6 +72,8 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
     private String FILE_NAME;
     private List<SearchHistoryDb> historyDBList;
     private HistorySearchAdapter historySearchAdapter;
+    private ArrayAdapter<String> mArrayAdapter;
+    private ArrayList<String> mHistories;
 
     @Override
     public int getLayoutId() {
@@ -74,6 +89,9 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
                 mSerchView.setText("");
             }
         });
+        initHistoryData();
+        initInterface();
+
         mSerchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,7 +105,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                mPresenter.currentlySearch(s.toString());
             }
         });
         mSerchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -128,28 +146,49 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
                 KeyBoardUtils.closeKeybord(mSerchView, getApplicationContext());
                 searchData();
                 break;
+            default:
+                break;
         }
     }
 
     private void searchData() {
-        // TODO: 2017/2/20 搜索业务
         if (TextUtils.isEmpty(mSerchView.getText())) {
             ToastUtil.show("请输入设备名称");
             return;
         }
+        String content = mSerchView.getText().toString();
+        Observable.just(content).compose(RxSchedulers.<String>applyObservableAsync()).flatMap(new Function<String, ObservableSource<Boolean>>() {
+            @Override
+            public ObservableSource<Boolean> apply(String s) throws Exception {
+                SearchHistoryDb searchHistoryDb = new SearchHistoryDb();
+                searchHistoryDb.setId(DateUtils.getCurrentTimeMillis());
+                searchHistoryDb.setTime((String) DateUtils.getData("2017-02-23 09:37", DateUtils.getCurrentTimeMillis()));
+                searchHistoryDb.setCont(s);
+                searchHistoryDb.setType("");
+                searchHistoryDb.save();
+                return Observable.just(true);
+            }
+        }).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                if (aBoolean) {
+                    Intent intent = new Intent(App.getApplication(), MachineListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("filter", "");
+                    bundle.putString("ranges", "某钢厂");
+                    bundle.putString("status", "");
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
         //1、添加搜索记录
-        SearchHistoryDb searchHistoryDb = new SearchHistoryDb();
-        searchHistoryDb.setId(DateUtils.getCurrentTimeMillis());
-        searchHistoryDb.setTime((String) DateUtils.getData("2017-02-23 09:37", DateUtils.getCurrentTimeMillis()));
-        searchHistoryDb.setCont(mSerchView.getText().toString());
-        searchHistoryDb.setType("");
-        searchHistoryDb.save();
         //2、执行搜索业务
         //3、填充搜索结果
     }
 
 
-    @Deprecated
     public void initHistoryData() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             try {
@@ -174,10 +213,17 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
         }
     }
 
-    @Deprecated
+
     public void initInterface() {
         if (!TextUtils.isEmpty(cacheLine)) {
             historyArray = cacheLine.split(",");
+            mHistories = new ArrayList<String>(new HashSet<String>(Arrays.asList(historyArray)));
+            if (mArrayAdapter != null) {
+                mArrayAdapter = new ArrayAdapter<String>(this, R.layout.item_history_search, mHistories);
+                mSerchView.setAdapter(mArrayAdapter);
+            } else {
+                mArrayAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -185,7 +231,9 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
     public void fillData() {
         Connector.getDatabase();
         historyDBList = DataSupport.findAll(SearchHistoryDb.class);
-        if (historyDBList.size() == 0) {llSearchHistory.setVisibility(View.GONE);}
+        if (historyDBList.size() == 0) {
+            llSearchHistory.setVisibility(View.GONE);
+        }
         View inflate = View.inflate(this, R.layout.layout_history_search_foot, null);
         TextView clearBtt = (TextView) inflate.findViewById(R.id.bt_history_clear);
         clearBtt.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +246,14 @@ public class SearchActivity extends BaseActivity<SearchPresenter, SearchModel> i
         if (historyDBList != null) {
             historySearchAdapter = new HistorySearchAdapter(this, historyDBList);
             lvSearchHistory.setAdapter(historySearchAdapter);
+            lvSearchHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    SearchHistoryDb item = (SearchHistoryDb) adapterView.getItemAtPosition(i);
+                    mSerchView.setText(item.getCont());
+                    searchData();
+                }
+            });
         }
     }
 

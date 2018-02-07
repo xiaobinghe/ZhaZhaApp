@@ -28,8 +28,7 @@ public class RightSideslipLay extends RelativeLayout {
     private ListView selectList;
     private Button resetBrand;
     private Button okBrand;
-    //    private ImageView backBrand;
-    private RelativeLayout mRelateLay;
+    private LinearLayout mRelateLay;
     private RightSideslipLayAdapter slidLayFrameAdapter;
     private String JsonStr = "{\"operCode\": 1,\"data\": [{\"isOpen\": true,\"single_check\": 0,\"key\": \"运行效率\", \"vals\": [ { \"val\": \"经济运行\"}, {\"val\": \"非经济运行\" }, {\"val\": \"合理运行\" }]},{\"single_check\": 0,\"key\": \"平均负载\", \"vals\": [{ \"val\": \"空载\"},{ \"val\": \"轻载\"},{ \"val\": \"半载\"},{ \"val\": \"重载\"},{ \"val\": \"过载\"}],\"open\": true}," +
             "{\"isOpen\": false,\"single_check\": 0,\"key\": \"健康分析\", \"vals\": [{ \"val\": \"好\"},{ \"val\": \"较好\"},{ \"val\": \"较差\"},{ \"val\": \"差\"}],\"open\": false}," +
@@ -47,7 +46,7 @@ public class RightSideslipLay extends RelativeLayout {
         selectList = (ListView) findViewById(R.id.selsectFrameLV);
 //        backBrand = (ImageView) findViewById(R.id.select_brand_back_im);
         resetBrand = (Button) findViewById(R.id.fram_reset_but);
-        mRelateLay = (RelativeLayout) findViewById(R.id.select_frame_lay);
+        mRelateLay = (LinearLayout) findViewById(R.id.select_frame_lay);
         okBrand = (Button) findViewById(R.id.fram_ok_but);
         resetBrand.setOnClickListener(mOnClickListener);
         okBrand.setOnClickListener(mOnClickListener);
