@@ -1,6 +1,8 @@
 package com.locensate.letnetwork.main.ui.tools;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +13,10 @@ import android.widget.TextView;
 
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.entity.FilterEntity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
 import com.locensate.letnetwork.utils.ToastUtil;
-import com.locensate.letnetwork.entity.FilterEntity;
-import com.locensate.letnetwork.main.ui.search.SearchActivity;
 import com.locensate.letnetwork.view.NormalMorePop;
 import com.locensate.letnetwork.view.filterpopwindow.FilterPopWindow;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
@@ -143,7 +144,11 @@ public abstract class BaseToolsActivity extends BaseActivity {
                 public void onClick(int position) {
                     switch (position) {
                         case 0:
-                            startActivity(SearchActivity.class);
+                            Intent intent = new Intent();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("target", "tools");
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                             break;
                         case 1:
                             morePop.dismiss();
@@ -154,6 +159,8 @@ public abstract class BaseToolsActivity extends BaseActivity {
                             }
                             break;
                         case 2:
+                            break;
+                        default:
                             break;
                     }
                 }

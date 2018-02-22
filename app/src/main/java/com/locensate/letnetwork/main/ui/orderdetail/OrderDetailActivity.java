@@ -19,6 +19,7 @@ import com.locensate.letnetwork.entity.OrderMsgEntity;
 import com.locensate.letnetwork.main.ui.AddCommunicationActivity;
 import com.locensate.letnetwork.main.ui.AddEvaluateActivity;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
+import com.locensate.letnetwork.utils.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -53,6 +53,9 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
     private boolean hasEvaluate = false;
     private int ON_EVALUATED = 0x1002;
     private OrderMsgEntity mOrderMsgEntity;
+    private int orderStatus = 3;
+    private View mProgress;
+    private View mEvaluate;
 
     @Override
     public int getLayoutId() {
@@ -65,20 +68,20 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
         orderId = intent.getStringExtra("orderId");
         mOrderMsgEntity = (OrderMsgEntity) intent.getExtras().getSerializable("order");
         mIvOrderDetailTitle.setText("能效");
-
-
-        mSrlOrderDetail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mSrlOrderDetail.setRefreshing(false);}
-        });
         mRvOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         communicates = new ArrayList<>();
 //      communicates.add(new OrderCommunicate("", orderId, "李俊", System.currentTimeMillis() - 1200000L, "", "除尘风机电机出现异常，电机发烫，并伴有吱吱响声，现已停机。"));
         communicates.add(new OrderCommunicate("", orderId, "李俊", System.currentTimeMillis() - 1200000L, "", "我们需要查看这台设备详细的运行数据，查看过程不影响设备的使用。"));
         detailRVAdapter = new OrderDetailRvAdapter(R.layout.item_order_detail, communicates);
-        addHeader(5, "",3);
+        addHeader(orderStatus);
         mRvOrderDetail.setAdapter(detailRVAdapter);
+        mSrlOrderDetail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSrlOrderDetail.setRefreshing(false);
+                detailRVAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -86,7 +89,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
 
     }
 
-    private void addHeader(int stars, String evaluate ,int orderStatus) {
+    private void addHeader(int orderStatus) {
         detailRVAdapter.addHeaderView(getHeadBaseInfoView(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,9 +101,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
         }));
         detailRVAdapter.addHeaderView(getHeadProgressView(orderStatus));
         // TODO: 2017/5/26  根据工单状态判断是否显示评价模块
-        if (isCompleted) {
-            detailRVAdapter.addHeaderView(getHeadEvaluateView(stars, evaluate));
-        }
+
         detailRVAdapter.addHeaderView(getHeadCommunicateTitle(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,15 +120,20 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
     }
 
     private View getHeadProgressView(int status) {
-        View progress = getLayoutInflater().inflate(R.layout.layout_order_detail_head_progress, (ViewGroup) mRvOrderDetail.getParent(), false);
-        TextView tvCommit = (TextView) progress.findViewById(R.id.tv_commit);
-        ImageView ivCommit = (ImageView) progress.findViewById(R.id.iv_commit);
-        TextView tvGet = (TextView) progress.findViewById(R.id.tv_get);
-        ImageView ivGet = (ImageView) progress.findViewById(R.id.iv_get);
-        TextView tvHandle = (TextView) progress.findViewById(R.id.tv_handle);
-        ImageView ivHandle = (ImageView) progress.findViewById(R.id.iv_handle);
-        TextView tvComplete = (TextView) progress.findViewById(R.id.tv_complete);
-        ImageView ivComplete = (ImageView) progress.findViewById(R.id.iv_complete);
+        mProgress = getLayoutInflater().inflate(R.layout.layout_order_detail_head_progress, (ViewGroup) mRvOrderDetail.getParent(), false);
+        updateProgress(status);
+        return mProgress;
+    }
+
+    private void updateProgress(int status) {
+        TextView tvCommit = (TextView) mProgress.findViewById(R.id.tv_commit);
+        ImageView ivCommit = (ImageView) mProgress.findViewById(R.id.iv_commit);
+        TextView tvGet = (TextView) mProgress.findViewById(R.id.tv_get);
+        ImageView ivGet = (ImageView) mProgress.findViewById(R.id.iv_get);
+        TextView tvHandle = (TextView) mProgress.findViewById(R.id.tv_handle);
+        ImageView ivHandle = (ImageView) mProgress.findViewById(R.id.iv_handle);
+        TextView tvComplete = (TextView) mProgress.findViewById(R.id.tv_complete);
+        ImageView ivComplete = (ImageView) mProgress.findViewById(R.id.iv_complete);
 
         tvGet.setTextColor(status == 1 ? getResources().getColor(R.color.font_gray_blue) : getResources().getColor(R.color.font_deep_blue));
         ivGet.setImageResource(status == 1 ? R.drawable.shape_circle_progress_light_blue : R.drawable.shape_circle_progress_deep_blue);
@@ -135,19 +141,22 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
         ivHandle.setImageResource(status == 2 || status == 1 ? R.drawable.shape_circle_progress_light_blue : R.drawable.shape_circle_progress_deep_blue);
         tvComplete.setTextColor(status == 2 || status == 1 || status == 3 ? getResources().getColor(R.color.font_gray_blue) : getResources().getColor(R.color.font_deep_blue));
         ivComplete.setImageResource(status == 2 || status == 1 || status == 3 ? R.drawable.shape_circle_progress_light_blue : R.drawable.shape_circle_progress_deep_blue);
-
-        return progress;
     }
 
     private View getHeadEvaluateView(int star, String evaluateContent) {
-        View evaluate = getLayoutInflater().inflate(R.layout.layout_order_detail_head_evaluate, (ViewGroup) mRvOrderDetail.getParent(), false);
-        LinearLayout llStars = (LinearLayout) evaluate.findViewById(R.id.ll_stars);
-        ImageView star1 = (ImageView) evaluate.findViewById(R.id.iv_star1);
-        ImageView star2 = (ImageView) evaluate.findViewById(R.id.iv_star2);
-        ImageView star3 = (ImageView) evaluate.findViewById(R.id.iv_star3);
-        ImageView star4 = (ImageView) evaluate.findViewById(R.id.iv_star4);
-        ImageView star5 = (ImageView) evaluate.findViewById(R.id.iv_star5);
-        TextView tvEvaluate = (TextView) evaluate.findViewById(R.id.tv_evaluate);
+        mEvaluate = getLayoutInflater().inflate(R.layout.layout_order_detail_head_evaluate, (ViewGroup) mRvOrderDetail.getParent(), false);
+        updateEvaluate(star, evaluateContent);
+        return mEvaluate;
+    }
+
+    private void updateEvaluate(int star, String evaluateContent) {
+        LinearLayout llStars = (LinearLayout) mEvaluate.findViewById(R.id.ll_stars);
+        ImageView star1 = (ImageView) mEvaluate.findViewById(R.id.iv_star1);
+        ImageView star2 = (ImageView) mEvaluate.findViewById(R.id.iv_star2);
+        ImageView star3 = (ImageView) mEvaluate.findViewById(R.id.iv_star3);
+        ImageView star4 = (ImageView) mEvaluate.findViewById(R.id.iv_star4);
+        ImageView star5 = (ImageView) mEvaluate.findViewById(R.id.iv_star5);
+        TextView tvEvaluate = (TextView) mEvaluate.findViewById(R.id.tv_evaluate);
 
         llStars.setVisibility(hasEvaluate ? View.VISIBLE : View.GONE);
         tvEvaluate.setText(hasEvaluate ? evaluateContent : "工单已完成，暂无评价，请及时添加评价！");
@@ -156,7 +165,6 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
         star3.setImageResource(star == 1 || star == 2 ? R.drawable.star_gray_ : R.drawable.star_yellow_);
         star4.setImageResource(star == 4 || star == 5 ? R.drawable.star_yellow_ : R.drawable.star_gray_);
         star5.setImageResource(star == 5 ? R.drawable.star_yellow_ : R.drawable.star_gray_);
-        return evaluate;
     }
 
     public View getHeadBaseInfoView(View.OnClickListener listener) {
@@ -193,11 +201,12 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
             communicates.add(communicate);
             detailRVAdapter.notifyDataSetChanged();
         } else if (requestCode == ON_EVALUATED && resultCode == AddEvaluateActivity.EVALUATED) {
-            detailRVAdapter.removeAllHeaderView();
+//            detailRVAdapter.removeAllHeaderView();
             hasEvaluate = true;
             Bundle extras = data.getExtras();
-            extras.getInt("starCount");
-            addHeader(extras.getInt("starCount"), extras.getString("evaluateContent"),4);
+//            extras.getInt("starCount");
+//            addHeader(extras.getInt("starCount"), extras.getString("evaluateContent"), 4);
+            updateEvaluate(extras.getInt("starCount"), extras.getString("evaluateContent"));
         }
 
     }
@@ -210,14 +219,27 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
                 break;
             case R.id.iv_order_detail_com:
                 if (!isCompleted) {
-                    isCompleted = true;
-                    mIvOrderDetailCom.setText("评价");
-                    detailRVAdapter.removeAllHeaderView();
-                    addHeader(5, "",4);
+                    if (orderStatus == 3) {
+                        isCompleted = true;
+                        mIvOrderDetailCom.setText("评价");
+                        addEvaluateView();
+                    } else {
+                        ToastUtil.show("工单尚未处理，暂不能完成");
+                    }
                 } else {
                     startActivityForResult(new Intent(getApplication(), AddEvaluateActivity.class), ON_EVALUATED);
                 }
                 break;
+            default:
+                break;
+        }
+    }
+
+    private void addEvaluateView() {
+        updateProgress(3);
+        if (isCompleted) {
+            detailRVAdapter.addHeaderView(getHeadEvaluateView(0, ""), 2);
+            detailRVAdapter.notifyDataSetChanged();
         }
     }
 }
