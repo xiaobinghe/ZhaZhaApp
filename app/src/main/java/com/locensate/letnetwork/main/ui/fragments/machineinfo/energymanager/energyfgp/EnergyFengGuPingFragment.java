@@ -118,8 +118,8 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
                 }
             }
         });
-        fillLineData();
-        fillPieData();
+        initLineData();
+        initPieChart();
         fillCombineData();
     }
 
@@ -248,7 +248,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         return d;
     }
 
-    private void fillLineData() {
+    private void initLineData() {
         // 设置描述是否可用
         lineChart.getDescription().setEnabled(false);
 
@@ -449,8 +449,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
 
     }
 
-    private void fillPieData() {
-        initPieData();
+    private void initPieChart() {
         pieChart.setUsePercentValues(true);
         //添加饼图的描述是否可用
         pieChart.getDescription().setEnabled(false);
@@ -464,7 +463,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
 //        pieChart.setDescription(desc);
 
 //        pieChart.setExtraOffsets(5, 10, 5, 5);
-
+        pieChart.setNoDataText("暂无数据");
         pieChart.setDragDecelerationEnabled(true);
 
 //        pieChart.setDrawSliceText(false);
@@ -513,8 +512,6 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         // 添加选中监听
 //        pieChart.setOnChartValueSelectedListener(this);
 
-        setData(3, 100);
-
         // pieChart.spin(2000, 0, 360);
 
         Legend l = pieChart.getLegend();
@@ -525,12 +522,6 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         l.setEnabled(false);
     }
 
-    private void initPieData() {
-        piePercent[0] = 47.3f;
-        piePercent[1] = 20.2f;
-        piePercent[2] = 32.5f;
-
-    }
 
     private SpannableString generateCenterSpannableText() {
 
@@ -546,17 +537,9 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         return s;
     }
 
-    private void setData(int count, float range) {
+    @Override
+    public void setPieData(ArrayList<PieEntry> entries) {
 
-        float mult = range;
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry(piePercent[i], mParties[i]));
-        }
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
         dataSet.setDrawValues(false);
@@ -618,5 +601,10 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
 
         }
         return entries1;
+    }
+
+    public void notifyData(long motorId, long startMills, long endMills, String timeType) {
+
+
     }
 }

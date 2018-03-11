@@ -15,23 +15,35 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.google.gson.Gson;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.entity.RealTimeEntity;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.bean.KanBanDataEntity;
+import com.locensate.letnetwork.bean.Organizations;
+import com.locensate.letnetwork.bean._User;
+import com.locensate.letnetwork.main.ui.fragments.overview.OverviewModel;
 import com.locensate.letnetwork.main.ui.search.SearchActivity;
+import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.OrganizationsOption;
 import com.locensate.letnetwork.utils.SpUtil;
+import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
-import com.locensate.letnetwork.view.expandableview.Level0Item;
-import com.locensate.letnetwork.view.expandableview.Level1Item;
-import com.locensate.letnetwork.view.expandableview.Level2Item;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * @author xiaobinghe
@@ -53,8 +65,22 @@ public class ToolsKanBanActivity extends BaseActivity {
     SwipeRefreshLayout srlKanBan;
     @BindView(R.id.activity_kan_ban)
     LinearLayout activityKanBan;
+    @BindView(R.id.iv_left)
+    ImageView mIvLeft;
+    @BindView(R.id.tv_center)
+    TextView mTvCenter;
+    @BindView(R.id.iv_right)
+    ImageView mIvRight;
     private ExpandablePopWindow expandablePopwindow;
-    private String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
+    private KanBanRVAdapter mAdapter;
+    private int pageSize = 10;
+    private int pageNum = 1;
+    private long organizationId;
+    private int mTotalPage = 1;
+    private boolean isRefresh = false;
+    private String organizationName;
+    private List<MultiItemEntity> mEntities = new ArrayList<>();
+    private CompositeDisposable mCompositeDisposable;
 
     @Override
     public int getLayoutId() {
@@ -67,130 +93,207 @@ public class ToolsKanBanActivity extends BaseActivity {
         srlKanBan.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                srlKanBan.setRefreshing(false);
+                isRefresh = true;
+                request(organizationId, pageNum, pageSize);
             }
         });
+        _User user = new Gson().fromJson(SpUtil.getString(App.getApplication(), Constant.USER, ""), _User.class);
+        organizationId = user.getData().getOrganization().getOrganizationId();
+        organizationName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
+        tvMachinePath.setText(organizationName);
         rvKanBan.setLayoutManager(new LinearLayoutManager(this));
-        rvKanBan.setAdapter(new KanBanRVAdapter(R.layout.layout_item_kan_ban, getData()));
-        tvMachinePath.setText(mGroupName);
+        mAdapter = new KanBanRVAdapter(R.layout.layout_item_kan_ban, new ArrayList<KanBanDataEntity.DataBean.MotorListBean>());
+        mAdapter.setEnableLoadMore(false);
+        rvKanBan.setAdapter(mAdapter);
+
+        mCompositeDisposable = new CompositeDisposable();
+        requestOrganization();
+        request(organizationId, pageNum, pageSize);
+
+        Observable<Long> observable = Observable.interval(10 * 1000, TimeUnit.MILLISECONDS).doOnNext(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                request(organizationId, pageNum, pageSize);
+            }
+        });
+        DisposableObserver disposable = getDisposable();
+        observable.compose(RxSchedulers.<Long>applyObservableAsync()).subscribe(disposable);
+        mCompositeDisposable.add(disposable);
     }
 
-    @OnClick({R.id.iv_title_only_back, R.id.tv_machine_path, R.id.iv_search})
-    public void onClick(View view) {
+    private DisposableObserver getDisposable() {
+        return new DisposableObserver<Long>() {
+            @Override
+            public void onNext(Long kanBanDataEntity) {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+    }
+
+    private void requestOrganization() {
+
+        new OverviewModel().getOrganizations().compose(RxSchedulers.<Organizations>applyObservableAsync()).subscribe(new Consumer<Organizations>() {
+            @Override
+            public void accept(Organizations organizations) throws Exception {
+                if (null != organizations) {
+                    organizationName = organizations.getData().get(0).getOrganizationName();
+                    tvMachinePath.setText(organizationName);
+                    mEntities = OrganizationsOption.handleOrganizations(organizations);
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+
+            }
+        });
+
+    }
+
+    private void request(long organizationId, int pageNum, int pageSize) {
+        Api.getInstance().service.getKanBanData(organizationId, pageNum, pageSize).compose(RxSchedulers.<KanBanDataEntity>applyObservableAsync()).subscribe(new Consumer<KanBanDataEntity>() {
+            @Override
+            public void accept(KanBanDataEntity kanBanDataEntity) throws Exception {
+                KanBanDataEntity.DataBean data = kanBanDataEntity.getData();
+                handleData(data);
+            }
+        });
+    }
+
+    private void handleData(KanBanDataEntity.DataBean data) {
+        mTotalPage = data.getTotal_page();
+        pageNum = data.getPage_num();
+        if (mTotalPage == 0) {
+            mTotalPage = 1;
+        }
+        if (pageNum > mTotalPage) {
+            pageNum = mTotalPage;
+        }
+        mTvCenter.setText(pageNum + "/" + mTotalPage);
+        List<KanBanDataEntity.DataBean.MotorListBean> beanList = data.getMotor_list();
+        mAdapter.replaceData(beanList);
+        if (isRefresh) {
+            srlKanBan.setRefreshing(false);
+            isRefresh = false;
+        }
+    }
+
+    private void showPop(List<MultiItemEntity> groupTree) {
+        if (null == expandablePopwindow) {
+            expandablePopwindow = new ExpandablePopWindow(this, groupTree);
+            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
+        }
+        expandablePopwindow.showAsDropDown(tvMachinePath, 20, 0);
+        expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                String temp = expandablePopwindow.getPath();
+                if (temp != null) {
+                    organizationName = temp;
+                    organizationId = expandablePopwindow.getOrganizationId();
+                    tvMachinePath.setText(organizationName);
+                    request(organizationId, pageNum, pageSize);
+                }
+            }
+        });
+    }
+
+    @OnClick({R.id.iv_title_only_back, R.id.tv_machine_path, R.id.iv_search, R.id.iv_left, R.id.iv_right})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_only_back:
                 finish();
                 break;
             case R.id.tv_machine_path:
-                showPop(getGroupTree());
+                if (App.isMock) {
+                    showPop(new OverviewModel().getGroupTree());
+                    break;
+                }
+                showPop(mEntities);
                 break;
             case R.id.iv_search:
+                ToastUtil.show(R.string.function_uncomplete);
                 Intent intent = new Intent(App.getApplication(), SearchActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("target", "tools_kanban");
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
+            case R.id.iv_left:
+                LogUtil.e("left", "---pageNum=" + pageNum + "-------------pageSize=" + pageSize + "------------totalPage=" + mTotalPage);
+                if (pageNum > 1) {
+                    --pageNum;
+                    isRefresh = true;
+                    srlKanBan.setRefreshing(true);
+                    request(organizationId, pageNum, pageSize);
+                } else {
+                    ToastUtil.show("已经是第一页");
+                }
+                break;
+            case R.id.iv_right:
+                LogUtil.e("right", "---pageNum=" + pageNum + "-------------pageSize=" + pageSize + "------------totalPage=" + mTotalPage);
+                if (pageNum < mTotalPage) {
+                    ++pageNum;
+                    srlKanBan.setRefreshing(true);
+                    isRefresh = true;
+                    request(organizationId, pageNum, pageSize);
+                } else {
+                    ToastUtil.show("已经是最后一页");
+                }
+                break;
             default:
                 break;
         }
     }
 
-    private void showPop(ArrayList<MultiItemEntity> groupTree) {
-        if (null == expandablePopwindow) {
-            expandablePopwindow = new ExpandablePopWindow(this, groupTree);
-            expandablePopwindow.setAnimationStyle(R.style.MyPopAnim);
-        }
-        expandablePopwindow.showAsDropDown(tvMachinePath,20,0);
-        expandablePopwindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                String temp = expandablePopwindow.getPath();
-                if (temp != null) {
-                    mGroupName = temp;
-                }
-                tvMachinePath.setText(mGroupName);
-            }
-        });
-    }
-
-    private ArrayList<MultiItemEntity> getGroupTree() {
-        int lv0Count = 5;
-        int lv1Count = 3;
-        int personCount = 4;
-
-        String[] nameList = {"焦化厂", "炼钢厂", "烧结厂", "不锈钢厂", "国际贸易公司"};
-        String[] lv0List = {"一车间", "二车间", "三车间"};
-        String[] lv1List = {"一班", "二班", "三班", "四班"};
-        ArrayList<MultiItemEntity> res = new ArrayList<>();
-        res.add(new Level0Item("全部", "全部", 0));
-        for (int i = 0; i < lv0Count; i++) {
-            Level0Item lv0 = new Level0Item(nameList[i], nameList[i], 0);
-
-            for (int j = 0; j < lv1Count; j++) {
-                Level1Item lv1 = new Level1Item(lv0List[j], "", 0);
-                for (int k = 0; k < personCount; k++) {
-                    lv1.addSubItem(new Level2Item(lv1List[k], null, false, 0));
-                }
-                lv0.addSubItem(lv1);
-            }
-            res.add(lv0);
-        }
-
-        return res;
-    }
-
-    private List<RealTimeEntity> getData() {
-        ArrayList<RealTimeEntity> entities = new ArrayList<>();
-        entities.add(new RealTimeEntity("1", "运料主皮带机", "一车间配电室", "55kW", "15kW", "40A", "27%", "0.72", "56%", false, "normal"));
-        entities.add(new RealTimeEntity("1", "一次除尘风机", "一车间配电室", "55kW", "35kW", "80A", "64%", "0.81", "60%", false, "normal"));
-        entities.add(new RealTimeEntity("1", "二次风机", "一车间配电室", "55kW", "0kW", "0A", "0%", "0", "26%", false, "low"));
-        entities.add(new RealTimeEntity("1", "循环水泵", "一车间配电室", "55kW", "0kW", "0A", "0%", "0", "19%", false, "stop"));
-        entities.add(new RealTimeEntity("1", "空调机", "一车间配电室", "55kW", "22.8kW", "30A", "36%", "0.48", "56%", true, "high"));
-
-        return entities;
-    }
-
-    private class KanBanRVAdapter extends BaseQuickAdapter<RealTimeEntity, BaseViewHolder> {
-        public KanBanRVAdapter(int layoutResId, List<RealTimeEntity> data) {
+    private class KanBanRVAdapter extends BaseQuickAdapter<KanBanDataEntity.DataBean.MotorListBean, BaseViewHolder> {
+        public KanBanRVAdapter(int layoutResId, ArrayList<KanBanDataEntity.DataBean.MotorListBean> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder baseViewHolder, RealTimeEntity realTimeEntity) {
-            baseViewHolder.setText(R.id.tv_machine, realTimeEntity.getMachineName())
-                    .setText(R.id.tv_machine_path, realTimeEntity.getPath())
-                    .setText(R.id.tv_default_power, realTimeEntity.getDefaultPower())
-                    .setText(R.id.tv_real_power, realTimeEntity.getRealPower())
-                    .setText(R.id.tv_running_current, realTimeEntity.getRunningCurrent())
-                    .setText(R.id.tv_real_load_rate, realTimeEntity.getRealLoadRate())
-                    .setText(R.id.tv_real_efficiency, realTimeEntity.getRealEfficiency())
-                    .setText(R.id.tv_electric_hot, realTimeEntity.getElectricHotQ30())
-                    .setTextColor(R.id.tv_electric_hot, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_efficiency, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_load_rate, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_running_current, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_power, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_default_power, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_electric_hot_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_electric_hot_below_, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_efficiency_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_load_rate_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_running_current_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_real_power_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setTextColor(R.id.tv_default_power_below, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
-                    .setVisible(R.id.iv_interrupt, realTimeEntity.isInterrupt())
-                    .setBackgroundColor(R.id.ll_alert_level, realTimeEntity.isInterrupt() ? getResources().getColor(R.color.ground_line) : selectColor(realTimeEntity));
-
-
+        protected void convert(BaseViewHolder baseViewHolder, KanBanDataEntity.DataBean.MotorListBean motorListBean) {
+            DecimalFormat df = new DecimalFormat("0.00");
+            DecimalFormat dfL = new DecimalFormat("0.000");
+            baseViewHolder.setText(R.id.tv_machine, motorListBean.getWhole_equipment_name())
+                    .setText(R.id.tv_machine_path, motorListBean.getOrganization_name())
+                    .setText(R.id.tv_default_power, motorListBean.getRated_power() + "kW")
+                    .setText(R.id.tv_real_power, df.format(motorListBean.getP1()) + "kW")
+                    .setText(R.id.tv_running_current, df.format(motorListBean.getIO()) + "A")
+                    .setText(R.id.tv_real_load_rate, df.format(motorListBean.getBETA() * 100) + "%")
+                    .setText(R.id.tv_real_efficiency, dfL.format(motorListBean.getETA()) + "")
+                    .setText(R.id.tv_electric_hot, df.format(motorListBean.getQ30() * 100) + "%")
+//                    .setTextColor(R.id.tv_electric_hot, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_efficiency, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_load_rate, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_running_current, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_power, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_default_power, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_content_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_electric_hot_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_electric_hot_below_, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_efficiency_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_load_rate_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_running_current_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_real_power_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+//                    .setTextColor(R.id.tv_default_power_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
+                    .setVisible(R.id.iv_interrupt, false)
+                    .setBackgroundColor(R.id.ll_alert_level, selectColor(motorListBean.getRunning_status()));
         }
 
-        private int selectColor(RealTimeEntity realTimeEntity) {
-            String status = realTimeEntity.getStatus();
+        private int selectColor(String status) {
             Resources resources = getResources();
-            if ("stop".equals(status)) {
+            if ("停止".equals(status)) {
                 return resources.getColor(R.color.alert_stop);
-            } else if ("high".equals(status)) {
+            } else if ("".equals(status)) {
                 return resources.getColor(R.color.alert_high);
             } else if ("low".equals(status)) {
                 return resources.getColor(R.color.alert_low);
@@ -198,5 +301,11 @@ public class ToolsKanBanActivity extends BaseActivity {
                 return resources.getColor(R.color.normal_green);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.clear();
     }
 }

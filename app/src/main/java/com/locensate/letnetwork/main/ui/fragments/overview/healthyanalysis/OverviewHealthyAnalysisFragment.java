@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -26,7 +23,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.base.RxBus;
 import com.locensate.letnetwork.main.ui.MachineListActivity;
 import com.locensate.letnetwork.main.ui.fragments.overview.OverviewFragment;
 
@@ -36,7 +32,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -56,9 +51,38 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
     LinearLayout mLlWorse;
     @BindView(R.id.ll_worst)
     LinearLayout mLlWorst;
+    @BindView(R.id.tv_best_rate)
+    TextView mTvBestRate;
+    @BindView(R.id.tv_best_count)
+    TextView mTvBestCount;
+    @BindView(R.id.tv_best_rate_power)
+    TextView mTvBestRatePower;
+    @BindView(R.id.tv_better_rate)
+    TextView mTvBetterRate;
+    @BindView(R.id.tv_better_count)
+    TextView mTvBetterCount;
+    @BindView(R.id.tv_better_rate_power)
+    TextView mTvBetterRatePower;
+    @BindView(R.id.tv_worse_rate)
+    TextView mTvWorseRate;
+    @BindView(R.id.tv_worse_count)
+    TextView mTvWorseCount;
+    @BindView(R.id.tv_worse_rate_power)
+    TextView mTvWorseRatePower;
+    @BindView(R.id.tv_worst_rate)
+    TextView mTvWorstRate;
+    @BindView(R.id.tv_worst_count)
+    TextView mTvWorstCount;
+    @BindView(R.id.tv_worst_rate_power)
+    TextView mTvWorstRatePower;
+
     private Typeface tf;
     private String[] mParties = new String[]{"健康", "较好", "较差", "差"};
-    private float[] percents = new float[]{16.7f, 37.5f, 37.5f, 8.3f};
+    private int organizationId = 1;
+    private long startMills;
+    private long endMills;
+
+
 //    private String range = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "");
 
    /* public static OverviewHealthyAnalysisFragment getInstance(String range) {
@@ -79,7 +103,7 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
 
     @Override
     protected void initView() {
-
+        initChartConfig();
     }
 
     @Override
@@ -93,11 +117,11 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
     }
 
 
-    @Override
-    public void fillData(ArrayList<PieEntry> pieEntries) {
+    public void initChartConfig() {
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
+        pieChart.setNoDataText("暂无数据");
 //        Description desc = new Description();
 //        desc.setText("we are super man");
 //        pieChart.setDescription(desc);
@@ -108,7 +132,6 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
         pieChart.setDragDecelerationEnabled(true);
 
         pieChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-//        pieChart.setCenterText(generateCenterSpannableText());
         pieChart.setDrawSliceText(false);
         pieChart.setRotationAngle(270f);
         pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
@@ -129,7 +152,6 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
 
         pieChart.setDrawCenterText(true);
 
-//        pieChart.setCenterText(generateCenterSpannableText());
         pieChart.setCenterText("健康");
         pieChart.setCenterTextSize(16f);
 
@@ -149,9 +171,6 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
                 return false;
             }
         });
-
-        setData(4, 100);
-
 //         pieChart.spin(2000, 0, 360);
 
         Legend l = pieChart.getLegend();
@@ -162,31 +181,47 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
         l.setEnabled(false);
     }
 
-    private CharSequence generateCenterSpannableText() {
-        SpannableString s = new SpannableString("120台\r\n功率1800kw");
-        s.setSpan(new RelativeSizeSpan(1.5f), 0, 4, 0);
-//        s.setSpan(new StyleSpan());
-        s.setSpan(new StyleSpan(Typeface.DEFAULT_BOLD.getStyle()), 0, 4, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 4, s.length() - 5, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 4, s.length() - 5, 0);
-        s.setSpan(new RelativeSizeSpan(.65f), 4, s.length() - 6, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 6, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(App.getApplication().getResources().getColor(R.color.red)), s.length() - 6, s.length(), 0);
-        return s;
+
+    @Override
+    public void setNumData(String[] counts, String[] powerRates, String[] countRate) {
+        mTvBestRate.setText(countRate[0]);
+        mTvBestCount.setText(counts[0]);
+        mTvBestRatePower.setText(powerRates[0]);
+        mTvBetterRate.setText(countRate[1]);
+        mTvBetterCount.setText(counts[1]);
+        mTvBetterRatePower.setText(powerRates[1]);
+        mTvWorseRate.setText(countRate[2]);
+        mTvWorseCount.setText(counts[2]);
+        mTvWorseRatePower.setText(powerRates[2]);
+        mTvWorstRate.setText(countRate[3]);
+        mTvWorstCount.setText(counts[3]);
+        mTvWorstRatePower.setText(powerRates[3]);
     }
 
-    private void setData(int count, int range) {
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry(percents[i], mParties[i]));
-        }
+    @Override
+    public void setNoData() {
+        mTvBestRate.setText("——");
+        mTvBestCount.setText("——");
+        mTvBestRatePower.setText("——");
+        mTvBetterRate.setText("——");
+        mTvBetterCount.setText("——");
+        mTvBetterRatePower.setText("——");
+        mTvWorseRate.setText("——");
+        mTvWorseCount.setText("——");
+        mTvWorseRatePower.setText("——");
+        mTvWorstRate.setText("——");
+        mTvWorstCount.setText("——");
+        mTvWorstRatePower.setText("——");
+    }
+
+    @Override
+    public void setData(ArrayList<PieEntry> entries) {
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
 
         dataSet.setSliceSpace(0f);
         dataSet.setSelectionShift(5f);
+
 
         // add a lot of colors
 
@@ -234,23 +269,23 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
         switch (view.getId()) {
             case R.id.ll_health:
                 filter = "health";
-                status=mParties[0];
+                status = mParties[0];
                 break;
             case R.id.ll_good:
                 filter = "good";
-                status=mParties[1];
+                status = mParties[1];
                 break;
             case R.id.ll_worse:
                 filter = "worse";
-                status=mParties[2];
+                status = mParties[2];
                 break;
             case R.id.ll_worst:
                 filter = "worst";
-                status=mParties[3];
+                status = mParties[3];
                 break;
             default:
                 filter = "health";
-                status=mParties[0];
+                status = mParties[0];
                 break;
         }
 
@@ -258,7 +293,7 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
         Bundle bundle = new Bundle();
         bundle.putString("filter", filter);
         bundle.putString("ranges", OverviewFragment.mGroupName);
-        bundle.putString("status",status);
+        bundle.putString("status", status);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -266,6 +301,29 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unRegister();
+    }
+
+    public void acceptOrganizationId(int organizationId, long startMills, long endMills) {
+        this.organizationId = organizationId;
+        this.startMills = startMills;
+        this.endMills = endMills;
+        if (null != mPresenter) {
+            mPresenter.requestData(organizationId, startMills, endMills);
+        }
+    }
+
+    @Override
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    @Override
+    public long getStartMills() {
+        return startMills;
+    }
+
+    @Override
+    public long getEndMills() {
+        return endMills;
     }
 }

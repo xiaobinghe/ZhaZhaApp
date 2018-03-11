@@ -162,6 +162,7 @@ public class AddOrderFragment extends BaseFragment {
         entpBeen.add(new EntpBean("locensate", "北京罗圣森特节能科技有限公司"));
         entpBeen.add(new EntpBean("locensate", "上海电机科学研究院"));
         entpBeen.add(new EntpBean("locensate", "北京电机厂股份有限公司"));
+        entpBeen.add(new EntpBean("locensate", "上海宝钢股份有限公司"));
         return entpBeen;
     }
 

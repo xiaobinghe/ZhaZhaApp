@@ -11,6 +11,7 @@ import com.locensate.letnetwork.bean.OverviewMotor;
 import com.locensate.letnetwork.entity.MsgEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -49,8 +50,8 @@ public interface OverviewContract {
         /**
          * 获取电机概览数据
          *
-         * @return
          * @param organizationId
+         * @return
          */
         Observable<OverviewMotor> getBaseDate(int organizationId);
     }
@@ -65,10 +66,8 @@ public interface OverviewContract {
 
         /**
          * 添加子集Fragment
-         *
-         * @param containFragment
          */
-        void fillContain(Fragment[] containFragment);
+        void fillContain();
 
         /**
          * 获取组织范围（titleText）
@@ -86,6 +85,32 @@ public interface OverviewContract {
         void showPop(List<MultiItemEntity> groupTree);
 
 
+        /**
+         * 初始化时间类型和范围值
+         *
+         * @param type
+         * @param initTimeValue
+         */
+        void initTimeTypeAndValue(String type, Date[] initTimeValue);
+
+        /**
+         * 获取fragment的子fragment
+         *
+         * @return
+         */
+        Fragment[] getChildFragments();
+
+        /**
+         * 设置全局分析数据
+         *
+         * @param powerConsumptionTotal
+         * @param averageEfficiency
+         * @param averageLoadRate
+         * @param noLoadConsumption
+         */
+        void fillAllAnalysisData(String powerConsumptionTotal, String averageEfficiency, String averageLoadRate, String noLoadConsumption);
+
+        void setTitleText(String organizationName);
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
@@ -94,5 +119,18 @@ public interface OverviewContract {
          * 弹出组织结构pop
          */
         public abstract void showPop();
+
+        /**
+         * 通知子fragment刷新数据
+         *
+         * @param organizationId
+         * @param startMills
+         * @param endMills
+         */
+        public abstract void notifyChildFragments(int organizationId, long startMills, long endMills);
+
+        public abstract void setTimeRange(long startMills, long endMills);
+
+        public abstract void setOrganizationId(int organizationId);
     }
 }

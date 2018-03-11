@@ -5,17 +5,28 @@ import android.support.v4.app.Fragment;
 import com.locensate.letnetwork.base.BaseModel;
 import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
+import com.locensate.letnetwork.bean.MotorEfficiencyBaseEntity;
+
+import java.util.Date;
 
 /**
- *  
  * @author xiaobinghe
  */
 
 
 public interface MachineInfoEnergyManagerContract {
     interface View extends BaseView {
-        void initData(Fragment[] fragments);
+        void initData();
 
+        long getMotorId();
+
+        void initTimeTypeAndValue(String type, Date[] startAndEnd);
+
+        void fillBaseData(MotorEfficiencyBaseEntity.DataBean data);
+
+        Fragment[] getChildFragments();
+
+        String getTimeType();
     }
 
     interface Model extends BaseModel {
@@ -23,6 +34,9 @@ public interface MachineInfoEnergyManagerContract {
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
-      abstract  void  initData();
+
+        public abstract void notifyChild();
+
+        public abstract void setTimeRange(long timeInMillis, long time);
     }
 }

@@ -70,4 +70,14 @@ public class Constant {
     public static final String ALERT_LOW = "low";
 
 
+    /**
+     * 升降序
+     */
+    public static final String ASC = "ASC";
+    public static final String DESC = "DESC";
+    /**
+     * 聚合方式：max and avg
+     */
+    public static String AGG_MAX = "MAX";
+    public static String AGG_AVG = "AVG";
 }

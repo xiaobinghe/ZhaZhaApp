@@ -6,8 +6,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.locensate.letnetwork.base.BaseModel;
 import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
+import com.locensate.letnetwork.bean.MotorEfficiencyLoadEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -23,7 +25,11 @@ public interface EnergyLoadContract {
         void setPieData(ArrayList<PieEntry> pieData);
 
 
-        void setLineData(ArrayList<Entry> lineData, String[] dataLabels);
+        void setLineData(List<Entry> lineData, String[] dataLabels);
+
+        void setLoadRate(MotorEfficiencyLoadEntity.DataBean data, long sumTime, String average_loading, String current_loading);
+
+        void pullRequest();
     }
 
     interface Model extends BaseModel {
@@ -39,6 +45,9 @@ public interface EnergyLoadContract {
 
     abstract class Presenter extends BasePresenter<Model, View> {
 
+        public abstract void requestData(long motorId, long startMills, long endMills);
+
+        public abstract void requestHistory(long motorId, String beta, long startMills, long endMills, String agg, String sampling, String interpolation);
     }
 
 }

@@ -31,7 +31,7 @@
         <item name="android:background">@color/bg_head</item>
     </style>
 
-    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Actionbar color -->
         <item name="colorPrimary">@color/font_blue_tab</item>
         <!--Status bar color-->

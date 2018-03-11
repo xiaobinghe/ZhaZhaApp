@@ -74,7 +74,6 @@ public abstract class BaseFragment<T extends BasePresenter, V extends BaseModel>
         return rootView;
     }
 
-
     /**
      * 当Activity创建时调用
      *

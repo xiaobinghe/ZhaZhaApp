@@ -84,6 +84,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_healthy_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -92,6 +93,7 @@
                 android:src="@drawable/healthy_blue"/>
 
             <TextView
+                android:id="@+id/tv_title_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -257,7 +259,7 @@
                     android:orientation="vertical">
 
                     <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pie_machine_health_elect_hotter"
+                        android:id="@+id/pie_machine_health_elect_hotter_q5"
                         android:layout_width="60dp"
                         android:layout_height="60dp"/>
 
@@ -269,11 +271,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_electric_hot"
+                            android:id="@+id/tv_electric_hot_q5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="电子过热"
+                            android:text="电子过热Q5"
                             android:textColor="@color/font_gray_font"
                             android:textSize="12sp"/>
 
@@ -284,7 +286,7 @@
                             android:background="@color/font_gray_font"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_health_max_electric_hotter_value"
+                            android:id="@+id/tv_machine_health_max_electric_hotter_value_q5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
@@ -294,7 +296,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_health_max_electric_hotter_date"
+                            android:id="@+id/tv_machine_health_max_electric_hotter_date_q5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -304,7 +306,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_health_max_electric_hotter_time"
+                            android:id="@+id/tv_machine_health_max_electric_hotter_time_q5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -324,10 +326,74 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/dp_15"
-                android:paddingLeft="@dimen/dp_50"
-                android:paddingRight="@dimen/dp_50"
-                android:paddingTop="@dimen/dp_15">
 
+                android:paddingTop="@dimen/dp_15">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_machine_health_elect_hotter_q30"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_electric_over_hot_q30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_electric_hot_q30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="电子过热Q30"
+                            android:textColor="@color/font_gray_font"
+                            android:textSize="12sp"/>
+
+                        <View
+                            android:layout_width="48dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@color/font_gray_font"/>
+
+                        <TextView
+                            android:id="@+id/tv_machine_health_max_electric_hotter_value_q30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="最大值：120%"
+                            android:textColor="@color/font_content"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_machine_health_max_electric_hotter_date_q30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="2017-07-18"
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_machine_health_max_electric_hotter_time_q30"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="10:50:23"
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

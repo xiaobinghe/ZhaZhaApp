@@ -171,6 +171,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_power_consumption_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -197,6 +198,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_average_efficiency_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -225,6 +227,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_average_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -253,6 +256,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_no_load_consumption_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

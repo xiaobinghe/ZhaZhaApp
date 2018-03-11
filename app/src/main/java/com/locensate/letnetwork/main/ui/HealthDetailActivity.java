@@ -1,5 +1,6 @@
 package com.locensate.letnetwork.main.ui;
 
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,20 +10,23 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.entity.HealthDetailBean;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.bean.HealthOverDataEntity;
 import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.ToastUtil;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -40,7 +44,13 @@ public class HealthDetailActivity extends BaseActivity {
     CardView mActivityHealthDetail;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
+    @BindView(R.id.tv_item_c)
+    TextView mTvItemC;
     private String mType;
+    private long mStartTime;
+    private long mEndTime;
+    private long mMotorId;
+    private HealthDetailAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -49,38 +59,74 @@ public class HealthDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mType = getIntent().getExtras().getString("type");
+        Bundle extras = getIntent().getExtras();
+        mType = extras.getString("type");
+        mStartTime = extras.getLong("startTime");
+        mEndTime = extras.getLong("endTime");
+        mMotorId = extras.getLong("motorId");
         LogUtil.e(TAG, "------------mType==" + mType);
         mTvItem1.setText("时间");
-        switch (mType) {
-            case "maxStartCount":
-                mTvTitle.setText("电机每小时启动次数超标情况");
-                mTvItem2.setText("电机每小时启动次数");
-                break;
-            case "electric_hot":
-                mTvTitle.setText("电机每小时电子过热情况");
-                mTvItem2.setText("电机每小时电子过热值");
-                break;
-            case "over_current":
-                mTvTitle.setText("电机过流情况");
-                mTvItem2.setText("过流值");
-                break;
-            case "over_temp":
-                mTvTitle.setText("电机温度超标情况");
-                mTvItem2.setText("温度值");
-                break;
-            default:
-                break;
-
-        }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new HealthDetailAdapter(R.layout.item_health_detail, getData()));
+        mAdapter = new HealthDetailAdapter(R.layout.item_health_detail, new ArrayList<HealthOverDataEntity.DataBean>());
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.bindToRecyclerView(mRecyclerView);
+        getObservableData().compose(RxSchedulers.<HealthOverDataEntity>applyObservableAsync()).subscribe(new Consumer<HealthOverDataEntity>() {
+            @Override
+            public void accept(HealthOverDataEntity healthOverDataEntity) throws Exception {
+                List<HealthOverDataEntity.DataBean> data = healthOverDataEntity.getData();
+                if (null == data || data.size() == 0) {
+                    mAdapter.setEmptyView(R.layout.layout_no_data);
+                } else {
+                    mAdapter.addData(data);
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                LogUtil.e("OverFlagData", "-" + throwable.toString());
+                ToastUtil.show(R.string.data_load_fail);
+            }
+        });
     }
 
-    private List<HealthDetailBean> getData() {
+    private Observable<HealthOverDataEntity> getObservableData() {
+        switch (mType) {
+            case "over_temp":
+                mTvTitle.setText("温度超标情况");
+                mTvItemC.setText("位置");
+                mTvItem2.setText("每小时最大值");
+                return Api.getInstance().service.getOverTempData(mMotorId, mStartTime, mEndTime);
+            case "shark":
+                mTvTitle.setText("振动超标情况");
+                mTvItemC.setText("位置");
+                mTvItem2.setText("每小时最大值");
+                return Api.getInstance().service.getSharkData(mMotorId, mStartTime, mEndTime);
+            case "electric_hot":
+                mTvTitle.setText("5分钟电子过热情况");
+                mTvItem2.setText("每小时最大值");
+                return Api.getInstance().service.getElectricHotterQ5(mMotorId, mStartTime, mEndTime);
+            case "electric_hot_q30":
+                mTvTitle.setText("30分钟电子过热情况");
+                mTvItem2.setText("每小时最大值");
+                return Api.getInstance().service.getElectricHotterQ30(mMotorId, mStartTime, mEndTime);
+            case "maxStartCount":
+                mTvTitle.setText("每小时启动次数超标情况");
+                mTvItem2.setText("每小时次数");
+                return Api.getInstance().service.getStartCountData(mMotorId, mStartTime, mEndTime);
+            case "over_current":
+                mTvTitle.setText("过流情况");
+                mTvItem2.setText("每小时最大值");
+                return Api.getInstance().service.getOverCurrentData(mMotorId, mStartTime, mEndTime);
+            default:
+                return null;
+        }
+    }
+/*
+
+    private List<HealthOverDataEntity> getData() {
         String tempHour = "00";
         String temp = "";
-        ArrayList<HealthDetailBean> healthDetailBeen = new ArrayList<>();
+        ArrayList<HealthOverDataEntity.DataBean> healthDetailBeen = new ArrayList<>();
         Calendar instance = Calendar.getInstance();
         instance.set(2017, 07, 23);
         int year = instance.get(Calendar.YEAR);
@@ -105,16 +151,16 @@ public class HealthDetailActivity extends BaseActivity {
 
             switch (mType) {
                 case "maxStartCount":
-                    healthDetailBeen.add(new HealthDetailBean("", temp + "  " + tempHour + ":00", String.valueOf(new Random().nextInt() + 6)));
+                    healthDetailBeen.add(new HealthOverDataEntity.DataBean("", temp + "  " + tempHour + ":00", String.valueOf(new Random().nextInt() + 6)));
                     break;
                 case "electric_hot":
-                    healthDetailBeen.add(new HealthDetailBean("", temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (int) (Math.random() * 60 + 90) + "%"));
+                    healthDetailBeen.add(new HealthOverDataEntity.DataBean("", temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (double) (Math.random() * 60 + 90) + "%"));
                     break;
                 case "over_current":
-                    healthDetailBeen.add(new HealthDetailBean("", temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (int) (Math.random() * 20 + 100) + "%"));
+                    healthDetailBeen.add(new HealthOverDataEntity.DataBean("", temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (double) (Math.random() * 20 + 100) + "%"));
                     break;
                 case "over_temp":
-                    healthDetailBeen.add(new HealthDetailBean("", temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (int) (Math.random() * 65) + "℃"));
+                    healthDetailBeen.add(new HealthOverDataEntity.DataBean( temp + "  " + tempHour + ":" + (int) ((Math.random() * 50) + 10), (double) (Math.random() * 65) + "℃"));
                     break;
                 default:
                     break;
@@ -124,23 +170,49 @@ public class HealthDetailActivity extends BaseActivity {
         return healthDetailBeen;
     }
 
+*/
 
     @OnClick(R.id.iv_close)
     public void onViewClicked() {
         finish();
     }
 
-    private class HealthDetailAdapter extends BaseQuickAdapter<HealthDetailBean, BaseViewHolder> {
-        public HealthDetailAdapter(int layoutResId, List<HealthDetailBean> data) {
+    private class HealthDetailAdapter extends BaseQuickAdapter<HealthOverDataEntity.DataBean, BaseViewHolder> {
+        public HealthDetailAdapter(int layoutResId, ArrayList<HealthOverDataEntity.DataBean> data) {
             super(layoutResId, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder baseViewHolder, HealthDetailBean healthDetailBean) {
+        protected void convert(BaseViewHolder baseViewHolder, HealthOverDataEntity.DataBean healthDetailBean) {
             LogUtil.e(TAG, "------------mType==" + mType);
 
-            baseViewHolder.setText(R.id.tv_time, healthDetailBean.getTime())
-                    .setText(R.id.tv_value, healthDetailBean.getValue());
+            DecimalFormat df = new DecimalFormat("0.0");
+            baseViewHolder.setText(R.id.tv_time, healthDetailBean.getTime());
+
+            switch (mType) {
+                case "over_temp":
+                    baseViewHolder.setText(R.id.tv_value, df.format(healthDetailBean.getValue()) + "℃")
+                            .setText(R.id.tv_location, healthDetailBean.getType());
+                    break;
+                case "shark":
+                    baseViewHolder.setText(R.id.tv_value, df.format(healthDetailBean.getValue()))
+                            .setText(R.id.tv_location, healthDetailBean.getType());
+                    break;
+                case "electric_hot":
+                case "electric_hot_q30":
+                    baseViewHolder.setText(R.id.tv_value, df.format(healthDetailBean.getValue() * 100) + "%");
+                    break;
+                case "maxStartCount":
+                    baseViewHolder.setText(R.id.tv_value, (int) healthDetailBean.getValue() + "次");
+                    break;
+                case "over_current":
+                    baseViewHolder.setText(R.id.tv_value, df.format(healthDetailBean.getValue()) + "A");
+                    break;
+                default:
+                    break;
+
+            }
+
         }
     }
 }

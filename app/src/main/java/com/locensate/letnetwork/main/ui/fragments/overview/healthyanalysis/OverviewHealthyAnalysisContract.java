@@ -15,11 +15,23 @@ import java.util.ArrayList;
 
 public interface OverviewHealthyAnalysisContract {
     interface View extends BaseView{
-        void fillData(ArrayList<PieEntry> pieEntries);
+        void setData(ArrayList<PieEntry> pieEntries);
+
+        int getOrganizationId();
+
+        long getStartMills();
+
+        long getEndMills();
+
+        void setNumData(String[] counts, String[] powerRates, String[] countRate);
+
+        void setNoData();
     }
 
     interface Model extends BaseModel{
         ArrayList<PieEntry> initData();
+
+        ArrayList<PieEntry> initMockData();
     }
 
     abstract class Presenter extends BasePresenter<Model,View>{

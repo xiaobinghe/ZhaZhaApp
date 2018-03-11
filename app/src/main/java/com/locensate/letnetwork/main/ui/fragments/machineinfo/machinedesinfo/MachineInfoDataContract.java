@@ -1,8 +1,11 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.machinedesinfo;
 
+import android.os.Bundle;
+
 import com.locensate.letnetwork.base.BaseModel;
 import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
+import com.locensate.letnetwork.bean.MachineInfoEntity;
 
 
 /**
@@ -23,15 +26,16 @@ public interface MachineInfoDataContract {
     }
 
     interface View extends BaseView {
-        /**
-         * 初始化View
-         *
-         * @param data
-         */
-        void initView(String data);
+
+        void dispatchData(MachineInfoEntity.DataBean data);
+
+        Bundle getMotorInfo();
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {
-            abstract void initData();
+        /**
+         * 初始化数据
+         */
+       public abstract void initData();
     }
 }

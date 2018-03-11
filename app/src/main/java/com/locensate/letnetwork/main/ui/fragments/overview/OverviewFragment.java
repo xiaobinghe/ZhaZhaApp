@@ -17,14 +17,16 @@ import com.bigkoo.pickerview.lib.WheelView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.locensate.letnetwork.App;
-import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
 import com.locensate.letnetwork.bean.OverviewMotor;
+import com.locensate.letnetwork.main.ui.fragments.overview.healthyanalysis.OverviewHealthyAnalysisFragment;
+import com.locensate.letnetwork.main.ui.fragments.overview.loadanalysis.OverviewLoadAnalysisFragment;
+import com.locensate.letnetwork.main.ui.fragments.overview.rateanalysis.OverviewRateAnalysisFragment;
 import com.locensate.letnetwork.main.ui.message.MessageActivity;
 import com.locensate.letnetwork.utils.DateUtils;
+import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
-import com.locensate.letnetwork.utils.SpUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -93,17 +96,27 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
     TextView mTvMachineMeasure;
     @BindView(R.id.tv_machine_power_total)
     TextView mTvMachinePowerTotal;
+    @BindView(R.id.tv_power_consumption_total)
+    TextView mTvPowerConsumptionTotal;
+    @BindView(R.id.tv_average_efficiency_total)
+    TextView mTvAverageEfficiencyTotal;
+    @BindView(R.id.tv_average_load_rate)
+    TextView mTvAverageLoadRate;
+    @BindView(R.id.tv_no_load_consumption_total)
+    TextView mTvNoLoadConsumptionTotal;
     private ImageView[] points = new ImageView[3];
     private int currentPage = 0;
     private ArrayList<String> timeTypes = new ArrayList<>();
-    private Calendar startDate = Calendar.getInstance();
+    private Calendar startDate;
     private ExpandablePopWindow expandablePopwindow;
-    public static String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
+    public static String mGroupName;
     private OptionsPickerView mTimeTypePicker;
     private MyTimePickerView mYmPicker;
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mYmdPicker;
     private MyTimePickerView mYmdhPicker;
+    private Fragment[] fragments = {new OverviewRateAnalysisFragment(), new OverviewLoadAnalysisFragment(), new OverviewHealthyAnalysisFragment()};
+
 
     @Override
     public int getInflaterView() {
@@ -115,7 +128,8 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
         points[0] = ivPoint1;
         points[1] = ivPoint2;
         points[2] = ivPoint3;
-        tvRootFile.setText(mGroupName);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+        startDate = Calendar.getInstance();
         startDate.set(2010, 0, 1);
         initTimeType();
     }
@@ -131,7 +145,6 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
     @Override
     protected void lazyLoad() {
 
-
     }
 
     @Override
@@ -140,13 +153,12 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
         mTvMachinePowerTotal.setText("总装机功率/" + overviewMotor.getData().getMeasurePowerCount() + "kW");
         mTvMotorCount.setText("电机/" + overviewMotor.getData().getMotorCount() + "台");
         mTvMotorPowerTotal.setText("总装机功率/" + overviewMotor.getData().getPowerCount() + "kW");
-        tvRootFile.setText(mGroupName);
     }
 
     @Override
-    public void fillContain(Fragment[] containFragment) {
+    public void fillContain() {
         vpOverviewContain.setOffscreenPageLimit(3);
-        vpOverviewContain.setAdapter(new OverviewContainPageAdapter(getChildFragmentManager(), containFragment));
+        vpOverviewContain.setAdapter(new OverviewContainPageAdapter(getChildFragmentManager(), fragments));
         vpOverviewContain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -189,14 +201,42 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
             @Override
             public void onDismiss() {
                 String temp = expandablePopwindow.getPath();
-                int organizationId = expandablePopwindow.getOrganizationId();
+                LogUtil.e("expandablePopwindow", "--temp=" + temp);
+                int id = expandablePopwindow.getOrganizationId();
                 if (temp != null) {
                     mGroupName = temp;
+                    tvRootFile.setText(mGroupName);
                 }
-                tvRootFile.setText(mGroupName);
-                mPresenter.fillMonitorOverviewData(organizationId);
+                LogUtil.e("expandablePopwindow", "--mGroupName=" + mGroupName);
+                mPresenter.setOrganizationId(id == 0 ? mPresenter.organizationId : id);
+//                mPresenter.notifyChildFragments(organizationId, mPresenter.startMills, mPresenter.endMills);
             }
         });
+    }
+
+    @Override
+    public void initTimeTypeAndValue(String type, Date[] initTimeValue) {
+        tvTimeValue.setText(DateUtils.getTime(initTimeValue[0], type) + "/" + DateUtils.getTime(initTimeValue[1], type));
+        timeTypeContent.setText(type);
+    }
+
+    @Override
+    public Fragment[] getChildFragments() {
+        return fragments;
+    }
+
+    @Override
+    public void fillAllAnalysisData(String powerConsumptionTotal, String averageEfficiency, String averageLoadRate, String noLoadConsumption) {
+        mTvPowerConsumptionTotal.setText(powerConsumptionTotal);
+        mTvAverageEfficiencyTotal.setText(averageEfficiency);
+        mTvAverageLoadRate.setText(averageLoadRate);
+        mTvNoLoadConsumptionTotal.setText(noLoadConsumption);
+    }
+
+    @Override
+    public void setTitleText(String organizationName) {
+        mGroupName = organizationName;
+        tvRootFile.setText(organizationName);
     }
 
     @OnClick({R.id.iv_root_file, R.id.time_type, R.id.time_value, R.id.fl_alert, R.id.fl_energy, R.id.fl_order, R.id.fl_remind})
@@ -281,7 +321,18 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
                 mYmPicker = PickViewUtils.getInstance().getYMPicker(getActivity(), startDate, new MyTimePickerView.OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
+                        //获取当前月第一天
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(date);
+                        c.add(Calendar.MONTH, 0);
+                        c.set(Calendar.DAY_OF_MONTH, 1);
+                        long startMills = c.getTimeInMillis();
+                        //获取当前月最后一天
+                        Calendar ca = Calendar.getInstance();
+                        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+                        long endMills = ca.getTimeInMillis();
                         tvTimeValue.setText(DateUtils.getTime(date, text));
+                        mPresenter.setTimeRange(startMills, endMills);
                     }
                 });
             }
@@ -295,6 +346,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
                     public void onTimeSelect(Date date, View v) {
                         Date[] firstAndEnd = DateUtils.getFirstAndEndDayDateOfWeek(date);
                         tvTimeValue.setText(DateUtils.getTime(firstAndEnd[0], text) + "/" + DateUtils.getTime(firstAndEnd[1], text));
+                        mPresenter.setTimeRange(firstAndEnd[0].getTime(), firstAndEnd[1].getTime());
                     }
                 });
             }
@@ -307,6 +359,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
                     @Override
                     public void onTimeSelect(Date date, View v) {
                         tvTimeValue.setText(DateUtils.getTime(date, text));
+                        mPresenter.setTimeRange(date.getTime(), date.getTime() + 86399000L);
                     }
                 });
             }
@@ -319,6 +372,7 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
                     @Override
                     public void onTimeSelect(Date date, View v) {
                         tvTimeValue.setText(DateUtils.getTime(date, text));
+                        mPresenter.setTimeRange(date.getTime(), date.getTime() + 3599000L);
                     }
                 });
             }

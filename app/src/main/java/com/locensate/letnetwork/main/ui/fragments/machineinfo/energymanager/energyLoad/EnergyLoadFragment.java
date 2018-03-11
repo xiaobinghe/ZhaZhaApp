@@ -1,7 +1,6 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.energyLoad;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,9 +33,18 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
+import com.locensate.letnetwork.bean.MotorEfficiencyLoadEntity;
+import com.locensate.letnetwork.utils.AggLinkedUtil;
+import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.view.markView.CommonMarkerView;
+import com.locensate.letnetwork.view.markView.MyMarkerView;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,73 +56,69 @@ import butterknife.OnClick;
 public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, EnergyLoadModel> implements EnergyLoadContract.View, OnChartValueSelectedListener {
 
     @BindView(R.id.tv_energy_load_current_efficiency)
-    TextView tvEnergyLoadCurrentEfficiency;
+    TextView mTvEnergyLoadCurrentEfficiency;
     @BindView(R.id.tv_energy_load_average_efficiency)
-    TextView tvEnergyLoadAverageEfficiency;
-    @BindView(R.id.pie_energy_efficiency)
-    PieChart pieLoad;
-    @BindView(R.id.textView6)
-    TextView textView6;
-    @BindView(R.id.tv_energy_load_time1)
-    TextView tvEnergyLoadTime1;
-    @BindView(R.id.tv_energy_load_percent1)
-    TextView tvEnergyLoadPercent1;
-    @BindView(R.id.textView4)
-    TextView textView4;
-    @BindView(R.id.tv_energy_load_time2)
-    TextView tvEnergyLoadTime2;
-    @BindView(R.id.tv_energy_load_percent2)
-    TextView tvEnergyLoadPercent2;
-    @BindView(R.id.tv_energy_load_time3)
-    TextView tvEnergyLoadTime3;
-    @BindView(R.id.tv_energy_load_percent3)
-    TextView tvEnergyLoadPercent3;
-    @BindView(R.id.tv_energy_load_time4)
-    TextView tvEnergyLoadTime4;
-    @BindView(R.id.tv_energy_load_percent4)
-    TextView tvEnergyLoadPercent4;
-    @BindView(R.id.tv_energy_load_time5)
-    TextView tvEnergyLoadTime5;
-    @BindView(R.id.tv_energy_load_percent5)
-    TextView tvEnergyLoadPercent5;
-    @BindView(R.id.tv_energy_load_time6)
-    TextView tvEnergyLoadTime6;
-    @BindView(R.id.tv_energy_load_percent6)
-    TextView tvEnergyLoadPercent6;
-    @BindView(R.id.lc_energy_load)
-    LineChart lineLoad;
-    @BindView(R.id.ll_energy_lose_electric)
-    LinearLayout llEnergyLoseElectric;
+    TextView mTvEnergyLoadAverageEfficiency;
     @BindView(R.id.rb_percent)
     RadioButton mRbPercent;
     @BindView(R.id.rb_load_type)
     RadioButton mRbLoadType;
     @BindView(R.id.rg_switch)
     RadioGroup mRgSwitch;
-    @BindView(R.id.bar_chart)
-    BarChart mBarChart;
+    @BindView(R.id.pie_energy_efficiency)
+    PieChart mPieEnergyEfficiency;
+    @BindView(R.id.tv_no_load_time)
+    TextView mTvNoLoadTime;
+    @BindView(R.id.tv_no_load_percent)
+    TextView mTvNoLoadPercent;
+    @BindView(R.id.tv_light_load_time)
+    TextView mTvLightLoadTime;
+    @BindView(R.id.tv_light_percent)
+    TextView mTvLightPercent;
+    @BindView(R.id.tv_half_load_time)
+    TextView mTvHalfLoadTime;
+    @BindView(R.id.tv_half_load_percent)
+    TextView mTvHalfLoadPercent;
+    @BindView(R.id.textView6)
+    TextView mTextView6;
+    @BindView(R.id.tv_heavy_load_time)
+    TextView mTvHeavyLoadTime;
+    @BindView(R.id.tv_heavy_load_percent)
+    TextView mTvHeavyLoadPercent;
+    @BindView(R.id.textView4)
+    TextView mTextView4;
+    @BindView(R.id.tv_over_load_time)
+    TextView mTvOverLoadTime;
+    @BindView(R.id.tv_overload_percent)
+    TextView mTvOverloadPercent;
+    @BindView(R.id.tv_stop_time)
+    TextView mTvStopTime;
+    @BindView(R.id.tv_stop_percent)
+    TextView mTvStopPercent;
     @BindView(R.id.ll_load_type)
     LinearLayout mLlLoadType;
+    @BindView(R.id.bar_chart)
+    BarChart mBarChart;
     @BindView(R.id.ll_percent)
     LinearLayout mLlPercent;
     @BindView(R.id.iv_switch)
     ImageView mIvSwitch;
+    @BindView(R.id.lc_energy_load)
+    LineChart mLcEnergyLoad;
+    @BindView(R.id.ll_energy_lose_electric)
+    LinearLayout mLlEnergyLoseElectric;
 
+    private long motorId;
+    private long startMills;
+    private long endMills;
+    //    private String[] barChartX = {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", ">120"};
+    private String[] barChartX = {"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100-110", "110-120", ">120"};
+    private boolean isCompleteInitUI = false;
+    private String timeType;
+    private String mAgg;
+    private String mSampling;
+    private String mInterpolation;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EnergyLoadFragment.
-     */
- /*   public static EnergyLoadFragment newInstance(String param1, String param2) {
-        if (null == fragment) {
-            fragment = new EnergyLoadFragment();
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-        }
-        return fragment;
-    }*/
     @Override
     public int getInflaterView() {
         return R.layout.fragment_energy_load;
@@ -122,11 +126,15 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
 
     @Override
     protected void lazyLoad() {
+        if (isCompleteInitUI) {
+            mPresenter.requestData(motorId, startMills, endMills);
+        }
 
     }
 
     @Override
     protected void initView() {
+        isCompleteInitUI = true;
         mRgSwitch.check(R.id.rb_load_type);
         mRgSwitch.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -143,6 +151,20 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
                 }
             }
         });
+        mTvNoLoadPercent.setText("——");
+        mTvLightPercent.setText("——");
+        mTvHalfLoadPercent.setText("——");
+        mTvHeavyLoadPercent.setText("——");
+        mTvOverloadPercent.setText("——");
+        mTvStopPercent.setText("——");
+
+        mTvNoLoadTime.setText("——");
+        mTvLightLoadTime.setText("——");
+        mTvHalfLoadTime.setText("——");
+        mTvHeavyLoadTime.setText("——");
+        mTvOverLoadTime.setText("——");
+        mTvStopTime.setText("——");
+
         initBarData();
         initPieData();
         initLineData();
@@ -152,6 +174,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
      * 初始化BarChart，配置基本属性
      */
     private void initBarData() {
+        mBarChart.setNoDataText("暂无数据");
         mBarChart.setDrawBarShadow(false);
         mBarChart.setDrawValueAboveBar(false);
         mBarChart.setDrawingCacheBackgroundColor(getResources().getColor(R.color.gray_line));
@@ -172,9 +195,10 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
      * 初始化PieChart，配置基本属性
      */
     private void initPieData() {
-        pieLoad.setUsePercentValues(true);
+        mPieEnergyEfficiency.setUsePercentValues(true);
+        mPieEnergyEfficiency.setNoDataText("暂无数据");
         //添加饼图的描述是否可用
-        pieLoad.getDescription().setEnabled(false);
+        mPieEnergyEfficiency.getDescription().setEnabled(false);
 //        //添加饼图描述
 //        Description desc = new Description();
 //        //设置饼图描述的内容
@@ -182,55 +206,55 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
 //        //描述内容显示的位置有left，right，center可供选择
 //        desc.setTextAlign(Paint.Align.CENTER);
 //        //设置饼图描述
-//        pieLoad.setDescription(desc);
-//        pieLoad.setExtraOffsets(5, 10, 5, 5);
-        pieLoad.setDragDecelerationEnabled(true);
-//        pieLoad.setDrawSliceText(false);
+//        mPieEnergyEfficiency.setDescription(desc);
+//        mPieEnergyEfficiency.setExtraOffsets(5, 10, 5, 5);
+        mPieEnergyEfficiency.setDragDecelerationEnabled(true);
+//        mPieEnergyEfficiency.setDrawSliceText(false);
         //设置滑动摩擦系数
-        pieLoad.setDragDecelerationFrictionCoef(0.98f);
+        mPieEnergyEfficiency.setDragDecelerationFrictionCoef(0.98f);
         //字体类型
 //        tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
         //设置中心显示的文字类型
-//        pieLoad.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+//        mPieEnergyEfficiency.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
         //设置中心显示的文字
-//        pieLoad.setCenterText(generateCenterSpannableText());
+//        mPieEnergyEfficiency.setCenterText(generateCenterSpannableText());
         //设置饼图左上右下的偏移量
-        pieLoad.setExtraOffsets(0.f, 0.f, 0.f, 0.f);
+        mPieEnergyEfficiency.setExtraOffsets(0.f, 0.f, 0.f, 0.f);
         //饼图是否空心
-        pieLoad.setDrawHoleEnabled(false);
+        mPieEnergyEfficiency.setDrawHoleEnabled(false);
         //饼图空心处的颜色
-//        pieLoad.setHoleColor(Color.WHITE);
+//        mPieEnergyEfficiency.setHoleColor(Color.WHITE);
         //饼图中心处阴影部分的颜色
-//        pieLoad.setTransparentCircleColor(Color.WHITE);
+//        mPieEnergyEfficiency.setTransparentCircleColor(Color.WHITE);
         //阴影部分的透明度（0-225）
-//        pieLoad.setTransparentCircleAlpha(110);
+//        mPieEnergyEfficiency.setTransparentCircleAlpha(110);
         //饼图上的标签颜色
-//        pieLoad.setEntryLabelColor(Color.BLACK);
+//        mPieEnergyEfficiency.setEntryLabelColor(Color.BLACK);
         //饼图上标签可用性
-        pieLoad.setDrawEntryLabels(false);
+        mPieEnergyEfficiency.setDrawEntryLabels(false);
         //饼图中心圆的半径
-//        pieLoad.setHoleRadius(60f);
+//        mPieEnergyEfficiency.setHoleRadius(60f);
         //饼图阴影部分圆的半径
-//        pieLoad.setTransparentCircleRadius(65f);
+//        mPieEnergyEfficiency.setTransparentCircleRadius(65f);
         //饼图中心文字可用性
-//        pieLoad.setDrawCenterText(true);
+//        mPieEnergyEfficiency.setDrawCenterText(true);
         //绘制饼图的起始点，默认为270度
-        pieLoad.setRotationAngle(270f);
+        mPieEnergyEfficiency.setRotationAngle(270f);
         // 设置饼图是否可以被滑动
-        pieLoad.setRotationEnabled(true);
+        mPieEnergyEfficiency.setRotationEnabled(true);
         //设置选中后是否高亮突出显示
-        pieLoad.setHighlightPerTapEnabled(false);
+        mPieEnergyEfficiency.setHighlightPerTapEnabled(false);
 
-        // pieLoad.setUnit(" €");
-        // pieLoad.setDrawUnitsInChart(true);
+        // mPieEnergyEfficiency.setUnit(" €");
+        // mPieEnergyEfficiency.setDrawUnitsInChart(true);
 
         // 添加选中监听
-        pieLoad.setOnChartValueSelectedListener(this);
+        mPieEnergyEfficiency.setOnChartValueSelectedListener(this);
 
-        pieLoad.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-        // pieLoad.spin(2000, 0, 360);
+        mPieEnergyEfficiency.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mPieEnergyEfficiency.spin(2000, 0, 360);
 
-        Legend l = pieLoad.getLegend();
+        Legend l = mPieEnergyEfficiency.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -243,77 +267,80 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
      */
     private void initLineData() {
         // 设置描述是否可用
-        lineLoad.getDescription().setEnabled(false);
+        mLcEnergyLoad.getDescription().setEnabled(false);
 
+        mLcEnergyLoad.setNoDataText("暂无数据");
         // 设置触摸手势可用
-        lineLoad.setTouchEnabled(true);
+        mLcEnergyLoad.setTouchEnabled(true);
 
         //滑动摩擦系数
-        lineLoad.setDragDecelerationFrictionCoef(0.9f);
+        mLcEnergyLoad.setDragDecelerationFrictionCoef(0.9f);
 
         // enable scaling and dragging
-        lineLoad.setDragEnabled(true);
-        lineLoad.setScaleEnabled(true);
-        lineLoad.setDrawGridBackground(false);
-        lineLoad.setHighlightPerDragEnabled(true);
+        mLcEnergyLoad.setDragEnabled(true);
+        mLcEnergyLoad.setScaleEnabled(true);
+        mLcEnergyLoad.setDrawGridBackground(false);
+        mLcEnergyLoad.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        lineLoad.setPinchZoom(true);
+        mLcEnergyLoad.setPinchZoom(true);
 
         // set an alternative background color
-        lineLoad.setBackgroundColor(getResources().getColor(R.color.white));
+        mLcEnergyLoad.setBackgroundColor(getResources().getColor(R.color.white));
 
-        // TODO: 2017/6/27 add data
-
-
-        lineLoad.animateX(2500);
+        mLcEnergyLoad.animateX(2500);
         // get the legend (only possible after setting data)图例
-        Legend l = lineLoad.getLegend();
+        Legend l = mLcEnergyLoad.getLegend();
 
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(mTfLight);
         l.setTextSize(10f);
         l.setTextColor(getResources().getColor(R.color.font_content));
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
-        XAxis xAxis = lineLoad.getXAxis();
-//        xAxis.setTypeface(mTfLight);
+        XAxis xAxis = mLcEnergyLoad.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(10f);
-        xAxis.setAxisMaximum(23f);
-        xAxis.setAxisMinimum(0f);
         xAxis.setTextColor(getResources().getColor(R.color.font_content));
         xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
 
-        YAxis leftAxis = lineLoad.getAxisLeft();
-//        leftAxis.setTypeface(mTfLight);
-        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
-        leftAxis.setAxisMaximum(120f);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawAxisLine(true);
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return (int) value + "%";
+
+                LogUtil.e("getFormattedValue", "------value---" + value);
+                long m = (long) (value + startMills);
+                return mFormat.format(new Date(m));
             }
         });
 
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);
-        YAxis rightAxis = lineLoad.getAxisRight();
-//        rightAxis.setTypeface(mTfLight);
-        rightAxis.setTextColor(getResources().getColor(R.color.font_content));
+
+        YAxis rightAxis = mLcEnergyLoad.getAxisRight();
         rightAxis.setAxisMaximum(0f);
         rightAxis.setAxisMinimum(0f);
+        rightAxis.setTextColor(getResources().getColor(R.color.white));
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawZeroLine(false);
         rightAxis.setGranularityEnabled(false);
+
+        YAxis leftAxis = mLcEnergyLoad.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
+        leftAxis.setDrawAxisLine(true);
+
+        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return (int) value * 100 + "%";
+            }
+        });
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+
     }
 
 
@@ -341,7 +368,8 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         IAxisValueFormatter xAxisFormatter = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return getString(value);
+                LogUtil.e("getFormattedValue", "------" + value + "---------" + axis.mEntryCount);
+                return getLabelString(value);
             }
         };
         XAxis xAxis = mBarChart.getXAxis();
@@ -350,7 +378,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
 //        xAxis.setTypeface(mTfLight);
         xAxis.setDrawGridLines(false);
         // 设置最小缩放的距离
-        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setGranularity(1f);
 
         xAxis.setLabelCount(barData.size());
         // 设置标签的颜色
@@ -365,31 +393,31 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         IAxisValueFormatter custom = new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return String.valueOf((int) value) + "h";
+                DecimalFormat df = new DecimalFormat("0.0");
+                return df.format(value) + "h";
             }
         };
 
         YAxis leftAxis = mBarChart.getAxisLeft();
-//        leftAxis.setTypeface(mTfLight);
+
         leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setTextColor(getResources().getColor(R.color.font_content));
         // 设置顶轴空间
         leftAxis.setSpaceTop(5f);
-        // TODO: 2017/6/26 设置最小范围
-        leftAxis.setAxisMinimum((tempMax - tempMin) / 2);
-        // TODO: 2017/6/26 设置最大范围
-        leftAxis.setAxisMaximum(tempMax + tempMax * 0.15f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinimum(0);
+        leftAxis.setAxisMaximum(tempMax + tempMax * 0.15f);
+
 
         YAxis rightAxis = mBarChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-//        rightAxis.setTypeface(mTfLight);
+
         rightAxis.setLabelCount(8, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
         rightAxis.setAxisMaximum(0f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinimum(0f);
 
         /**
          * 设置图例
@@ -433,7 +461,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
             BarData data = new BarData(dataSets);
             data.setValueTextSize(10f);
 //            data.setValueTypeface(mTfLight);
-            data.setBarWidth(0.4f);
+            data.setBarWidth(0.6f);
             mBarChart.setData(data);
         }
     }
@@ -448,12 +476,12 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
 
         // add a lot of colors
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(getResources().getColor(R.color.pie_green));
-        colors.add(getResources().getColor(R.color.pie_yellow));
         colors.add(getResources().getColor(R.color.pie_red));
-        colors.add(getResources().getColor(R.color.pie_gray));
         colors.add(getResources().getColor(R.color.pie_orange));
         colors.add(getResources().getColor(R.color.pie_blue));
+        colors.add(getResources().getColor(R.color.pie_green));
+        colors.add(getResources().getColor(R.color.pie_yellow));
+        colors.add(getResources().getColor(R.color.pie_gray));
 
         colors.add(ColorTemplate.getHoloBlue());
         dataSet.setColors(colors);
@@ -469,77 +497,85 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(6f);
         data.setValueTextColor(Color.BLACK);
-        pieLoad.setData(data);
+        mPieEnergyEfficiency.setData(data);
 
         // undo all highlights
-        pieLoad.highlightValues(null);
-        pieLoad.invalidate();
+        mPieEnergyEfficiency.highlightValues(null);
+        mPieEnergyEfficiency.invalidate();
     }
 
     @Override
-    public void setLineData(ArrayList<Entry> lineData, String[] dataLabels) {
+    public void setLineData(List<Entry> lineData, String[] dataLabels) {
+        mLcEnergyLoad.resetTracking();
         LineDataSet set1;
-        if (lineLoad.getData() != null &&
-                lineLoad.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) lineLoad.getData().getDataSetByIndex(0);
-            set1.setValues(lineData);
-            lineLoad.getData().notifyDataChanged();
-            lineLoad.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(lineData, dataLabels[0]);
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set1.setColor(getResources().getColor(R.color.pie_red));
-            set1.setCircleColor(getResources().getColor(R.color.pie_red));
-            set1.setLineWidth(1.5f);
-            set1.setFillAlpha(65);
-            set1.setDrawCircles(false);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawValues(false);
-            set1.setDrawCircleHole(false);
-            //set1.setFillFormatter(new MyFillFormatter(0f));
-            //set1.setDrawHorizontalHighlightIndicator(false);
-            //set1.setVisible(false);
-            //set1.setCircleHoleColor(Color.WHITE);
+
+        // create a dataset and give it a type
+        set1 = new LineDataSet(lineData, dataLabels[0]);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(getResources().getColor(R.color.pie_red));
+        set1.setCircleColor(getResources().getColor(R.color.pie_red));
+        set1.setLineWidth(1.5f);
+        set1.setFillAlpha(65);
+        set1.setDrawCircles(false);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawValues(false);
+        set1.setDrawCircleHole(false);
+        //set1.setFillFormatter(new MyFillFormatter(0f));
+        //set1.setDrawHorizontalHighlightIndicator(false);
+        //set1.setVisible(false);
+        //set1.setCircleHoleColor(Color.WHITE);
 
 
-            // create a data object with the datasets
-            LineData data = new LineData(set1);
-            data.setValueTextColor(Color.WHITE);
-            data.setValueTextSize(10f);
-            // set data
-            lineLoad.setData(data);
-        }
+        // create a data object with the datasets
+        LineData data = new LineData(set1);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(10f);
+        // set data
+        mLcEnergyLoad.setData(data);
+
+        mLcEnergyLoad.animateX(2000);
+        MyMarkerView mv = new MyMarkerView(getContext(), R.layout.layout_my_marker_view, startMills);
+        mv.setChartView(mLcEnergyLoad);
+        mLcEnergyLoad.setMarker(mv);
     }
 
-    @NonNull
-    private String getString(float value) {
-        String temp = new String();
-        switch ((int) value) {
-            case 1:
-                temp = "0-20";
-                break;
-            case 2:
-                temp = "20-40";
-                break;
-            case 3:
-                temp = "40-60";
-                break;
-            case 4:
-                temp = "60-80";
-                break;
-            case 5:
-                temp = "80-100";
-                break;
-            case 6:
-                temp = "100-120";
-                break;
-            case 7:
-                temp = ">120";
-                break;
+    @Override
+    public void setLoadRate(MotorEfficiencyLoadEntity.DataBean data, long sumSecond, String average_loading, String current_loading) {
+        mTvEnergyLoadCurrentEfficiency.setText(current_loading);
+        mTvEnergyLoadAverageEfficiency.setText(average_loading);
+        DecimalFormat df = new DecimalFormat("0.0");
+        DecimalFormat dfh = new DecimalFormat("0.0");
+        long no_loading_time = data.getNo_loading_time();
+        long light_loading_time = data.getLight_loading_time();
+        long half_load_time = data.getHalf_load_time();
+        long heavy_loading_time = data.getHeavy_loading_time();
+        long over_loading_time = data.getOver_loading_time();
+        long stop_time = sumSecond - no_loading_time - light_loading_time - half_load_time - heavy_loading_time - over_loading_time;
+        if (stop_time < 0) {
+            stop_time = 0;
         }
-        return temp;
+        mTvNoLoadPercent.setText((sumSecond == 0 ? 0 : df.format((no_loading_time * 100) / sumSecond)) + "%");
+        mTvLightPercent.setText((sumSecond == 0 ? 0 : df.format((light_loading_time * 100) / sumSecond)) + "%");
+        mTvHalfLoadPercent.setText((sumSecond == 0 ? 0 : df.format((half_load_time * 100) / sumSecond)) + "%");
+        mTvHeavyLoadPercent.setText((sumSecond == 0 ? 0 : df.format((heavy_loading_time * 100) / sumSecond)) + "%");
+        mTvOverloadPercent.setText((sumSecond == 0 ? 0 : df.format((over_loading_time * 100) / sumSecond)) + "%");
+        mTvStopPercent.setText((sumSecond == 0 ? 0 : df.format((stop_time * 100) / sumSecond)) + "%");
+
+
+        mTvNoLoadTime.setText(dfh.format(no_loading_time / (float) 3600) + "h");
+        mTvLightLoadTime.setText(dfh.format(light_loading_time / (float) 3600) + "h");
+        mTvHalfLoadTime.setText(dfh.format(half_load_time / (float) 3600) + "h");
+        mTvHeavyLoadTime.setText(dfh.format(heavy_loading_time / (float) 3600) + "h");
+        mTvOverLoadTime.setText(dfh.format(over_loading_time / (float) 3600) + "h");
+        mTvStopTime.setText(dfh.format(stop_time / (float) 3600) + "h");
+
+
+    }
+
+
+    private String getLabelString(float value) {
+        return barChartX[(int) value - 1];
     }
 
 
@@ -558,4 +594,65 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
     public void onClick() {
 
     }
+
+    public void notifyData(long motorId, long startMills, long endMills, String timeType) {
+        if (motorId == this.motorId && startMills == this.startMills && endMills == this.endMills) {
+            return;
+        }
+        this.motorId = motorId;
+        this.startMills = startMills;
+        this.endMills = endMills;
+        this.timeType = timeType;
+
+        LogUtil.e("LoadMills", "motorId=" + motorId + "---startMills=" + startMills + "----------endMills=" + endMills + "---------timeType=" + timeType);
+        mAgg = AggLinkedUtil.getAgg(timeType);
+        mSampling = AggLinkedUtil.getSampling(timeType);
+        mInterpolation = AggLinkedUtil.getInterpolation(timeType);
+
+        if (null != mPresenter) {
+            mPresenter.requestData(motorId, startMills, handleDate(endMills, startMills));
+            mPresenter.requestHistory(motorId, "BETA", startMills, endMills, mAgg, mSampling, mInterpolation);
+        }
+    }
+
+    private long handleDate(long endMills, long startMills) {
+        long cu = System.currentTimeMillis();
+        if ((endMills + 6000) < cu) {
+            return endMills;
+        }
+        Date currentDate = new Date(cu);
+        int minutes = currentDate.getMinutes();
+        if (minutes > 1 || minutes == 1) {
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+            calendar.set(Calendar.SECOND, -1);
+            long lastTime = calendar.getTimeInMillis();
+            if (startMills > lastTime) {
+                lastTime = startMills;
+            }
+            LogUtil.e("Calendar", "-----lastTime=" + lastTime + "----endMills=" + endMills);
+            return lastTime;
+        } else {
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+            calendar.set(Calendar.SECOND, -3601);
+            long lastTime = calendar.getTimeInMillis();
+            if (startMills > lastTime) {
+                lastTime = startMills;
+            }
+            LogUtil.e("Calendar2", "-----lastTime=" + lastTime + "----endMills=" + endMills);
+            return lastTime;
+        }
+    }
+
+    @Override
+    public void pullRequest() {
+        mPresenter.requestData(motorId, startMills, endMills);
+        mPresenter.requestHistory(motorId, "BETA", startMills, endMills, mAgg, mSampling, mInterpolation);
+    }
+
 }

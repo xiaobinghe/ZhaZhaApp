@@ -1,11 +1,15 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.healthmanager;
 
+import android.os.Bundle;
+
 import com.github.mikephil.charting.data.PieEntry;
 import com.locensate.letnetwork.base.BaseModel;
 import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
+import com.locensate.letnetwork.bean.MachineInfoHealthyManagerEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -17,16 +21,12 @@ import java.util.ArrayList;
 
 public interface MachineInfoHealthyManagerContract {
     interface View extends BaseView {
-        /**
-         * 填充数据
-         *
-         * @param pieTempData
-         * @param pieSharkData
-         * @param pie1Data
-         * @param pie2Data
-         * @param pieEntries
-         */
-        void fillData(ArrayList<PieEntry> pieTempData, ArrayList<PieEntry> pieSharkData, ArrayList<PieEntry> pie1Data, ArrayList<PieEntry> pie2Data, ArrayList<PieEntry> pieEntries);
+
+        void fillData(MachineInfoHealthyManagerEntity.DataBean data, ArrayList<PieEntry> pieTempData, ArrayList<PieEntry> pieSharkData, ArrayList<PieEntry> pieElectHotterQ5, ArrayList<PieEntry> pieElectHotterQ30, ArrayList<PieEntry> pieStartCount, ArrayList<PieEntry> pieCurrentOver);
+
+        void initTimeTypeAndValue(String timeType, Date[] startAndEnd);
+
+        Bundle getMachineInfo();
     }
 
     interface Model extends BaseModel {
@@ -44,6 +44,8 @@ public interface MachineInfoHealthyManagerContract {
         ArrayList<PieEntry> getPieStartCountData();
 
         ArrayList<PieEntry> getPieCurrentOverData();
+
+        ArrayList<PieEntry> getPieElectHotter30Data();
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {

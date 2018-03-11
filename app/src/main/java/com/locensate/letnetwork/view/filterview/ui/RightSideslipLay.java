@@ -134,7 +134,21 @@ public class RightSideslipLay extends RelativeLayout {
         protected void onSingleClick(View v) {
             switch (v.getId()) {
                 case R.id.fram_reset_but:
-
+                    List<MachineFilterTag.DataBean> data = attr.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        MachineFilterTag.DataBean dataBean = data.get(i);
+                        List<MachineFilterTag.DataBean.ValsBean> selectVals = dataBean.getSelectVals();
+                        if (selectVals != null) {
+                            selectVals.clear();
+                        }
+                        dataBean.setShowStr("");
+                        List<MachineFilterTag.DataBean.ValsBean> vals = dataBean.getVals();
+                        for (int j = 0; j < vals.size(); j++) {
+                            vals.get(j).setChick(false);
+                        }
+                    }
+                    setUpList();
+                    break;
                 case R.id.fram_ok_but:
                     menuCallBack.setupCloseMean();
                     break;

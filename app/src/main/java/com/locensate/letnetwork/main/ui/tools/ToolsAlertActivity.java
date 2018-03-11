@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -39,7 +38,7 @@ public class ToolsAlertActivity extends BaseToolsActivity {
 
     @Override
     protected RecyclerView.Adapter setRVAdapter() {
-        AlertMessageAdapter adapter=  new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
+        AlertMessageAdapter adapter = new AlertMessageAdapter(R.layout.item_message_alert_fragment, getItems());
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
@@ -59,29 +58,10 @@ public class ToolsAlertActivity extends BaseToolsActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(2000);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swipeRefreshLayout.setRefreshing(false);
-
-                                }
-                            });
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                };
-                runnable.run();
             }
         });
     }
+
     private List<MessageEntity> getItems() {
         ArrayList<MessageEntity> initDate = new ArrayList<>();
         initDate.add(new MessageEntity("", "输入端缺相", "中石化/北京分公司/储油车间", "通风机", (String) DateUtils.getData("yy-MM-dd HH:mm", DateUtils.getCurrentTimeMillis()), "high", 1, false));

@@ -152,7 +152,7 @@
                         android:textSize="36px"/>
 
                     <TextView
-
+                        android:id="@+id/tv_running_time"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -184,6 +184,7 @@
                         android:textSize="36px"/>
 
                     <TextView
+                        android:id="@+id/tv_empty_load_electric_used"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -223,6 +224,7 @@
                         android:textSize="36px"/>
 
                     <TextView
+                        android:id="@+id/tv_use_power"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -254,7 +256,7 @@
                         android:textSize="36px"/>
 
                     <TextView
-                        android:id="@+id/tv_lose_elect"
+                        android:id="@+id/tv_estimation_electric_count"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -294,7 +296,7 @@
                         android:textSize="36px"/>
 
                     <TextView
-                        android:id="@+id/tv_running_time"
+                        android:id="@+id/tv_electric_fee"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -321,11 +323,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="估测节电率  "
+                        android:text="电能利用率  "
                         android:textColor="@color/font_content"
                         android:textSize="36px"/>
 
                     <TextView
+                        android:id="@+id/tv_estimation_electric_rate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

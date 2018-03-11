@@ -1,13 +1,14 @@
 package com.locensate.letnetwork.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -16,6 +17,8 @@ public class DateUtils {
     private DateUtils() {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
+
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 输入日期获取对应的日期
@@ -77,7 +80,7 @@ public class DateUtils {
     }
 
     public static long getCurrentTimeMillis() {
-        return new Date().getTime();
+        return System.currentTimeMillis();
     }
 
     /**
@@ -158,7 +161,7 @@ public class DateUtils {
      * @return
      */
     public static Date[] getFirstAndEndDayDateOfWeek(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //设置时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //设置时间格式
         Date[] dates = new Date[2];
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -174,6 +177,10 @@ public class DateUtils {
 
         int day = cal.get(Calendar.DAY_OF_WEEK);//获得当前日期是一个星期的第几天
         cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);//根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         System.out.println("所在周星期一的日期：" + sdf.format(cal.getTime()));
         System.out.println(cal.getFirstDayOfWeek() + "-" + day + "+6=" + (cal.getFirstDayOfWeek() - day + 6));
         dates[0] = cal.getTime();
@@ -192,6 +199,9 @@ public class DateUtils {
                 break;
             case "时分":
                 simpleDateFormat = new SimpleDateFormat("HH:mm");
+                break;
+            case "时分秒":
+                simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
                 break;
             case "天":
                 simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -212,6 +222,64 @@ public class DateUtils {
         return simpleDateFormat.format(date);
     }
 
+    public static int getMondayPlus() {
+        Calendar cd = Calendar.getInstance();
+        int dayOfWeek = cd.get(Calendar.DAY_OF_WEEK);
+        if (dayOfWeek == 1) {
+            return -6;
+        } else {
+            return 2 - dayOfWeek;
+        }
+    }
+
+    // 获得当前周- 周一的日期
+    public static String getCurrentMonday() {
+        int mondayPlus = getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus);
+        Date monday = currentDate.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        String preMonday = df.format(monday);
+        return preMonday;
+    }
+
+
+    // 获得当前周- 周日  的日期
+    public static String getPreviousSunday() {
+        int mondayPlus = getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus + 6);
+        Date monday = currentDate.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        String preMonday = df.format(monday);
+        return preMonday;
+    }
+
+    // 获得当前月--开始日期
+    public static String getMinMonthDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 获得当前月--结束日期
+    public static String getMaxMonthDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     static class DateType {
 

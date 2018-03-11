@@ -96,7 +96,9 @@
                     android:id="@+id/tv_machine_item_control_machine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="控制设备：Y-3152"
+                    android:text="控制设备：直接启动"
+                    android:maxLength="10"
+                    android:ellipsize="end"
                     android:textColor="@color/font_content_gray"
                     android:textSize="11sp"
                     android:textStyle="bold"/>

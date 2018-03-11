@@ -197,477 +197,593 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_motor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ground_line"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:padding="@dimen/dp_15"
-                android:text="电机信息"
-                android:textColor="@color/font_blue_deep"
-                android:textSize="@dimen/sp_14"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/iv_machine_monitor_info"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="@dimen/dp_15"
-                android:src="@drawable/drag"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/white"
-            />
-
-        <LinearLayout
-            android:id="@+id/ll_machine_monitor_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/dp_15"
-            android:paddingLeft="@dimen/dp_15"
-            android:paddingRight="@dimen/dp_15">
-
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/dp_20"
-                android:paddingTop="@dimen/dp_20">
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="电机信息"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
 
                 <ImageView
-                    android:id="@+id/iv_machine_monitor_status"
+                    android:id="@+id/iv_1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/shape_monitor_status_green"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/dp_10"
-                    android:text="状态：在用"
-                    android:textColor="@color/font_black"
-                    android:textSize="@dimen/sp_13"/>
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="额定功率："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_default_power"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="55kW"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="额定电压："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_voltage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="380V"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="额定电流："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_default_current"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="100A"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="额定效率："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_default_efficiency"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="0.93"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"/>
-
+                android:layout_height="1px"
+                android:background="@color/white"
+            />
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="型号："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_model"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="55kW"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="种类："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="三相异步"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="能效等级："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_energy_efficiency_level"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="3级"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="冷却方式："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_cool_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="IC01"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"
-                android:layerType="software"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="安装方式："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_install_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="B3"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="@dimen/dp_65"
-                    android:layout_height="wrap_content"
-                    android:text="极对数："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_ji_num"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="4极"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="空载损耗："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_empty_load_lose"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="1.43kW"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="生产厂家："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_factory_produce"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="湘潭电机厂"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="安装时间："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_install_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="2007年6月"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"/>
-
-            <LinearLayout
+                android:id="@+id/ll_machine_monitor_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="备注："
-                    android:textColor="@color/font_content_gray"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_monitor_remake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="——"
-                    android:textColor="@color/font_content"/>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/white"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ground_line"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:padding="@dimen/dp_15"
-                android:text="控制设备信息"
-                android:textColor="@color/font_blue_deep"
-                android:textSize="@dimen/sp_14"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/iv_machine_control_info"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="@dimen/dp_15"
-                android:src="@drawable/drag"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/white"
-            />
-
-        <LinearLayout
-            android:id="@+id/ll_machine_control_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_15">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_5"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/default_monitor_icon"/>
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_15"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:paddingTop="@dimen/dp_20">
+
+                    <ImageView
+                        android:id="@+id/iv_motor_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/shape_monitor_status_green"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/dp_10"
+                        android:text="状态：在用"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/sp_13"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="额定功率："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_default_power"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="55kW"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="额定电压："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_default_voltage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="380V"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="额定电流："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_default_current"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="100A"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="额定效率："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_default_efficiency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="0.93"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_65"
+                        android:layout_height="wrap_content"
+                        android:text="型号："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_model"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="55kW"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="@dimen/dp_65"
+                        android:layout_height="wrap_content"
+                        android:text="种类："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="三相异步"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="能效等级："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_energy_efficiency_level"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="3级"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="冷却方式："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_cool_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="IC01"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"
+                    android:layerType="software"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="安装方式："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_install_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="B3"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="@dimen/dp_65"
+                        android:layout_height="wrap_content"
+                        android:text="极对数："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_ji_num"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="4极"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="空载损耗："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_empty_load_lose"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="1.43kW"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="生产厂家："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_factory_produce"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="湘潭电机厂"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="安装时间："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_install_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="2007年6月"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注："
+                        android:textColor="@color/font_content_gray"/>
+
+                    <TextView
+                        android:id="@+id/tv_motor_remake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="——"
+                        android:textColor="@color/font_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/white"
+        />
+
+        <LinearLayout
+            android:id="@+id/ll_control_equipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="控制设备信息"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp_15">
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white"
+            />
+            <LinearLayout
+                android:id="@+id/ll_machine_control_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_15">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_control_machine_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/default_monitor_icon"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_15">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="类型："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_control_machine_type"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.01"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="SGY"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_control_need_gone1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                        >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="品牌："
+                                    android:textColor="@color/font_content_gray"
+                                    android:textSize="@dimen/sp_13"/>
+
+                                <TextView
+                                    android:id="@+id/tv_control_machine_brand"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingLeft="@dimen/dp_5"
+                                    android:text="Fairford"
+                                    android:textColor="@color/font_content"
+                                    android:textSize="@dimen/sp_13"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="型号："
+                                    android:textColor="@color/font_content_gray"
+                                    android:textSize="@dimen/sp_13"/>
+
+                                <TextView
+                                    android:id="@+id/tv_control_machine_model"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingLeft="@dimen/dp_5"
+                                    android:text="SGY-201"
+                                    android:textColor="@color/font_content"
+                                    android:textSize="@dimen/sp_13"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_control_need_gone2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp_91"
                             android:layout_height="wrap_content"
-                            android:text="类型："
+                            android:text="额定功率："
                             android:textColor="@color/font_content_gray"
                             android:textSize="@dimen/sp_13"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_control_machine_type"
+                            android:id="@+id/tv_control_machine_default_power"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.01"
+                            android:layout_weight="1"
                             android:paddingLeft="@dimen/dp_5"
-                            android:text="SGY"
+                            android:text="55kW"
                             android:textColor="@color/font_content"
                             android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="输入电压等级："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_input_voltage"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="380V"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -679,17 +795,64 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="品牌："
+                            android:text="输出电压等级："
                             android:textColor="@color/font_content_gray"
                             android:textSize="@dimen/sp_13"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_control_machine_brand"
+                            android:id="@+id/tv_control_machine_output_voltage"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingLeft="@dimen/dp_5"
-                            android:text="Fairford"
+                            android:text="380V"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:background="@drawable/shape_line_empty"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dp_91"
+                            android:layout_height="wrap_content"
+                            android:text="旁路方案："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_other_path"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="有"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:layout_width="@dimen/dp_91"
+                            android:layout_height="wrap_content"
+                            android:text="控制方式："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_control_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="其他"
                             android:textColor="@color/font_content"
                             android:textSize="@dimen/sp_13"/>
 
@@ -702,303 +865,391 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/dp_91"
                             android:layout_height="wrap_content"
-                            android:text="型号："
+                            android:text="中性点接头："
                             android:textColor="@color/font_content_gray"
                             android:textSize="@dimen/sp_13"/>
 
                         <TextView
-                            android:id="@+id/tv_machine_control_machine_model"
+                            android:id="@+id/tv_control_machine_center_point_link"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingLeft="@dimen/dp_5"
-                            android:text="SGY-201"
+                            android:text="其他"
                             android:textColor="@color/font_content"
                             android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="控制信号类型："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_control_info_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="其他"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:background="@drawable/shape_line_empty"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dp_91"
+                            android:layout_height="wrap_content"
+                            android:text="安装时间："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_install_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="2007年5月"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dp_91"
+                            android:layout_height="wrap_content"
+                            android:text="关联计量点："
+                            android:textColor="@color/font_content_gray"
+                            android:textSize="@dimen/sp_13"/>
+
+                        <TextView
+                            android:id="@+id/tv_control_machine_link_compute_pointer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/dp_5"
+                            android:text="2-23107-122021-00001"
+                            android:textColor="@color/font_content"
+                            android:textSize="@dimen/sp_13"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注："
+                        android:textColor="@color/font_content_gray"/>
+
+                    <TextView
+                        android:id="@+id/tv_control_machine_remake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="——"
+                        android:textColor="@color/font_content"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_smart_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+        >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="智能开关信息"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white"
+            />
+            <LinearLayout
+                android:id="@+id/ll_smart_switch_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_15"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_smart_switch_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/default_monitor_icon"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_15">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="类型："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_smart_switch_type"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.01"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="电力仪表"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="品牌："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_smart_switch_brand"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="雅达"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="型号："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_smart_switch_model"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2060"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="安装时间："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_smart_switch_install_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2006年8月"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="关联计量点："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_smart_switch_link_compute_pointer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="无"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注："
+                        android:textColor="@color/font_content_gray"/>
+
+                    <TextView
+                        android:id="@+id/tv_smart_switch_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="——"
+                        android:textColor="@color/font_content"/>
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="额定功率："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_default_power"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="55kW"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="输入电压等级："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_input_voltage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="380V"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="输出电压等级："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_output_voltage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="380V"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="旁路方案："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_other_path"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="有"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="控制方式："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_control_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="其他"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="中性点接头："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_center_point_link"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="其他"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="控制信号类型："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_control_info_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="其他"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="安装时间："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_install_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="2007年5月"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="@dimen/dp_91"
-                    android:layout_height="wrap_content"
-                    android:text="关联计量点："
-                    android:textColor="@color/font_content_gray"
-                    android:textSize="@dimen/sp_13"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_link_compute_pointer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="@dimen/dp_5"
-                    android:text="2-23107-122021-00001"
-                    android:textColor="@color/font_content"
-                    android:textSize="@dimen/sp_13"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:background="@drawable/shape_line_empty"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="备注："
-                    android:textColor="@color/font_content_gray"/>
-
-                <TextView
-                    android:id="@+id/tv_machine_control_machine_remake"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="——"
-                    android:textColor="@color/font_content"/>
-            </LinearLayout>
-
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ground_line"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:padding="@dimen/dp_15"
-                android:text="监测设备信息"
-                android:textColor="@color/font_blue_deep"
-                android:textSize="@dimen/sp_14"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/iv_machine_monitoring_machine_info"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="@dimen/dp_15"
-                android:src="@drawable/drag"/>
-        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_machine_monitoring_machine"
+            android:id="@+id/ll_electric_instrument"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
-
+        >
             <LinearLayout
-                android:id="@+id/ll_machine_monitoring_machine1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="电力仪表信息"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/white"
+            />
+            <LinearLayout
+                android:id="@+id/ll_electric_instrument_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -1011,7 +1262,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/iv_machine_monitoring_machine_image1"
+                        android:id="@+id/iv_electric_instrument_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/default_monitor_icon"/>
@@ -1035,7 +1286,7 @@
                                 android:textSize="@dimen/sp_13"/>
 
                             <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_type1"
+                                android:id="@+id/tv_electric_instrument_type"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.01"
@@ -1060,7 +1311,7 @@
                                 android:textSize="@dimen/sp_13"/>
 
                             <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_brand1"
+                                android:id="@+id/tv_electric_instrument_brand"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1085,7 +1336,7 @@
                                 android:textSize="@dimen/sp_13"/>
 
                             <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_model1"
+                                android:id="@+id/tv_electric_instrument_model"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1110,7 +1361,7 @@
                                 android:textSize="@dimen/sp_13"/>
 
                             <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_install_time1"
+                                android:id="@+id/tv_electric_instrument_install_time"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -1121,58 +1372,57 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="关联计量点："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_link_compute_pointer1"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="无"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/ll_machine_monitoring_machine_meter_back_path1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="电表回路标志："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_meter_back_path_mark1"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="5"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
                     </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关联计量点："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_electric_instrument_link_compute_pointer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="无"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_electric_instrument_meter_back_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="电表回路标志："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_machine_monitoring_machine_meter_back_path_mark1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="5"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
 
                 </LinearLayout>
 
@@ -1195,433 +1445,7 @@
                         android:textColor="@color/font_content_gray"/>
 
                     <TextView
-                        android:id="@+id/tv_machine_monitoring_machine_remark1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="——"
-                        android:textColor="@color/font_content"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_machine_monitoring_machine2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/dp_15"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/font_content_gray"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv_machine_monitoring_machine_image2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/default_monitor_icon"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/dp_15">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="类型："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_type2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.01"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="电力仪表"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="品牌："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_brand2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="雅达"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="型号："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_model2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="2060"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="安装时间："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_install_time2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="2006年8月"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="关联计量点："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_link_compute_pointer2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="无"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/ll_machine_monitoring_machine_meter_back_path2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="电表回路标志："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_meter_back_path_mark2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="5"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:background="@drawable/shape_line_empty"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="备注："
-                        android:textColor="@color/font_content_gray"/>
-
-                    <TextView
-                        android:id="@+id/tv_machine_monitoring_machine_remark2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="——"
-                        android:textColor="@color/font_content"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_machine_monitoring_machine3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/dp_15"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/font_content_gray"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv_machine_monitoring_machine_image3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/default_monitor_icon"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/dp_15">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="类型："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_type3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.01"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="电力仪表"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="品牌："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_brand3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="雅达"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="型号："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_model3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="2060"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="安装时间："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_install_time3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="2006年8月"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="关联计量点："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_link_compute_pointer3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="无"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/ll_machine_monitoring_machine_meter_back_path3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="电表回路标志："
-                                android:textColor="@color/font_content_gray"
-                                android:textSize="@dimen/sp_13"/>
-
-                            <TextView
-                                android:id="@+id/tv_machine_monitoring_machine_meter_back_path_mark3"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:paddingLeft="@dimen/dp_5"
-                                android:text="5"
-                                android:textColor="@color/font_content"
-                                android:textSize="@dimen/sp_13"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:background="@drawable/shape_line_empty"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="备注："
-                        android:textColor="@color/font_content_gray"/>
-
-                    <TextView
-                        android:id="@+id/tv_machine_monitoring_machine_remark3"
+                        android:id="@+id/tv_electric_instrument_remark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="——"
@@ -1629,6 +1453,449 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_monitor_equipment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="监测设备"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_monitor_equipment_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_15"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/font_content_gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_monitor_equipment_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/default_monitor_icon"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_15">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="类型："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_monitor_equipment_type"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.01"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="电力仪表"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="品牌："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_monitor_equipment_brand"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="雅达"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="型号："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_monitor_equipment_model"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2060"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="安装时间："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_monitor_equipment_install_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2006年8月"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关联计量点："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_monitor_equipment_compute_pointer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="无"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注："
+                        android:textColor="@color/font_content_gray"/>
+
+                    <TextView
+                        android:id="@+id/tv_monitor_machine_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="——"
+                        android:textColor="@color/font_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_apf_pfc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ground_line"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_15"
+                    android:text="滤波补偿信息"
+                    android:textColor="@color/font_blue_deep"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_15"
+                    android:src="@drawable/drag"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_apf_pfc_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_15"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_15">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/font_content_gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_apf_pfc_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/default_monitor_icon"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_15">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="类型："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_apf_pfc_type"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.01"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="电力仪表"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="品牌："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_apf_pfc_brand"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="雅达"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="型号："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_apf_pfc_model"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2060"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="安装时间："
+                                android:textColor="@color/font_content_gray"
+                                android:textSize="@dimen/sp_13"/>
+
+                            <TextView
+                                android:id="@+id/tv_apf_pfc_install_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingLeft="@dimen/dp_5"
+                                android:text="2006年8月"
+                                android:textColor="@color/font_content"
+                                android:textSize="@dimen/sp_13"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关联计量点："
+                        android:textColor="@color/font_content_gray"
+                        android:textSize="@dimen/sp_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_apf_pfc_link_compute_pointer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/dp_5"
+                        android:text="无"
+                        android:textColor="@color/font_content"
+                        android:textSize="@dimen/sp_13"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/shape_line_empty"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注："
+                        android:textColor="@color/font_content_gray"/>
+
+                    <TextView
+                        android:id="@+id/tv_apf_pfc_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="——"
+                        android:textColor="@color/font_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 </com.locensate.letnetwork.view.MyScrollView>

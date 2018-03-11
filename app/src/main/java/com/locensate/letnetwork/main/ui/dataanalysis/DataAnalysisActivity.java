@@ -21,6 +21,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.monitorinfo.RunningStateEntity;
+import com.locensate.letnetwork.utils.AggLinkedUtil;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,9 +69,10 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     private String tagName;
     private Calendar mCurrentDate;
     private Calendar mStartCalendar;
-    private Date startDate;
     private MyTimePickerView mTimePickerView;
     private OptionsPickerView mTimeTypePicker;
+    private long endTime;
+    private long startTime;
 
     @Override
     public int getLayoutId() {
@@ -80,9 +83,10 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
     @Override
     public void initView() {
         parameter = (RunningStateEntity) getIntent().getExtras().getSerializable("parameter");
-        tvTitleOnlyBack.setText(parameter.getKey());
-        tagName = "MC-P1";
+        tagName = parameter.getKey();
+        tvTitleOnlyBack.setText(tagName);
         tvLabel.setText(tagName);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
         mCurrentDate = Calendar.getInstance();
         mCurrentDate.setTime(new Date(System.currentTimeMillis() - 600000L));
         mStartCalendar = Calendar.getInstance();
@@ -95,6 +99,7 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
         mChart.getDescription().setEnabled(false);
         // 设置触摸手势可用
         mChart.setTouchEnabled(true);
+        mChart.setNoDataText("暂无数据");
         //滑动摩擦系数
         mChart.setDragDecelerationFrictionCoef(0.9f);
 
@@ -129,7 +134,6 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 long m = (long) (mModel.getStartTime() + value);
-                LogUtil.e("MILLISECONDS", "------" + m + "++++++++" + value);
                 return mFormat.format(new Date(m));
             }
         });
@@ -177,34 +181,15 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
 
     @Override
     public void initData() {
-
         timeTypes.add("十分钟");
         timeTypes.add("一小时");
         timeTypes.add("一天");
         timeTypes.add("一周");
         timeTypes.add("一月");
-        startDate = new Date(System.currentTimeMillis() - 600000L);
-        tvTimeValue.setText(DateUtils.getTime(startDate, ""));
-        mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, startDate);
-
-
-    }
-
-    private String getRangeType(String text) {
-        switch (text) {
-            case "十分钟":
-                return "minute";
-            case "一小时":
-                return "hour";
-            case "一天":
-                return "day";
-            case "一周":
-                return "week";
-            case "一月":
-                return "mouth";
-            default:
-                return "mouth";
-        }
+        startTime = mCurrentDate.getTimeInMillis();
+        endTime = startTime + 600000L;
+        tvTimeValue.setText(DateUtils.getTime(new Date(startTime), ""));
+        mPresenter.setUp(parameter.getId(), parameter.getName(), startTime, endTime, AggLinkedUtil.getAgg(tvTimeType.getText().toString()), AggLinkedUtil.getSampling(tvTimeType.getText().toString()), AggLinkedUtil.getInterpolation(tvTimeType.getText().toString()));
     }
 
     @Override
@@ -212,10 +197,10 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
 
     }
 
-    @OnClick({R.id.tv_title_only_back, R.id.ll_time_value, R.id.fl_time_type})
+    @OnClick({R.id.iv_title_only_back, R.id.ll_time_value, R.id.fl_time_type})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_title_only_back:
+            case R.id.iv_title_only_back:
                 finish();
                 break;
             case R.id.ll_time_value:
@@ -223,9 +208,9 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
                     mTimePickerView = PickViewUtils.getInstance().getYMDHMPicker(this, mStartCalendar, mCurrentDate, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            startDate = date;
+                            startTime = date.getTime();
                             tvTimeValue.setText(DateUtils.getTime(date, ""));
-                            mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, date);
+                            mPresenter.setUp(parameter.getId(), parameter.getName(), startTime, getEndTime(), AggLinkedUtil.getAgg(tvTimeType.getText().toString()), AggLinkedUtil.getSampling(tvTimeType.getText().toString()), AggLinkedUtil.getInterpolation(tvTimeType.getText().toString()));
                         }
                     });
                 }
@@ -238,9 +223,7 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
                         public void onOptionsSelect(int options1, int options2, int options3, View v) {
                             LogUtil.e("pickview ", "--------option1" + options1 + "---option2---" + options2 + "-----option3----" + options3);
                             tvTimeType.setText(timeTypes.get(options1));
-                            if (startDate != null) {
-                                mPresenter.setUp(deviceId, getRangeType(tvTimeType.getText().toString()), tagName, startDate);
-                            }
+                            mPresenter.setUp(parameter.getId(), parameter.getName(), startTime, getEndTime(), AggLinkedUtil.getAgg(tvTimeType.getText().toString()), AggLinkedUtil.getSampling(tvTimeType.getText().toString()), AggLinkedUtil.getInterpolation(tvTimeType.getText().toString()));
                         }
                     });
                 }
@@ -249,6 +232,34 @@ public class DataAnalysisActivity extends BaseActivity<DataAnalysisPresenter, Da
             default:
                 break;
         }
+    }
+
+    private long getEndTime() {
+        long end;
+        switch (tvTimeType.getText().toString()) {
+            case "十分钟":
+                end = startTime + 599000L;
+                break;
+            case "一小时":
+                end = startTime + 3599000L;
+                break;
+            case "一天":
+                end = startTime + 86399000L;
+                break;
+            case "一周":
+                end = startTime + 604799000L;
+                break;
+            case "一月":
+                end = startTime + 2591999000L;
+                break;
+            default:
+                end = startTime + 599000L;
+                break;
+        }
+        if (end > System.currentTimeMillis()) {
+            end = System.currentTimeMillis();
+        }
+        return end;
     }
 
     @Override

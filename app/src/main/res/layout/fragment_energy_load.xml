@@ -137,7 +137,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time3"
+                    android:id="@+id/tv_no_load_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -146,7 +146,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent3"
+                    android:id="@+id/tv_no_load_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="13.9%"
@@ -177,7 +177,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time5"
+                    android:id="@+id/tv_light_load_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -187,7 +187,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent5"
+                    android:id="@+id/tv_light_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="60.8%"
@@ -218,7 +218,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time6"
+                    android:id="@+id/tv_half_load_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -228,7 +228,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent6"
+                    android:id="@+id/tv_half_load_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="20.8%"
@@ -260,7 +260,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time1"
+                    android:id="@+id/tv_heavy_load_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -269,7 +269,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent1"
+                    android:id="@+id/tv_heavy_load_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1.4%"
@@ -301,7 +301,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time2"
+                    android:id="@+id/tv_over_load_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -310,7 +310,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent2"
+                    android:id="@+id/tv_overload_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.3%"
@@ -341,7 +341,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_time4"
+                    android:id="@+id/tv_stop_time"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30px"
@@ -351,7 +351,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_load_percent4"
+                    android:id="@+id/tv_stop_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2.8%"
@@ -439,7 +439,9 @@
                     android:id="@+id/iv_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="45px"
+                    android:layout_marginRight="15dp"
+                    android:padding="@dimen/dp_8"
+                    android:visibility="invisible"
                     android:src="@drawable/switch_icon"/>
             </LinearLayout>
 

@@ -18,15 +18,22 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
+import com.locensate.letnetwork.bean.MotorEfficiencyBaseEntity;
+import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.energyLoad.EnergyLoadFragment;
+import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.energyefficiency.EnergyEfficiencyFragment;
+import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.energyfgp.EnergyFengGuPingFragment;
+import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 import com.locensate.letnetwork.utils.Constance;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
 import com.locensate.letnetwork.view.MyViewPager;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,23 +47,33 @@ import butterknife.OnClick;
 public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEnergyManagerPresenter, MachineInfoEnergyManagerModel> implements MachineInfoEnergyManagerContract.View, OnChartValueSelectedListener, ViewPager.OnPageChangeListener {
 
     @BindView(R.id.up_down)
-    ImageView upDown;
-    @BindView(R.id.time_type)
-    FrameLayout timeType;
-    @BindView(R.id.tv_time_value)
-    TextView tvTimeValue;
-    @BindView(R.id.time_value)
-    LinearLayout timeValue;
-    @BindView(R.id.tv_lose_elect)
-    TextView tvLoseElect;
-    @BindView(R.id.tv_running_time)
-    TextView tvRunningTime;
-    @BindView(R.id.tl_machine_energy_analysis)
-    TabLayout tlMachineEnergyAnalysis;
-    @BindView(R.id.vp_machine_energy_analysis)
-    MyViewPager vpMachineEnergyAnalysis;
+    ImageView mUpDown;
     @BindView(R.id.time_type_content)
     TextView mTimeTypeContent;
+    @BindView(R.id.time_type)
+    FrameLayout mTimeType;
+    @BindView(R.id.tv_time_value)
+    TextView mTvTimeValue;
+    @BindView(R.id.time_value)
+    LinearLayout mTimeValue;
+    @BindView(R.id.tv_running_time)
+    TextView mTvRunningTime;
+    @BindView(R.id.tv_empty_load_electric_used)
+    TextView mTvEmptyLoadElectricUsed;
+    @BindView(R.id.textView8)
+    TextView mTextView8;
+    @BindView(R.id.tv_use_power)
+    TextView mTvUsePower;
+    @BindView(R.id.tv_estimation_electric_count)
+    TextView mTvEstimationElectricCount;
+    @BindView(R.id.tv_electric_fee)
+    TextView mTvElectricFee;
+    @BindView(R.id.tv_estimation_electric_rate)
+    TextView mTvEstimationElectricRate;
+    @BindView(R.id.tl_machine_energy_analysis)
+    TabLayout mTlMachineEnergyAnalysis;
+    @BindView(R.id.vp_machine_energy_analysis)
+    MyViewPager mVpMachineEnergyAnalysis;
     private String timeShow;
     private OptionsPickerView mTimeTypePicker;
     private MyTimePickerView mHourPicker;
@@ -64,6 +81,7 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
     private MyTimePickerView mWeekPicker;
     private MyTimePickerView mDayPicker;
     private boolean initComplete = false;
+    private Fragment[] fragments = {new EnergyEfficiencyFragment(), new EnergyLoadFragment(), new EnergyFengGuPingFragment()};
 
     @Override
     public int getInflaterView() {
@@ -84,21 +102,57 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
 
     @Override
     public void initView() {
-        mTimeTypeContent.setText("月");
-        tvTimeValue.setText("2017-07");
+        timeShow = "周";
+        mTimeTypeContent.setText(timeShow);
         initComplete = true;
     }
 
     @Override
-    public void initData(Fragment[] fragments) {
-        vpMachineEnergyAnalysis.setAdapter(new MachineEnergyPageAdapter(this.getChildFragmentManager(), fragments));
-        vpMachineEnergyAnalysis.addOnPageChangeListener(this);
-        tlMachineEnergyAnalysis.post(new Runnable() {
+    public void initData() {
+        mVpMachineEnergyAnalysis.setOffscreenPageLimit(3);
+        mVpMachineEnergyAnalysis.setAdapter(new MachineEnergyPageAdapter(this.getChildFragmentManager(), fragments));
+        mVpMachineEnergyAnalysis.addOnPageChangeListener(this);
+        mTlMachineEnergyAnalysis.post(new Runnable() {
             @Override
             public void run() {
-                tlMachineEnergyAnalysis.setupWithViewPager(vpMachineEnergyAnalysis);
+                mTlMachineEnergyAnalysis.setupWithViewPager(mVpMachineEnergyAnalysis);
             }
         });
+    }
+
+
+    @Override
+    public void initTimeTypeAndValue(String type, Date[] startAndEnd) {
+        mTimeTypeContent.setText(type);
+        mTvTimeValue.setText(DateUtils.getTime(startAndEnd[0], type) + "/" + DateUtils.getTime(startAndEnd[1], type));
+
+    }
+
+    @Override
+    public void fillBaseData(MotorEfficiencyBaseEntity.DataBean data) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        double running_time = data.getRunning_time();
+        double electrical_fee = data.getElectrical_fee();
+        double estimate_save_power = data.getEstimate_save_power();
+        double no_loading_power = data.getNo_loading_power();
+        double power_use_ratio = data.getPower_use_ratio();
+        double power_consumption = data.getPower_consumption();
+        mTvRunningTime.setText(df.format(running_time / 3600) + "h");
+        mTvUsePower.setText(df.format(power_consumption) + "kWh");
+        mTvElectricFee.setText(df.format(electrical_fee) + "元");
+        mTvEmptyLoadElectricUsed.setText(df.format(no_loading_power) + "kWh");
+        mTvEstimationElectricCount.setText(df.format(estimate_save_power) + "kWh");
+        mTvEstimationElectricRate.setText(df.format(power_use_ratio * 100) + "%");
+    }
+
+    @Override
+    public Fragment[] getChildFragments() {
+        return fragments;
+    }
+
+    @Override
+    public String getTimeType() {
+        return timeShow;
     }
 
 
@@ -168,7 +222,7 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
 
 
     private void showPicker() {
-        Calendar instance = Calendar.getInstance();
+        Calendar instance = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
         instance.set(2010, 0, 1);
         switch (timeShow) {
             case "小时":
@@ -176,7 +230,8 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
                     mHourPicker = PickViewUtils.getInstance().getYMDHPicker(getActivity(), instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            tvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            mTvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            mPresenter.setTimeRange(date.getTime(), date.getTime() + 3599000L);
                         }
                     });
                 }
@@ -187,7 +242,19 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
                     mMouthPicker = PickViewUtils.getInstance().getYMPicker(getActivity(), instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            tvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            mTvTimeValue.setText(DateUtils.getTime(date, timeShow));
+
+                            //获取当前月第一天
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(date);
+                            c.add(Calendar.MONTH, 0);
+                            c.set(Calendar.DAY_OF_MONTH, 1);
+                            long startMills = c.getTimeInMillis();
+                            //获取当前月最后一天
+                            Calendar ca = Calendar.getInstance();
+                            ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            long endMills = ca.getTimeInMillis();
+                            mPresenter.setTimeRange(startMills, endMills);
                         }
                     });
                 }
@@ -199,7 +266,8 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
                         @Override
                         public void onTimeSelect(Date date, View v) {
                             Date[] firstAndEnd = DateUtils.getFirstAndEndDayDateOfWeek(date);
-                            tvTimeValue.setText(DateUtils.getTime(firstAndEnd[0], timeShow) + "/" + DateUtils.getTime(firstAndEnd[1], timeShow));
+                            mTvTimeValue.setText(DateUtils.getTime(firstAndEnd[0], timeShow) + "/" + DateUtils.getTime(firstAndEnd[1], timeShow));
+                            mPresenter.setTimeRange(firstAndEnd[0].getTime(), firstAndEnd[1].getTime()+86400000L);
                         }
                     });
                 }
@@ -210,7 +278,8 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
                     mDayPicker = PickViewUtils.getInstance().getWeekPicker(getActivity(), instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
-                            tvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            mTvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            mPresenter.setTimeRange(date.getTime(), date.getTime() + 86399000L);
                         }
                     });
                 }
@@ -219,6 +288,12 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
             default:
                 break;
         }
+    }
+
+
+    @Override
+    public long getMotorId() {
+        return ((MachineInfoActivity) getActivity()).getMachineInfo().getLong("motorId");
     }
 
     @Override
@@ -238,7 +313,7 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
 
     @Override
     public void onDestroyView() {
-        vpMachineEnergyAnalysis.setAdapter(null);
+        mVpMachineEnergyAnalysis.setAdapter(null);
         super.onDestroyView();
     }
 

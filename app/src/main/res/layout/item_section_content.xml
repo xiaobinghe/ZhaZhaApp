@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:text="运行状态"
             android:textColor="@color/font_content"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
 
         <TextView
             android:id="@+id/tv_section_content_value"
@@ -28,9 +28,9 @@
             android:layout_gravity="center_vertical"
             android:drawablePadding="@dimen/dp_5"
             android:drawableRight="@drawable/right_next"
-            android:text="运行状态"
+            android:text="——"
             android:textColor="@color/font_content"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"/>
 
 
     </LinearLayout>
@@ -38,10 +38,10 @@
     <View
         android:id="@+id/view_content_diver"
         android:layout_width="match_parent"
-        android:elevation="@dimen/dp_2"
         android:layout_height="1px"
         android:layout_marginLeft="@dimen/dp_15"
         android:layout_marginRight="@dimen/dp_15"
-        android:background="@color/black_line" />
+        android:background="@color/black_line"
+        android:elevation="@dimen/dp_2"/>
 
 </LinearLayout>

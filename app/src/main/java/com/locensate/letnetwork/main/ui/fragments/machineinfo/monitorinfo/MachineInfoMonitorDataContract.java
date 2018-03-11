@@ -5,6 +5,7 @@ import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
 import com.locensate.letnetwork.bean.BaseSubEquipment;
 import com.locensate.letnetwork.bean.EquipmentsEntity;
+import com.locensate.letnetwork.bean.TestBean;
 
 import java.util.List;
 
@@ -23,12 +24,6 @@ public interface MachineInfoMonitorDataContract {
 
     interface Model extends BaseModel {
 
-        /**
-         * 获取电机数据
-         *
-         * @return
-         */
-        List<MonitoringData> getMonitorData();
 
         /**
          * 获取依附的设备列表（控制设备，监测设备，滤波补偿设备等）
@@ -60,6 +55,8 @@ public interface MachineInfoMonitorDataContract {
          * @return
          */
         ObservableSource<BaseSubEquipment> getFilterCompensationLatestData(long id);
+
+        List<MonitoringData>  handleData(long motorId, TestBean.DataBean data);
     }
 
     interface View extends BaseView {
@@ -70,6 +67,8 @@ public interface MachineInfoMonitorDataContract {
          * @param runningStateData
          */
         void fillData(List<MonitoringData> runningStateData);
+
+        long getMotorId();
     }
 
     abstract class Presenter extends BasePresenter<Model, View> {

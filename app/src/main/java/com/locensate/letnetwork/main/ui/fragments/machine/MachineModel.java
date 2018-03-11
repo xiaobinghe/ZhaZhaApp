@@ -5,8 +5,8 @@ import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.bean.ImportantMachine;
-import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.bean.MachineFilterTag;
+import com.locensate.letnetwork.bean.MotorListEntity;
 import com.locensate.letnetwork.bean.Organizations;
 import com.locensate.letnetwork.bean._User;
 import com.locensate.letnetwork.entity.FilterEntity;
@@ -205,21 +205,10 @@ public class MachineModel implements MachineContract.Model {
     }
 
     @Override
-    public List<MachineDataBean> getMachineList() {
-        List<MachineDataBean> machines = new ArrayList<>();
+    public List<MotorListEntity.DataBean.ListBean> getMachineList() {
+        List<MotorListEntity.DataBean.ListBean> machines = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            if (i % 4 == 0) {
-                machines.add(new MachineDataBean("皮带机", "SGY205", "一车间/配电室", "380V", "55kW", "85", "0.90", true, true, String.valueOf(i)));
-            } else if (i % 4 == 1) {
-                machines.add(new MachineDataBean("除尘风机 ", "Y-3152", "一车间/配电室", "380V", "55kW", "68", "0.59", true, false, String.valueOf(i)));
-
-            } else if (i % 4 == 2) {
-                machines.add(new MachineDataBean("主抽风机", "MM430", "一车间/配电室", "380V", "55kW", "75", "0.89", false, true, String.valueOf(i)));
-
-            } else {
-                machines.add(new MachineDataBean("机尾除尘风机", "GZBCK", "一车间/配电室", "380V", "55kW", "75", "0.90", true, true, String.valueOf(i)));
-
-            }
+                machines.add(new MotorListEntity.DataBean.ListBean(0.9,0,1,1,55,"工料车间","变频器",75,"除尘风机电机","380v","除尘风机"));
         }
 
         return machines;
@@ -233,7 +222,7 @@ public class MachineModel implements MachineContract.Model {
     }
 
     @Override
-    public Observable postImpotantMachine(MachineDataBean item) {
+    public Observable postImpotantMachine(MotorListEntity.DataBean.ListBean item) {
         return Api.getInstance().service.postImportantMachine(new ImportantMachine());
     }
 
@@ -252,7 +241,6 @@ public class MachineModel implements MachineContract.Model {
     }
 
     public List<FilterEntity> getFilterData() {
-
         return null;
     }
 }

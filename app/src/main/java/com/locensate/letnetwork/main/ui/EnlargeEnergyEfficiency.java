@@ -3,6 +3,7 @@ package com.locensate.letnetwork.main.ui;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,17 +18,29 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.bean.MonitorEquipmentHistoryData;
+import com.locensate.letnetwork.utils.AggLinkedUtil;
 import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.ToastUtil;
+import com.locensate.letnetwork.view.markView.MyMarkerView;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
- *  
  * @author xiaobinghe
  */
 
@@ -43,6 +56,11 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
     LinearLayout llEnergyLoseElectric;
     @BindView(R.id.activity_enlager_energy_efficiency)
     LinearLayout activityEnlagerEnergyEfficiency;
+    private long mStartMills;
+    private long mEndMills;
+    private long motorId;
+    private String timeType;
+    private double efficiency;
 
     @Override
     public int getLayoutId() {
@@ -53,7 +71,69 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
     @Override
     public void initView() {
         tvTitleOnlyBack.setText("效率分析");
+
+        Bundle extras = getIntent().getExtras();
+        mStartMills = extras.getLong("startMills");
+        mEndMills = extras.getLong("endMills");
+        motorId = extras.getLong("motorId");
+        timeType = extras.getString("type");
+        efficiency = extras.getDouble("efficiency");
         fillLineData();
+        request();
+    }
+
+    private void request() {
+        Api.getInstance().service.getMonitorEquipmentHistoryData(motorId, "ETA", mStartMills, mEndMills, AggLinkedUtil.getAgg(timeType), AggLinkedUtil.getSampling(timeType), AggLinkedUtil.getInterpolation(timeType)).compose(RxSchedulers.<MonitorEquipmentHistoryData>applyObservableAsync()).map(new Function<MonitorEquipmentHistoryData, List<Entry>>() {
+
+            @Override
+            public List<Entry> apply(MonitorEquipmentHistoryData monitorEquipmentHistoryData) throws Exception {
+                LogUtil.e("MonitorEquipmentEntity", "--------------------" + monitorEquipmentHistoryData.toString());
+                List<Entry> entries = new ArrayList<>();
+                List<MonitorEquipmentHistoryData.DataBean> data = monitorEquipmentHistoryData.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    MonitorEquipmentHistoryData.DataBean dataBean = data.get(i);
+                    entries.add(new Entry((dataBean.getTime() - mStartMills) / 1000, (float) dataBean.getValue()));
+                }
+                return entries;
+            }
+        }).subscribe(new Consumer<List<Entry>>() {
+            @Override
+            public void accept(List<Entry> entries) throws Exception {
+                LogUtil.e("MonitorEquipmentEntity", "--------------------" + entries.get(0).getY() + "---" + entries.get(0).getX());
+                handleData(entries);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtil.show(App.getApplication().getString(R.string.load_fail_retry));
+            }
+        });
+
+    }
+
+    private void handleData(List<Entry> entries) {
+        if (entries == null || entries.size() == 0 || efficiency == 0) {
+            return;
+        }
+        LogUtil.e("mDefaultEfficiency---eff", "---" + entries.toString());
+
+        int size = entries.size();
+        ArrayList<Entry> set1 = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            set1.add(new Entry(entries.get(i).getX(), (float) efficiency));
+        }
+        LogUtil.e("mDefaultEfficiency---set1", "---set1.size=" + size + "---------" + set1.toString());
+
+        ArrayList<Entry> set2 = new ArrayList<>();
+        float value2 = (float) (1.25 * efficiency - 0.25f);
+        for (int i = 0; i < size; i++) {
+            set2.add(new Entry(entries.get(i).getX(), value2));
+        }
+        LogUtil.e("mDefaultEfficiency---set2", "---" + set2.toString());
+
+
+        setLineData(getDataSets(),entries,set1,set2,getColors());
+
     }
 
 
@@ -79,10 +159,6 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
         // set an alternative background color
         lineChart.setBackgroundColor(getResources().getColor(R.color.white));
 
-        // TODO: 2017/6/22 添加数据
-        // add data
-        setLineData(getDataSets(), getEntry1(), getEntry2(), getEntry3(), getColors());
-
         lineChart.animateX(2500);
 
         // get the legend (only possible after setting data)
@@ -90,50 +166,53 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
 
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(mTfLight);
         l.setTextSize(10f);
         l.setTextColor(getResources().getColor(R.color.font_content));
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
+
+
         XAxis xAxis = lineChart.getXAxis();
-//        xAxis.setTypeface(mTfLight);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(10f);
-        xAxis.setAxisMaximum(getEntry1().size());
-        xAxis.setAxisMinimum(0);
         xAxis.setTextColor(getResources().getColor(R.color.font_content));
         xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                long m = (long) (value * 1000 + mStartMills);
+                return mFormat.format(new Date(m));
+            }
+        });
+
+
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setTextColor(Color.WHITE);
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
 
         Typeface tf = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
 
         YAxis leftAxis = lineChart.getAxisLeft();
-//        leftAxis.setTypeface(mTfLight);
         leftAxis.setTextColor(getResources().getColor(R.color.font_content));
         leftAxis.setTypeface(tf);
         leftAxis.setAxisMaximum(5.0f);
-        leftAxis.setAxisMinimum(-0.0f);
         leftAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return String.valueOf(value / 5);
+                DecimalFormat decimalFormat = new DecimalFormat("0.0");
+                return decimalFormat.format(value / 5);
             }
         });
         leftAxis.setDrawGridLines(true);
         leftAxis.setDrawAxisLine(true);
         leftAxis.setGranularityEnabled(true);
-
-        YAxis rightAxis = lineChart.getAxisRight();
-//        rightAxis.setTypeface(mTfLight);
-        rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaximum(0);
-        rightAxis.setAxisMinimum(0);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setDrawZeroLine(false);
-        rightAxis.setGranularityEnabled(false);
     }
 
     private String[] getDataSets() {
@@ -182,7 +261,7 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
         return data1;
     }
 
-    private void setLineData(String[] dataSets, ArrayList<Entry> entries1, ArrayList<Entry> entries2, ArrayList<Entry> entries3, int[] dataColors) {
+    private void setLineData(String[] dataSets, List<Entry> entries1, List<Entry> entries2, List<Entry> entries3, int[] dataColors) {
 
 
         LineDataSet set1, set2, set3;
@@ -201,7 +280,7 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
             // create a dataset and give it a type
             set1 = new LineDataSet(entries1, dataSets[0]);
 
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set1.setAxisDependency(YAxis.AxisDependency.RIGHT);
             set1.setColor(dataColors[0]);
             set1.setCircleColor(dataColors[0]);
             set1.setLineWidth(1.5f);
@@ -218,7 +297,7 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
 
             // create a dataset and give it a type
             set2 = new LineDataSet(entries2, dataSets[1]);
-            set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
             set2.setColor(dataColors[1]);
             set2.setCircleColor(dataColors[1]);
             set2.setLineWidth(1.5f);
@@ -231,7 +310,7 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
             //set2.setFillFormatter(new MyFillFormatter(900f));
 
             set3 = new LineDataSet(entries3, dataSets[2]);
-            set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set3.setAxisDependency(YAxis.AxisDependency.RIGHT);
             set3.setColor(dataColors[2]);
             set3.setCircleColor(dataColors[2]);
             set3.setLineWidth(1.5f);
@@ -249,6 +328,11 @@ public class EnlargeEnergyEfficiency extends BaseActivity {
 
             // set data
             lineChart.setData(data);
+
+            lineChart.animateX(2000);
+            MyMarkerView mv = new MyMarkerView(this, R.layout.layout_my_marker_view, mStartMills);
+            mv.setChartView(lineChart);
+            lineChart.setMarker(mv);
         }
     }
 

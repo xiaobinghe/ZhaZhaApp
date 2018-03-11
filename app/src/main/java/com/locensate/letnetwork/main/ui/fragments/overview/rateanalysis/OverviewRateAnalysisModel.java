@@ -6,31 +6,25 @@ import java.util.ArrayList;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
 
 public class OverviewRateAnalysisModel implements OverviewRateAnalysisContract.Model {
-    @Override
-    public ArrayList<PieEntry> initData() {
-//        RxBus.get().register().map(new Function<Object, String>() {
-//            @Override
-//            public String apply(@NonNull Object o) throws Exception {
-//                return (String) o;
-//            }
-//        }).subscribe(new Consumer<String>() {
-//            @Override
-//            public void accept(@NonNull String s) throws Exception {
-//                    ToastUtil.show("RateAnalysis");
-//                    LogUtil.e("RateAnalysis:", "--------------" + s);
-//            }
-//        });
 
-        ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry((float) (Math.random() * 100) + 20, "经济运行"));
-        pieEntries.add(new PieEntry((float) (Math.random() * 100) + 20, "非经济运行"));
-        pieEntries.add(new PieEntry((float) (Math.random() * 100) + 20, "合理运行"));
-        return pieEntries;
+    private String[] mParties = new String[]{"经济", "合理", "非经济", "停止"};
+    private float[] piePercent = new float[]{41.6f, 16.7f, 33.3f, 8.4f};
+
+    @Override
+    public ArrayList<PieEntry> initMockData() {
+
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < 6; i++) {
+            entries.add(new PieEntry(piePercent[i], mParties[i]));
+        }
+        return entries;
     }
 }

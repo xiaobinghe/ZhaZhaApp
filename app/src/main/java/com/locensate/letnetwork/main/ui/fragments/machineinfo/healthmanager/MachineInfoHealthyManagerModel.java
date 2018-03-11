@@ -51,4 +51,12 @@ public class MachineInfoHealthyManagerModel implements MachineInfoHealthyManager
         pieEntries.add(new PieEntry(15f));
         return pieEntries;
     }
+
+    @Override
+    public ArrayList<PieEntry> getPieElectHotter30Data() {
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(70f));
+        pieEntries.add(new PieEntry(30f));
+        return pieEntries;
+    }
 }

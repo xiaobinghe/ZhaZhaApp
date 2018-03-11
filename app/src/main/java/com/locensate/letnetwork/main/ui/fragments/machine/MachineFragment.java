@@ -2,6 +2,7 @@ package com.locensate.letnetwork.main.ui.fragments.machine;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,7 +10,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -26,14 +29,14 @@ import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.bean.MachineFilterTag;
+import com.locensate.letnetwork.bean.MotorListEntity;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 import com.locensate.letnetwork.main.ui.search.SearchActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
-import com.locensate.letnetwork.utils.SpUtil;
+import com.locensate.letnetwork.view.CustomLoadingView;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.ModernDialog;
 import com.locensate.letnetwork.view.filterview.ui.RightSideslipLay;
@@ -89,7 +92,6 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     @BindView(R.id.drawer)
     DrawerLayout mDrawer;
     private MachineListAdapter adapter;
-    private boolean isAddListener = false;
     private List<String> timeTypes = new ArrayList<>();
     private String timeShow;
     private MyTimePickerView yearPicker;
@@ -100,9 +102,12 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     private ModernDialog dialog;
     private OptionsPickerView mTimeTypePicker;
     private RightSideslipLay mFilterView;
-    private ArrayList<MachineDataBean> mMachines;
-    private String mGroupName = SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢厂");
-
+    private ArrayList<MotorListEntity.DataBean.ListBean> mMachines;
+    private String mGroupName;
+    private int currentPage = 1;
+    private String sortType = Constant.DESC;
+    private boolean isRefresh;
+    private PopupWindow mSortSelect;
 
     @Override
     public int getInflaterView() {
@@ -118,7 +123,6 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
 
         /*设置title*/
-        tvRootFile.setText(SpUtil.getString(App.getApplication(), Constant.ENTERPRISE_NAME, "某钢铁厂"));
         tvRootFile.setFocusable(true);
         /*设置装机功率缺省值*/
         tvMachineHeadPowerCount.setText("总装机功率:36000kW");
@@ -138,7 +142,8 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         srlMachineListMachine.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                srlMachineListMachine.setRefreshing(false);
+                LogUtil.e("refresh", "-----------refreshing");
+                refresh();
             }
         });
 
@@ -151,8 +156,16 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
 
         /*初始化fragments*/
         rvMachineList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mMachines = new ArrayList<>();
+        mMachines = new ArrayList<MotorListEntity.DataBean.ListBean>();
         adapter = new MachineListAdapter(getContext(), R.layout.item_machine_list, mMachines);
+        adapter.setEnableLoadMore(true);
+        adapter.setLoadMoreView(new CustomLoadingView());
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadMore();
+            }
+        }, rvMachineList);
         rvMachineList.setAdapter(adapter);
 
         /*添加点击和长按监听*/
@@ -160,7 +173,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                final MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
+                MotorListEntity.DataBean.ListBean item = (MotorListEntity.DataBean.ListBean) baseQuickAdapter.getItem(i);
                 isMarkImportantMachine(item);
                 return false;
             }
@@ -168,19 +181,37 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                MachineDataBean item = (MachineDataBean) baseQuickAdapter.getItem(i);
+                MotorListEntity.DataBean.ListBean item = (MotorListEntity.DataBean.ListBean) baseQuickAdapter.getItem(i);
                 Intent intent = new Intent(App.getApplication(), MachineInfoActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("machineId", item.getId());
+                LogUtil.e("motorId", "-----------" + item.getMotor_id());
+                bundle.putLong("motorId", item.getMotor_id());
                 bundle.putString("machineName", item.getName());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
 
         });
-
     }
 
+    @Override
+    public void initTimeTypeAndValue(String type, Date[] initTimeValue) {
+        tvTimeValue.setText(DateUtils.getTime(initTimeValue[0], type) + "/" + DateUtils.getTime(initTimeValue[1], type));
+        timeTypeContent.setText(type);
+    }
+
+    private void loadMore() {
+        isRefresh = false;
+        currentPage++;
+        mPresenter.refreshList(currentPage, 10, sortType);
+    }
+
+    private void refresh() {
+        adapter.setEnableLoadMore(false);
+        currentPage = 1;
+        isRefresh = true;
+        mPresenter.refreshList(currentPage, 10, sortType);
+    }
 
     @Override
     protected void onVisible() {
@@ -190,16 +221,11 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     @Override
     protected void lazyLoad() {
         LogUtil.e("MachineFragment", "--------------lazyLoad()");
-        mPresenter.initData();
-        mPresenter.refreshFilter();
     }
 
     @Override
-    public void fillData(List<MachineDataBean> machines) {
-        if (mMachines.size() > 0) {
-            mMachines.clear();
-        }
-        mMachines.addAll(machines);
+    public void fillData(List<MotorListEntity.DataBean.ListBean> machines) {
+        adapter.addData(machines);
         adapter.notifyDataSetChanged();
     }
 
@@ -285,8 +311,30 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
     }
 
     private void powerSort() {
-        srlMachineListMachine.setRefreshing(true);
-        mPresenter.sort();
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_class_group_pop, null);
+        view.findViewById(R.id.tv_class_belong).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortType = Constant.ASC;
+                srlMachineListMachine.setRefreshing(true);
+                refresh();
+                mSortSelect.dismiss();
+            }
+        });
+        view.findViewById(R.id.tv_class_type).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortType = Constant.DESC;
+                srlMachineListMachine.setRefreshing(true);
+                refresh();
+                mSortSelect.dismiss();
+            }
+        });
+        mSortSelect = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ColorDrawable dw = new ColorDrawable(0000000000);
+        mSortSelect.setBackgroundDrawable(dw);
+        mSortSelect.setOutsideTouchable(true);
+        mSortSelect.showAsDropDown(tvMachineHeadPowerSort);
     }
 
     private void startSearch() {
@@ -296,7 +344,6 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         intent.putExtras(bundle);
         startActivity(intent);
     }
-
 
     @Override
     public void showPop(List<MultiItemEntity> groupTree) {
@@ -310,19 +357,76 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
             @Override
             public void onDismiss() {
                 String temp = expandablePopwindow.getPath();
+                int organizationId = expandablePopwindow.getOrganizationId();
                 if (temp != null) {
                     mGroupName = temp;
                 }
                 tvRootFile.setText(mGroupName);
+                isRefresh = true;
+                currentPage = 1;
+                mPresenter.setOrganizationId(organizationId);
             }
         });
     }
 
     @Override
-    public void sortComplete(List<MachineDataBean> machineList) {
-        fillData(machineList);
+    public void sortComplete(List<MotorListEntity.DataBean.ListBean> machineList) {
+
+        adapter.setNewData(machineList);
         srlMachineListMachine.setRefreshing(false);
     }
+
+    @Override
+    public void statisticsData(int motor_count, String format) {
+        tvMachineHeadMotorCount.setText("共" + motor_count + "台");
+        tvMachineHeadPowerCount.setText("总装机功率：" + format + "kW");
+    }
+
+    @Override
+    public boolean isRefresh() {
+        return isRefresh;
+    }
+
+    @Override
+    public void refreshFaild() {
+        srlMachineListMachine.setRefreshing(false);
+        adapter.setEnableLoadMore(true);
+        adapter.notifyLoadMoreToLoading();
+    }
+
+    @Override
+    public void loadMoreFaild() {
+        adapter.loadMoreEnd();
+    }
+
+    @Override
+    public void refreshSuccess(List<MotorListEntity.DataBean.ListBean> list) {
+        srlMachineListMachine.setRefreshing(false);
+        adapter.setNewData(list);
+        adapter.setEnableLoadMore(true);
+        adapter.notifyLoadMoreToLoading();
+    }
+
+    @Override
+    public void loadMoreSuccess(List<MotorListEntity.DataBean.ListBean> list) {
+        adapter.loadMoreComplete();
+        if (list.size() < 10) {
+            adapter.loadMoreEnd();
+        }
+        adapter.addData(list);
+    }
+
+    @Override
+    public String getSortType() {
+        return sortType;
+    }
+
+    @Override
+    public void setTitleText(String organizationName) {
+        mGroupName = organizationName;
+        tvRootFile.setText(organizationName);
+    }
+
 
     private void showPicker() {
         Calendar instance = Calendar.getInstance();
@@ -334,6 +438,8 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                         @Override
                         public void onTimeSelect(Date date, View v) {
                             tvTimeValue.setText(DateUtils.getTime(date, timeShow));
+                            isRefresh = true;
+                            mPresenter.setTimeRange(date.getTime(), date.getTime() + 3599000L);
                         }
                     });
                 }
@@ -344,8 +450,19 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                     mouthPicker = PickViewUtils.getInstance().getYMPicker(getActivity(), instance, new MyTimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date, View v) {
+                            //获取当前月第一天
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(date);
+                            c.add(Calendar.MONTH, 0);
+                            c.set(Calendar.DAY_OF_MONTH, 1);
+                            long startMills = c.getTimeInMillis();
+                            //获取当前月最后一天
+                            Calendar ca = Calendar.getInstance();
+                            ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            long endMills = ca.getTimeInMillis();
                             tvTimeValue.setText(DateUtils.getTime(date, timeShow));
-
+                            isRefresh = true;
+                            mPresenter.setTimeRange(startMills, endMills);
                         }
                     });
                 }
@@ -358,6 +475,8 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                         public void onTimeSelect(Date date, View v) {
                             Date[] firstAndEnd = DateUtils.getFirstAndEndDayDateOfWeek(date);
                             tvTimeValue.setText(DateUtils.getTime(firstAndEnd[0], timeShow) + "/" + DateUtils.getTime(firstAndEnd[1], timeShow));
+                            isRefresh = true;
+                            mPresenter.setTimeRange(firstAndEnd[0].getTime(), firstAndEnd[1].getTime());
                         }
                     });
                 }
@@ -369,7 +488,8 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                         @Override
                         public void onTimeSelect(Date date, View v) {
                             tvTimeValue.setText(DateUtils.getTime(date, timeShow));
-
+                            isRefresh = true;
+                            mPresenter.setTimeRange(date.getTime(), date.getTime() + 86399000L);
                         }
                     });
                 }
@@ -380,13 +500,12 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         }
     }
 
-
-    private void isMarkImportantMachine(final MachineDataBean item) {
+    private void isMarkImportantMachine(final MotorListEntity.DataBean.ListBean item) {
         dialog = new ModernDialog(getActivity(), R.layout.dialog_delete, new int[]{R.id.dialog_sure, R.id.dialog_cancel});
         dialog.show();
 
 
-        if (!item.isImportant()) {
+        if (item.getIs_important() == 1) {
             dialog.setMessage("将 " + item.getName() + " 标记为我关注的设备");
         } else {
             dialog.setMessage("取消关注" + item.getName());
@@ -403,8 +522,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                     case R.id.dialog_sure:
                         // TODO: 2018/1/23 标记为重点设备
                         mPresenter.markImportant(item);
-
-                        item.setImportant(!item.isImportant());
+                        item.setIs_important(1);
                         dialog.dismiss();
                         adapter.notifyDataSetChanged();
                         break;
@@ -416,7 +534,6 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
             }
         });
     }
-
 
     private void openMenu() {
         mDrawer.openDrawer(GravityCompat.END);

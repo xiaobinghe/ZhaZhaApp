@@ -34,4 +34,7 @@
     <string name="logining">Running in background. Please see log.</string>
     <string name="setting_su">Succeed to set</string>
     <string name="load_fail_retry">请选择正确的时间范围</string>
+    <string name="data_load_fail">数据错误</string>
+    <string name="function_uncomplete">功能暂未开放</string>
+    <string name="date_select_error">请选择正确的时间范围</string>
 </resources>

@@ -14,10 +14,10 @@ import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -47,6 +47,8 @@ public class PickViewUtils {
     }
 
     public MyTimePickerView getYMPicker(Activity context, Calendar startDate, MyTimePickerView.OnTimeSelectListener listener) {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+        Calendar endCalendar = Calendar.getInstance();
 
         return new MyTimePickerView.Builder(context, listener)
                 .setCancelText(context.getResources().getString(R.string.cancel))
@@ -63,8 +65,8 @@ public class PickViewUtils {
                 .setDividerColor(context.getResources().getColor(R.color.font_deep_blue))
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setType(MyTimePickerView.Type.YEAR_MONTH)
-                .setRangDate(startDate, Calendar.getInstance())
-                .setDate(Calendar.getInstance())
+                .setRangDate(startDate, endCalendar)
+                .setDate(endCalendar)
                 .build();
     }
 
@@ -72,7 +74,9 @@ public class PickViewUtils {
         /**
          *  年月日选择器
          */
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
 
+        Calendar endCalendar = Calendar.getInstance();
         return new MyTimePickerView.Builder(context, listener)
                 .setCancelText(context.getString(R.string.cancel))
                 .setSubmitText(context.getString(R.string.okay))
@@ -87,8 +91,8 @@ public class PickViewUtils {
                 .setDividerColor(context.getResources().getColor(R.color.font_deep_blue))
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setType(MyTimePickerView.Type.YEAR_MONTH_DAY)
-                .setRangDate(startDate, Calendar.getInstance())
-                .setDate(Calendar.getInstance())
+                .setRangDate(startDate, endCalendar)
+                .setDate(endCalendar)
                 .build();
     }
 
@@ -113,7 +117,7 @@ public class PickViewUtils {
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setType(MyTimePickerView.Type.YEAR_MONTH_DAY)
                 .setRangDate(startDate, endData)
-                .setDate(Calendar.getInstance())
+                .setDate(endData)
                 .build();
     }
 
@@ -121,6 +125,7 @@ public class PickViewUtils {
         /**
          *  年月日选择器
          */
+        Calendar endDate = Calendar.getInstance();
         return new MyTimePickerView.Builder(context, listener)
                 .setCancelText(context.getString(R.string.cancel))
                 .setSubmitText(context.getString(R.string.okay))
@@ -135,8 +140,8 @@ public class PickViewUtils {
                 .setDividerColor(context.getResources().getColor(R.color.font_deep_blue))
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setType(MyTimePickerView.Type.YEAR_MONTH_DAY)
-                .setRangDate(startDate, Calendar.getInstance())
-                .setDate(Calendar.getInstance())
+                .setRangDate(startDate, endDate)
+                .setDate(endDate)
                 .build();
     }
 
@@ -144,6 +149,9 @@ public class PickViewUtils {
         /**
          * 年月日时选择器
          */
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+        Calendar endCalendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+        endCalendar.add(Calendar.HOUR, -1);
         return new MyTimePickerView.Builder(context, listener).setDividerColor(context.getResources().getColor(R.color.font_deep_blue))
                 .setCancelText("取消")
                 .setSubmitText("确定")
@@ -160,8 +168,8 @@ public class PickViewUtils {
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setDividerType(WheelView.DividerType.FILL)
                 .setType(MyTimePickerView.Type.YEAR_MONTH_DAY_HOUR)
-                .setRangDate(startDate, Calendar.getInstance())
-                .setDate(Calendar.getInstance())
+                .setRangDate(startDate, endCalendar)
+                .setDate(endCalendar)
                 .build();
     }
 
@@ -186,7 +194,7 @@ public class PickViewUtils {
                 .setDividerType(WheelView.DividerType.FILL)
                 .setType(MyTimePickerView.Type.YEAR_MONTH_DAY_HOUR_MIN)
                 .setRangDate(startDate, endData)
-                .setDate(Calendar.getInstance())
+                .setDate(endData)
                 .build();
     }
 
@@ -210,7 +218,6 @@ public class PickViewUtils {
                 .setTextColorCenter(context.getResources().getColor(R.color.font_deep_blue))
                 .setDividerType(WheelView.DividerType.FILL)
                 .setType(MyTimePickerView.Type.HOURS_MINS)
-//                .setRangDate(startDate, endData)
                 .setDate(Calendar.getInstance())
                 .build();
     }

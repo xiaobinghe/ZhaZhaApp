@@ -21,6 +21,7 @@ import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.entity.GroupEnergyEntity;
+import com.locensate.letnetwork.main.ui.fragments.overview.OverviewModel;
 import com.locensate.letnetwork.utils.Constance;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.PickViewUtils;
@@ -121,7 +122,7 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
                 showPicker();
                 break;
             case R.id.tv_group:
-                showPop(getGroupTree());
+                showPop(new OverviewModel().getGroupTree());
                 break;
             default:
                 break;
@@ -220,6 +221,8 @@ public class ToolsEnergyAnalysisActivity extends BaseActivity {
                 }
                 mDayPicker.show();
                 break;
+                default:
+                    break;
         }
     }
 

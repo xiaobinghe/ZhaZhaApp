@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,18 +25,26 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
+import com.locensate.letnetwork.bean.MotorEfficiencyData;
 import com.locensate.letnetwork.main.ui.EnlargeEnergyEfficiency;
+import com.locensate.letnetwork.utils.AggLinkedUtil;
+import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.view.markView.MyMarkerView;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -71,21 +80,15 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
     LinearLayout llEnergyLoseElectric;
     @BindView(R.id.iv_switch)
     ImageView ivSwitch;
+    private long motorId;
+    private long startMills;
+    private long endMills;
+    private String mAgg = Constant.AGG_AVG;
+    private String mSampling = "2 second";
+    private String mInterpolation = "";
+    private String tagName = "ETA";
+    private String timeType;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EnergyEfficiencyFragment.
-     */
-    /*public static EnergyEfficiencyFragment newInstance() {
-        if (null == sFragment) {
-            sFragment = new EnergyEfficiencyFragment();
-            Bundle args = new Bundle();
-            sFragment.setArguments(args);
-        }
-        return sFragment;
-    }*/
     @Override
     public int getInflaterView() {
         return R.layout.fragment_energy_efficiency;
@@ -98,6 +101,18 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
 
     @Override
     protected void initView() {
+        tvEnergyCurrentEfficiency.setText("——");
+        tvEnergyAverageEfficiency.setText("——");
+
+        tvEnergyEfficiencyTime1.setText("——");
+        tvEnergyEfficiencyTime2.setText("——");
+        tvEnergyEfficiencyTime3.setText("——");
+        tvEnergyEfficiencyTime4.setText("——");
+
+        tvEnergyEfficiencyPercent1.setText("——");
+        tvEnergyEfficiencyPercent2.setText("——");
+        tvEnergyEfficiencyPercent3.setText("——");
+        tvEnergyEfficiencyPercent4.setText("——");
         initPieData();
         initLineData();
     }
@@ -117,6 +132,7 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
 
 //        pieEfficiency.setExtraOffsets(5, 10, 5, 5);
 
+        pieEfficiency.setNoDataText("暂无数据");
         pieEfficiency.setDragDecelerationEnabled(true);
 
 //        pieEfficiency.setDrawSliceText(false);
@@ -180,7 +196,7 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
     private void initLineData() {
         // 设置描述是否可用
         lineEfficiency.getDescription().setEnabled(false);
-
+        lineEfficiency.setNoDataText("暂无数据");
         // 设置触摸手势可用
         lineEfficiency.setTouchEnabled(true);
 
@@ -209,18 +225,54 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
 
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(mTfLight);
+
         l.setTextSize(10f);
         l.setTextColor(getResources().getColor(R.color.font_content));
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
 
+        XAxis xAxis = lineEfficiency.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(getResources().getColor(R.color.font_content));
+        xAxis.setDrawGridLines(true);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                long m = (long) (value * 1000 + startMills);
+                return mFormat.format(new Date(m));
+            }
+        });
+
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
+
+        YAxis leftAxis = lineEfficiency.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
+        leftAxis.setTypeface(tf);
+        leftAxis.setAxisMaximum(1.0f);
+        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                DecimalFormat df = new DecimalFormat("0.0");
+                return df.format(value);
+            }
+        });
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawAxisLine(false);
+        leftAxis.setGranularityEnabled(false);
+
+        YAxis rightAxis = lineEfficiency.getAxisRight();
+        rightAxis.setTextColor(Color.WHITE);
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
     }
-
 
     @Override
     public void setPieData(ArrayList<PieEntry> pieData) {
@@ -262,116 +314,110 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
         pieEfficiency.invalidate();
     }
 
+    @Override
+    public long motorId() {
+        return motorId;
+    }
+
+    @Override
+    public long getStartMills() {
+        return startMills;
+    }
+
+    @Override
+    public long getEndMills() {
+        return endMills;
+    }
 
     @Override
     public void setLineData(List<List<Entry>> lineData, String[] lineLabels) {
         List<Entry> entries1 = lineData.get(0);
         List<Entry> entries2 = lineData.get(1);
         List<Entry> entries3 = lineData.get(2);
-
-
-        XAxis xAxis = lineEfficiency.getXAxis();
-//        xAxis.setTypeface(mTfLight);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(10f);
-        xAxis.setAxisMaximum(entries1.size());
-        xAxis.setAxisMinimum(0);
-        xAxis.setTextColor(getResources().getColor(R.color.font_content));
-        xAxis.setDrawGridLines(true);
-        xAxis.setDrawAxisLine(true);
-
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf");
-
-        YAxis leftAxis = lineEfficiency.getAxisLeft();
-//        leftAxis.setTypeface(mTfLight);
-        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
-        leftAxis.setTypeface(tf);
-        leftAxis.setAxisMaximum(5.0f);
-        leftAxis.setAxisMinimum(-0.0f);
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return String.valueOf(value / 5);
-            }
-        });
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setDrawAxisLine(true);
-        leftAxis.setGranularityEnabled(true);
-
-        YAxis rightAxis = lineEfficiency.getAxisRight();
-//        rightAxis.setTypeface(mTfLight);
-        rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaximum(0);
-        rightAxis.setAxisMinimum(0);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setDrawZeroLine(false);
-        rightAxis.setGranularityEnabled(false);
-
         LineDataSet set1, set2, set3;
+        lineEfficiency.resetTracking();
+        // create a dataset and give it a type
+        set1 = new LineDataSet(entries1, lineLabels[0]);
 
-        if (lineEfficiency.getData() != null &&
-                lineEfficiency.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) lineEfficiency.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet) lineEfficiency.getData().getDataSetByIndex(1);
-            set3 = (LineDataSet) lineEfficiency.getData().getDataSetByIndex(2);
-            set1.setValues(entries1);
-            set2.setValues(lineData.get(1));
-            set3.setValues(lineData.get(2));
-            lineEfficiency.getData().notifyDataChanged();
-            lineEfficiency.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(entries1, lineLabels[0]);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(getColors()[0]);
+        set1.setCircleColor(getColors()[0]);
+        set1.setLineWidth(1.5f);
+        set1.setFillAlpha(65);
+        set1.setDrawCircles(false);
+        set1.setDrawValues(false);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawCircleHole(false);
+        //set1.setFillFormatter(new MyFillFormatter(0f));
+        //set1.setDrawHorizontalHighlightIndicator(false);
+        //set1.setVisible(false);
+        //set1.setCircleHoleColor(Color.WHITE);
 
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set1.setColor(getColors()[0]);
-            set1.setCircleColor(getColors()[0]);
-            set1.setLineWidth(1.5f);
-            set1.setFillAlpha(65);
-            set1.setDrawCircles(false);
-            set1.setDrawValues(false);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawCircleHole(false);
-            //set1.setFillFormatter(new MyFillFormatter(0f));
-            //set1.setDrawHorizontalHighlightIndicator(false);
-            //set1.setVisible(false);
-            //set1.setCircleHoleColor(Color.WHITE);
-
-            // create a dataset and give it a type
-            set2 = new LineDataSet(entries2, lineLabels[1]);
-            set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set2.setColor(getColors()[1]);
-            set2.setCircleColor(getColors()[1]);
-            set2.setLineWidth(1.5f);
-            set2.setDrawCircles(false);
-            set2.setDrawValues(false);
-            set2.setFillAlpha(65);
-            set2.setFillColor(getColors()[1]);
-            set2.setDrawCircleHole(false);
+        // create a dataset and give it a type
+        set2 = new LineDataSet(entries2, lineLabels[1]);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set2.setColor(getColors()[1]);
+        set2.setCircleColor(getColors()[1]);
+        set2.setLineWidth(1.5f);
+        set2.setDrawCircles(false);
+        set2.setDrawValues(false);
+        set2.setFillAlpha(65);
+        set2.setFillColor(getColors()[1]);
+        set2.setDrawCircleHole(false);
 //            set2.setHighLightColor(Color.rgb(244, 117, 117));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
+        //set2.setFillFormatter(new MyFillFormatter(900f));
 
-            set3 = new LineDataSet(entries3, lineLabels[2]);
-            set3.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set3.setColor(getColors()[2]);
-            set3.setCircleColor(getColors()[2]);
-            set3.setLineWidth(1.5f);
-            set3.setDrawCircles(false);
-            set3.setDrawValues(false);
-            set3.setFillAlpha(65);
-            set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
-            set3.setDrawCircleHole(false);
+        set3 = new LineDataSet(entries3, lineLabels[2]);
+        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set3.setColor(getColors()[2]);
+        set3.setCircleColor(getColors()[2]);
+        set3.setLineWidth(1.5f);
+        set3.setDrawCircles(false);
+        set3.setDrawValues(false);
+        set3.setFillAlpha(65);
+        set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
+        set3.setDrawCircleHole(false);
 //            set3.setHighLightColor(Color.rgb(244, 117, 117));
 
-            // create a data object with the datasets
-            LineData data = new LineData(set1, set2, set3);
-            data.setValueTextColor(Color.WHITE);
-            data.setValueTextSize(10f);
+        // create a data object with the datasets
+        LineData data = new LineData(set1, set2, set3);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(10f);
 
-            // set data
-            lineEfficiency.setData(data);
+        // set data
+        lineEfficiency.setData(data);
+        lineEfficiency.animateX(2000);
+
+        MyMarkerView mv = new MyMarkerView(getActivity(), R.layout.layout_my_marker_view, startMills);
+        mv.setChartView(lineEfficiency);
+        lineEfficiency.setMarker(mv);
+    }
+
+    @Override
+    public void setPieDesData(MotorEfficiencyData.DataBean data, long sumTime) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat dfe = new DecimalFormat("0.0");
+        DecimalFormat df1 = new DecimalFormat("0.000");
+        tvEnergyAverageEfficiency.setText(df1.format(data.getAverage_efficiency()));
+        tvEnergyCurrentEfficiency.setText(df1.format(data.getCurrent_efficiency()));
+        long diseconomic_running_time = data.getDiseconomic_running_time();
+        long economic_running_time = data.getEconomic_running_time();
+        long easonable_running_time = data.getEasonable_running_time();
+        long stop_time = sumTime - diseconomic_running_time - economic_running_time - easonable_running_time;
+        if (stop_time < 1) {
+            stop_time = 0;
         }
+        tvEnergyEfficiencyTime1.setText(df.format(economic_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime2.setText(df.format(easonable_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime3.setText(df.format(diseconomic_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime4.setText(df.format(stop_time / 3600) + "h");
+
+        tvEnergyEfficiencyPercent1.setText((sumTime == 0 ? 0 : dfe.format(economic_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent2.setText((sumTime == 0 ? 0 : dfe.format(easonable_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent3.setText((sumTime == 0 ? 0 : dfe.format(diseconomic_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent4.setText((sumTime == 0 ? 0 : dfe.format(stop_time * 100 / sumTime)) + "%");
+
     }
 
     public int[] getColors() {
@@ -382,6 +428,75 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
 
     @OnClick(R.id.iv_switch)
     public void onClick() {
-        startActivity(new Intent(getActivity(), EnlargeEnergyEfficiency.class));
+        Intent intent = new Intent(getActivity(), EnlargeEnergyEfficiency.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong("startMills", startMills);
+        bundle.putLong("endMills", endMills);
+        bundle.putLong("motorId", motorId);
+        bundle.putString("type", timeType);
+        bundle.putDouble("efficiency", mPresenter.getDefaultE());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
+
+    public void notifyData(long motorId, long startMills, long endMills, String timeType) {
+        LogUtil.e("NotifyData", "---motorId=" + motorId + "---start=" + startMills + "---endMills=" + endMills);
+        if (motorId == this.motorId && startMills == this.startMills && endMills == this.endMills) {
+            return;
+        }
+        this.motorId = motorId;
+        this.startMills = startMills;
+        this.endMills = endMills;
+        this.timeType = timeType;
+        mAgg = AggLinkedUtil.getAgg(timeType);
+        mSampling = AggLinkedUtil.getSampling(timeType);
+        mInterpolation = AggLinkedUtil.getInterpolation(timeType);
+
+        if (null != mPresenter) {
+            mPresenter.requestData(motorId, startMills, handleDate(endMills, startMills));
+            mPresenter.requestHistory(motorId, tagName, startMills, endMills, mAgg, mSampling, mInterpolation);
+        }
+    }
+
+
+    private long handleDate(long endMills, long startMills) {
+        long cu = System.currentTimeMillis();
+        if ((endMills + 6000) < cu) {
+            return endMills;
+        }
+        Date currentDate = new Date(cu);
+        int minutes = currentDate.getMinutes();
+        if (minutes > 1 || minutes == 1) {
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+            calendar.set(Calendar.SECOND, -1);
+            long lastTime = calendar.getTimeInMillis();
+            if (startMills > lastTime) {
+                lastTime = startMills;
+            }
+            LogUtil.e("Calendar", "-----lastTime=" + lastTime + "----endMills=" + endMills);
+            return lastTime;
+        } else {
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentDate);
+            calendar.set(Calendar.SECOND, -3601);
+            long lastTime = calendar.getTimeInMillis();
+            if (startMills > lastTime) {
+                lastTime = startMills;
+            }
+            LogUtil.e("Calendar2", "-----lastTime=" + lastTime + "----endMills=" + endMills);
+            return lastTime;
+        }
+    }
+
+    @Override
+    public void pullRequest() {
+        mPresenter.requestData(motorId, startMills, endMills);
+        mPresenter.requestHistory(motorId, tagName, startMills, endMills, mAgg, mSampling, mInterpolation);
+    }
+
 }

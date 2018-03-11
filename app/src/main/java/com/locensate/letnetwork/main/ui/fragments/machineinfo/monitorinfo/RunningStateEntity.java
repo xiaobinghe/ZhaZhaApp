@@ -3,32 +3,50 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.monitorinfo;
 import java.io.Serializable;
 
 /**
- *  
  * @author xiaobinghe
  */
 
 public class RunningStateEntity implements Serializable {
 
-    public String id;
-    public String key;
-    public String value;
-    public String unit;
-    public boolean isBreak;
+    private long id;
+    private String key;
+    private double value;
+    private String unit;
+    private boolean isBreak;
+    private String header;
+    private String name;
 
-
-    public RunningStateEntity(String id, String key, String value, boolean isBreak) {
+    public RunningStateEntity(long id, String key, double value, boolean isBreak) {
         this.id = id;
         this.key = key;
         this.value = value;
         this.isBreak = isBreak;
     }
 
-    public RunningStateEntity(String id, String key, String value, String unit, boolean isBreak) {
+    public RunningStateEntity(long id, String name, String header, String key, double value, String unit, boolean isBreak) {
         this.id = id;
+        this.name = name;
+        this.header = header;
         this.key = key;
         this.value = value;
         this.unit = unit;
         this.isBreak = isBreak;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
     }
 
     public String getUnit() {
@@ -55,11 +73,11 @@ public class RunningStateEntity implements Serializable {
         this.isBreak = isbreak;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -71,11 +89,11 @@ public class RunningStateEntity implements Serializable {
         this.key = key;
     }
 
-    public String getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }

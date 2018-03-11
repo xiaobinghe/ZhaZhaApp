@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -25,10 +23,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.base.RxBus;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.main.ui.MachineListActivity;
 import com.locensate.letnetwork.main.ui.fragments.overview.OverviewFragment;
+import com.locensate.letnetwork.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -37,7 +34,6 @@ import butterknife.OnClick;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -52,20 +48,40 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
     LinearLayout mLlUneconomic;
     @BindView(R.id.ll_stop)
     LinearLayout mLlStop;
+    @BindView(R.id.view2)
+    View mView2;
+    @BindView(R.id.imageView)
+    ImageView mImageView;
+    @BindView(R.id.tv_economy_rate)
+    TextView mTvEconomyRate;
+    @BindView(R.id.tv_economy_count)
+    TextView mTvEconomyCount;
+    @BindView(R.id.tv_economy_power_rate)
+    TextView mTvEconomyPowerRate;
+    @BindView(R.id.tv_rational_rate)
+    TextView mTvRationalRate;
+    @BindView(R.id.tv_rational_count)
+    TextView mTvRationalCount;
+    @BindView(R.id.tv_rational_power_rate)
+    TextView mTvRationalPowerRate;
+    @BindView(R.id.tv_uneconomic_rate)
+    TextView mTvUneconomicRate;
+    @BindView(R.id.tv_uneconomic_count)
+    TextView mTvUneconomicCount;
+    @BindView(R.id.tv_uneconomic_power_rate)
+    TextView mTvUneconomicPowerRate;
+    @BindView(R.id.tv_stop_rate)
+    TextView mTvStopRate;
+    @BindView(R.id.tv_stop_count)
+    TextView mTvStopCount;
+    @BindView(R.id.tv_stop_power_rate)
+    TextView mTvStopPowerRate;
+
     private Typeface tf;
     private String[] mParties = new String[]{"经济", "合理", "非经济", "停止"};
-    private float[] piePercent = new float[]{41.6f, 16.7f, 33.3f, 8.4f};
-    private String mRange;
-
-   /* public static OverviewRateAnalysisFragment getInstance(String range) {
-        if (null == overviewRateAnalysisFragment) {
-            overviewRateAnalysisFragment = new OverviewRateAnalysisFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("range", range);
-            overviewRateAnalysisFragment.setArguments(bundle);
-        }
-        return overviewRateAnalysisFragment;
-    }*/
+    private int organizationId;
+    private long startMills;
+    private long endMills;
 
     @Override
     public int getInflaterView() {
@@ -74,7 +90,7 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
 
     @Override
     protected void initView() {
-
+        initChartConfig();
     }
 
     @Override
@@ -88,12 +104,11 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
         LogUtil.e("lazyLoad:", "-------------lazyLoad");
     }
 
-
-    @Override
-    public void fillData(ArrayList<PieEntry> pieEntries) {
+    public void initChartConfig() {
         pieChart.setUsePercentValues(true);
         //添加饼图的描述是否可用
         pieChart.getDescription().setEnabled(false);
+        pieChart.setNoDataText("暂无数据");
 //        //添加饼图描述
 //        Description desc = new Description();
 //        //设置饼图描述的内容
@@ -102,7 +117,6 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
 //        desc.setTextAlign(Paint.Align.CENTER);
 //        //设置饼图描述
 //        pieChart.setDescription(desc);
-
 //        pieChart.setExtraOffsets(5, 10, 5, 5);
 
         pieChart.setDragDecelerationEnabled(true);
@@ -153,9 +167,6 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
 
         // 添加选中监听
         pieChart.setOnChartValueSelectedListener(this);
-
-        setData(4, 100);
-
         pieChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // pieChart.spin(2000, 0, 360);
 
@@ -167,31 +178,8 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
         l.setEnabled(false);
     }
 
-    private SpannableString generateCenterSpannableText() {
-
-        SpannableString s = new SpannableString("120台\r\n功率1800kw");
-        s.setSpan(new RelativeSizeSpan(1.5f), 0, 4, 0);
-//        s.setSpan(new StyleSpan());
-        s.setSpan(new StyleSpan(Typeface.DEFAULT_BOLD.getStyle()), 0, 4, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 4, s.length() - 5, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 4, s.length() - 5, 0);
-        s.setSpan(new RelativeSizeSpan(.65f), 4, s.length() - 6, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 6, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(App.getApplication().getResources().getColor(R.color.red)), s.length() - 6, s.length(), 0);
-        return s;
-    }
-
-    private void setData(int count, float range) {
-
-        float mult = range;
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry(piePercent[i], mParties[i]));
-        }
+    @Override
+    public void setData(ArrayList<PieEntry> entries) {
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
         dataSet.setDrawValues(false);
@@ -247,23 +235,23 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
         switch (view.getId()) {
             case R.id.ll_economic:
                 filter = "economic";
-                status=mParties[0];
+                status = mParties[0];
                 break;
             case R.id.ll_reasonable:
                 filter = "reasonable";
-                status=mParties[1];
+                status = mParties[1];
                 break;
             case R.id.ll_uneconomic:
                 filter = "uneconomic";
-                status=mParties[2];
+                status = mParties[2];
                 break;
             case R.id.ll_stop:
                 filter = "stop";
-                status=mParties[3];
+                status = mParties[3];
                 break;
             default:
                 filter = "economic";
-                status=mParties[0];
+                status = mParties[0];
                 break;
         }
         Intent intent = new Intent(App.getApplication(), MachineListActivity.class);
@@ -275,9 +263,59 @@ public class OverviewRateAnalysisFragment extends BaseFragment<OverviewRateAnaly
         startActivity(intent);
     }
 
+    public void acceptOrganizationId(int organizationId, long startMills, long endMills) {
+        this.organizationId = organizationId;
+        this.startMills = startMills;
+        this.endMills = endMills;
+        if (null != mPresenter) {
+            mPresenter.requestData(organizationId, startMills, endMills);
+        }
+    }
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        RxBus.get().unRegister();
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    @Override
+    public long getStartMills() {
+        return startMills;
+    }
+
+    @Override
+    public long getEndMills() {
+        return endMills;
+    }
+
+    @Override
+    public void setNumData(String[] counts, String[] powerRates, String[] countRate) {
+        mTvEconomyCount.setText(counts[0]);
+        mTvEconomyPowerRate.setText(powerRates[0]);
+        mTvEconomyRate.setText(countRate[0]);
+        mTvRationalCount.setText(counts[1]);
+        mTvRationalPowerRate.setText(powerRates[1]);
+        mTvRationalRate.setText(countRate[1]);
+        mTvUneconomicCount.setText(counts[2]);
+        mTvUneconomicPowerRate.setText(powerRates[2]);
+        mTvUneconomicRate.setText(countRate[2]);
+        mTvStopCount.setText(counts[3]);
+        mTvStopPowerRate.setText(powerRates[3]);
+        mTvStopRate.setText(countRate[3]);
+    }
+
+    @Override
+    public void setNoData() {
+        mTvEconomyCount.setText("——");
+        mTvEconomyPowerRate.setText("——");
+        mTvEconomyRate.setText("——");
+        mTvRationalCount.setText("——");
+        mTvRationalPowerRate.setText("——");
+        mTvRationalRate.setText("——");
+        mTvUneconomicCount.setText("——");
+        mTvUneconomicPowerRate.setText("——");
+        mTvUneconomicRate.setText("——");
+        mTvStopCount.setText("——");
+        mTvStopPowerRate.setText("——");
+        mTvStopRate.setText("——");
     }
 }

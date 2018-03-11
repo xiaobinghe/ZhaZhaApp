@@ -29,10 +29,9 @@ public class DataAnalysisModel implements DataAnalysisContract.Model {
     }
 
     @Override
-    public Observable<MonitorEquipmentHistoryData> getOriginData(long monitorEquipmentId, String rangeType, String tagName,long sTime, long endTime) {
-//        startTime = 1517319601000L;
-        startTime = sTime;
-        return Api.getInstance().service.getMonitorEquipmentHistoryData(monitorEquipmentId,tagName , rangeType, startTime, endTime);
+    public Observable<MonitorEquipmentHistoryData> getOriginData(long id, String tagName, long startTime, long endTime, String aggregator, String samplingValue, String interpolation) {
+        this.startTime = startTime;
+        return Api.getInstance().service.getMonitorEquipmentHistoryData(id, tagName, startTime, endTime, aggregator, samplingValue, interpolation);
     }
 
     @Override

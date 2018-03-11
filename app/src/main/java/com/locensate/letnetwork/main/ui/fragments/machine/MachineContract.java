@@ -4,10 +4,11 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.locensate.letnetwork.base.BaseModel;
 import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
-import com.locensate.letnetwork.bean.MachineDataBean;
 import com.locensate.letnetwork.bean.MachineFilterTag;
+import com.locensate.letnetwork.bean.MotorListEntity;
 import com.locensate.letnetwork.bean.Organizations;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -23,7 +24,7 @@ public interface MachineContract {
 
         List<String> getMachines();
 
-        List<MachineDataBean> getMachineList();
+        List<MotorListEntity.DataBean.ListBean> getMachineList();
 
 
         MachineFilterTag getFilterDefault();
@@ -41,7 +42,7 @@ public interface MachineContract {
          * @param item
          * @return
          */
-        Observable postImpotantMachine(MachineDataBean item);
+        Observable postImpotantMachine(MotorListEntity.DataBean.ListBean item);
 
         /**
          * 获取筛选标签
@@ -57,7 +58,7 @@ public interface MachineContract {
          *
          * @param machineList
          */
-        void fillData(List<MachineDataBean> machineList);
+        void fillData(List<MotorListEntity.DataBean.ListBean> machineList);
 
         /**
          * 填充筛选标签数据
@@ -76,11 +77,33 @@ public interface MachineContract {
 
         /**
          * 排序完成
+         *
          * @param machineList
          */
-        void sortComplete(List<MachineDataBean> machineList);
+        void sortComplete(List<MotorListEntity.DataBean.ListBean> machineList);
+
+        void statisticsData(int motor_count, String format);
+
+        boolean isRefresh();
+
+        void refreshFaild();
+
+        void loadMoreFaild();
+
+        void refreshSuccess(List<MotorListEntity.DataBean.ListBean> list);
+
+        void loadMoreSuccess(List<MotorListEntity.DataBean.ListBean> list);
+
+        String getSortType();
+
+        void setTitleText(String organizationName);
+
+        void initTimeTypeAndValue(String type, Date[] startAndEnd);
     }
 
+    /**
+     *
+     */
     abstract class Presenter extends BasePresenter<Model, View> {
 
         /**
@@ -93,17 +116,30 @@ public interface MachineContract {
          *
          * @param item
          */
-        public abstract void markImportant(MachineDataBean item);
+        public abstract void markImportant(MotorListEntity.DataBean.ListBean item);
 
         /**
-         * 初始化数据
+         * 刷新数据
+         *
+         * @param i
+         * @param i1
+         * @param asc
          */
-        public abstract void initData();
+        public abstract void refreshList(int i, int i1, String asc);
 
         /**
          * 筛选列表数据刷新
          */
         public abstract void refreshFilter();
+
+
+        /**
+         * 设置时间范围
+         *
+         * @param startMills
+         * @param endMills
+         */
+        public abstract void setTimeRange(long startMills, long endMills);
 
         /**
          * 标记重点设备
@@ -113,7 +149,5 @@ public interface MachineContract {
          * @param important
          */
         public abstract void setImportantMachine(String id, String importantMachine, boolean important);
-
-        public abstract void sort();
     }
 }

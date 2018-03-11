@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="  0-20%"
+                        android:text="空载"
                         android:textColor="@color/font_pie_black"
                         android:textSize="32px"/>
                 </LinearLayout>
@@ -142,6 +142,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_no_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -159,6 +160,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_no_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -176,6 +178,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_no_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -213,7 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="20-40%"
+                        android:text="轻载"
                         android:textColor="@color/font_pie_black"
                         android:textSize="32px"/>
                 </LinearLayout>
@@ -227,6 +230,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_light_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -244,6 +248,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_light_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -261,6 +266,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_light_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -298,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="40-60%"
+                        android:text="半载"
                         android:textColor="@color/font_pie_black"
                         android:textSize="32px"/>
                 </LinearLayout>
@@ -312,6 +318,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_half_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -329,6 +336,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_half_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -346,6 +354,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_half_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -383,7 +392,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="60-80%"
+                        android:text="重载"
                         android:textColor="@color/font_pie_black"
                         android:textSize="32px"/>
                 </LinearLayout>
@@ -397,6 +406,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_heavy_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -414,6 +424,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_heavy_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -431,6 +442,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_heavy_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -468,7 +480,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/more_80"
+                        android:text="过载"
                         android:textColor="@color/font_pie_black"
                         android:textSize="32px"/>
                 </LinearLayout>
@@ -482,6 +494,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_over_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -499,6 +512,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_over_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -516,6 +530,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_over_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -567,6 +582,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_stop_load_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -584,6 +600,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_stop_load_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -601,6 +618,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_stop_load_power_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"

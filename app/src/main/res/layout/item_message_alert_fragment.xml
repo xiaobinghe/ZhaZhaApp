@@ -108,5 +108,4 @@
             android:text="1"
             android:textColor="@color/white" />
     </FrameLayout>
-
 </FrameLayout>

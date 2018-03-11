@@ -21,7 +21,7 @@ import cn.jpush.android.api.JPushInterface;
 public class App extends LitePalApplication {
 
     private static Application mApp;
-    public static boolean isMock = true;
+    public static boolean isMock = false;
 
     @Override
     public void onCreate() {

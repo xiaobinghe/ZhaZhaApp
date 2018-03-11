@@ -236,7 +236,7 @@ public class OrderDetailActivity extends BaseActivity<OrderDetailPresenter, Orde
     }
 
     private void addEvaluateView() {
-        updateProgress(3);
+        updateProgress(4);
         if (isCompleted) {
             detailRVAdapter.addHeaderView(getHeadEvaluateView(0, ""), 2);
             detailRVAdapter.notifyDataSetChanged();

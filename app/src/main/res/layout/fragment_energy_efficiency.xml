@@ -171,7 +171,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_efficiency_time4"
+                    android:id="@+id/tv_energy_efficiency_time3"
                     android:layout_width="150px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="32px"
@@ -180,7 +180,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_efficiency_percent4"
+                    android:id="@+id/tv_energy_efficiency_percent3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="95.5%"
@@ -211,7 +211,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_efficiency_time3"
+                    android:id="@+id/tv_energy_efficiency_time4"
                     android:layout_width="182px"
                     android:layout_height="wrap_content"
                     android:paddingLeft="62px"
@@ -220,7 +220,7 @@
                     android:textSize="30px"/>
 
                 <TextView
-                    android:id="@+id/tv_energy_efficiency_percent3"
+                    android:id="@+id/tv_energy_efficiency_percent4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2.8%"
@@ -292,6 +292,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:padding="@dimen/dp_8"
                     android:src="@drawable/switch_icon"/>
             </LinearLayout>
 

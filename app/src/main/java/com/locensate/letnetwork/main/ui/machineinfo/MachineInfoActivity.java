@@ -11,11 +11,10 @@ import android.widget.TextView;
 import com.locensate.letnetwork.AppManager;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.main.ui.AddRemindActivity;
 import com.locensate.letnetwork.main.ui.AddRepairActivity;
-import com.locensate.letnetwork.main.ui.addorder.AddOrderActivity;
 import com.locensate.letnetwork.main.ui.CreateRiPlanActivity;
+import com.locensate.letnetwork.main.ui.addorder.AddOrderActivity;
 import com.locensate.letnetwork.view.MachineInfoPop;
 
 import butterknife.BindView;
@@ -42,16 +41,13 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
     @BindView(R.id.vp_machine_info_content)
     ViewPager vpMachineInfoContent;
     private String machineName;
-    private String machineId;
+    private long motorId;
 
     private MachineInfoPop machineInfoPop;
     private Bundle mExtras;
 
     @Override
     public int getLayoutId() {
-
-        LogUtil.e(TAG, String.valueOf(this.getTaskId()));
-
         return R.layout.activity_machine_info;
     }
 
@@ -59,7 +55,7 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
     public void initView() {
         mExtras = getIntent().getExtras();
         machineName = mExtras.getString("machineName");
-        machineId = mExtras.getString("machineId");
+        motorId = mExtras.getLong("motorId");
         tvNormalTitleContent.setText(machineName);
     }
 

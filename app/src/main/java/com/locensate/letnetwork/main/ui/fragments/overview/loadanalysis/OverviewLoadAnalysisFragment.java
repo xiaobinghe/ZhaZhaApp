@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -24,7 +21,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.base.RxBus;
 import com.locensate.letnetwork.main.ui.MachineListActivity;
 import com.locensate.letnetwork.main.ui.fragments.overview.OverviewFragment;
 
@@ -35,7 +31,6 @@ import butterknife.OnClick;
 
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -55,10 +50,49 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
     LinearLayout mLlOver;
     @BindView(R.id.ll_stop)
     LinearLayout mLlStop;
+    @BindView(R.id.tv_no_load_rate)
+    TextView mTvNoLoadRate;
+    @BindView(R.id.tv_no_load_count)
+    TextView mTvNoLoadCount;
+    @BindView(R.id.tv_no_load_power_rate)
+    TextView mTvNoLoadPowerRate;
+    @BindView(R.id.tv_light_load_rate)
+    TextView mTvLightLoadRate;
+    @BindView(R.id.tv_light_load_count)
+    TextView mTvLightLoadCount;
+    @BindView(R.id.tv_light_load_power_rate)
+    TextView mTvLightLoadPowerRate;
+    @BindView(R.id.tv_half_load_rate)
+    TextView mTvHalfLoadRate;
+    @BindView(R.id.tv_half_load_count)
+    TextView mTvHalfLoadCount;
+    @BindView(R.id.tv_half_load_power_rate)
+    TextView mTvHalfLoadPowerRate;
+    @BindView(R.id.tv_heavy_load_rate)
+    TextView mTvHeavyLoadRate;
+    @BindView(R.id.tv_heavy_load_count)
+    TextView mTvHeavyLoadCount;
+    @BindView(R.id.tv_heavy_load_power_rate)
+    TextView mTvHeavyLoadPowerRate;
+    @BindView(R.id.tv_over_load_rate)
+    TextView mTvOverLoadRate;
+    @BindView(R.id.tv_over_load_count)
+    TextView mTvOverLoadCount;
+    @BindView(R.id.tv_over_load_power_rate)
+    TextView mTvOverLoadPowerRate;
+    @BindView(R.id.tv_stop_load_rate)
+    TextView mTvStopLoadRate;
+    @BindView(R.id.tv_stop_load_count)
+    TextView mTvStopLoadCount;
+    @BindView(R.id.tv_stop_load_power_rate)
+    TextView mTvStopLoadPowerRate;
+
     private Typeface tf;
-//    private String[] mParties = new String[]{"空载", "轻载", "半载", "重载", "过载", "停止"};
-    private String[] mParties = new String[]{"0-20%", "20-40%", "40-60%", "60-80%", "80-100%", "100%以上"};
-    private float[] percents = new float[]{10f, 35.8f, 4.2f, 40f, 1.7f, 8.3f};
+    private String[] mParties = new String[]{"空载", "轻载", "半载", "重载", "过载", "停止"};
+    //private String[] mParties = new String[]{"0-20%", "20-40%", "40-60%", "60-80%", "80-100%", "100%以上"};
+    private int organizationId;
+    private long startMills;
+    private long endMills;
 
     /*public static OverviewLoadAnalysisFragment getInstance(String range) {
         if (null == overviewLoadAnalysisFragment) {
@@ -77,7 +111,7 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
 
     @Override
     protected void initView() {
-
+        initChartConfig();
     }
 
     @Override
@@ -90,17 +124,14 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
 
     }
 
-
-    @Override
-    public void fillData(ArrayList<PieEntry> pieEntries) {
-
+    private void initChartConfig() {
         pieOverviewContain.setUsePercentValues(true);
         pieOverviewContain.getDescription().setEnabled(false);
+        pieOverviewContain.setNoDataText("暂无数据");
 //        Description desc = new Description();
 //        desc.setText("we are super man");
 //        pieOverviewContain.setDescription(desc);
 //        pieOverviewContain.setExtraOffsets(5, 10, 5, 5);
-
         pieOverviewContain.setDragDecelerationFrictionCoef(0.98f);
 
         tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
@@ -138,8 +169,6 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
         // add a selection listener
         pieOverviewContain.setOnChartValueSelectedListener(this);
 
-        setData(6, 100);
-
         pieOverviewContain.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // pieOverviewContain.spin(2000, 0, 360);
 
@@ -151,37 +180,13 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
         l.setEnabled(false);
     }
 
-    private CharSequence generateCenterSpannableText() {
-        SpannableString s = new SpannableString("120台\r\n功率1800kw");
-        s.setSpan(new RelativeSizeSpan(1.5f), 0, 4, 0);
-//        s.setSpan(new StyleSpan());
-        s.setSpan(new StyleSpan(Typeface.DEFAULT_BOLD.getStyle()), 0, 4, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 4, s.length() - 5, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 4, s.length() - 5, 0);
-        s.setSpan(new RelativeSizeSpan(.65f), 4, s.length() - 6, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 6, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(App.getApplication().getResources().getColor(R.color.red)), s.length() - 6, s.length(), 0);
-        return s;
-    }
-
-    private void setData(int count, int range) {
-        float mult = range;
-
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-
-        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
-        // the chart.
-        for (int i = 0; i < count; i++) {
-            entries.add(new PieEntry(percents[i], mParties[i]));
-        }
+    @Override
+    public void setData(ArrayList<PieEntry> entries) {
 
         PieDataSet dataSet = new PieDataSet(entries, "Election Results");
-
         dataSet.setSliceSpace(0f);
         dataSet.setSelectionShift(5f);
-
         // add a lot of colors
-
         ArrayList<Integer> colors = new ArrayList<Integer>();
         colors.add(getResources().getColor(R.color.pie_orange));
         colors.add(getResources().getColor(R.color.pie_yellow));
@@ -234,27 +239,27 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
                 break;
             case R.id.ll_light:
                 filter = "light";
-                status = mParties[0];
+                status = mParties[1];
 
                 break;
             case R.id.ll_half:
                 filter = "half";
-                status = mParties[0];
+                status = mParties[2];
 
                 break;
             case R.id.ll_heavy:
                 filter = "heavy";
-                status = mParties[0];
+                status = mParties[3];
 
                 break;
             case R.id.ll_over:
                 filter = "over";
-                status = mParties[0];
+                status = mParties[4];
 
                 break;
             case R.id.ll_stop:
                 filter = "stop";
-                status = mParties[0];
+                status = mParties[5];
 
                 break;
             default:
@@ -266,7 +271,7 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
         Bundle bundle = new Bundle();
         bundle.putString("filter", filter);
         bundle.putString("ranges", OverviewFragment.mGroupName);
-        bundle.putString("status",status);
+        bundle.putString("status", status);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -274,8 +279,74 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unRegister();
 
     }
 
+    public void acceptOrganizationId(int organizationId, long startMills, long endMills) {
+        this.organizationId = organizationId;
+        this.startMills = startMills;
+        this.endMills = endMills;
+        if (null != mPresenter) {
+            mPresenter.requestData(organizationId, startMills, endMills);
+        }
+    }
+
+    @Override
+    public int getOrganizationId() {
+        return organizationId;
+    }
+
+    @Override
+    public long getStartMills() {
+        return startMills;
+    }
+
+    @Override
+    public long getEndMills() {
+        return endMills;
+    }
+
+    @Override
+    public void setNumData(String[] counts, String[] powerRates, String[] countRate) {
+        mTvNoLoadCount.setText(counts[0]);
+        mTvNoLoadPowerRate.setText(powerRates[0]);
+        mTvNoLoadRate.setText(countRate[0]);
+        mTvLightLoadCount.setText(counts[1]);
+        mTvLightLoadPowerRate.setText(powerRates[1]);
+        mTvLightLoadRate.setText(countRate[1]);
+        mTvHalfLoadCount.setText(counts[2]);
+        mTvHalfLoadPowerRate.setText(powerRates[2]);
+        mTvHalfLoadRate.setText(countRate[2]);
+        mTvHeavyLoadCount.setText(counts[3]);
+        mTvHeavyLoadPowerRate.setText(powerRates[3]);
+        mTvHeavyLoadRate.setText(countRate[3]);
+        mTvOverLoadCount.setText(counts[4]);
+        mTvOverLoadPowerRate.setText(powerRates[4]);
+        mTvOverLoadRate.setText(countRate[4]);
+        mTvStopLoadCount.setText(counts[5]);
+        mTvStopLoadPowerRate.setText(powerRates[5]);
+        mTvStopLoadRate.setText(countRate[5]);
+    }
+
+    @Override
+    public void setNoData() {
+        mTvNoLoadCount.setText("——");
+        mTvNoLoadPowerRate.setText("——");
+        mTvNoLoadRate.setText("——");
+        mTvLightLoadCount.setText("——");
+        mTvLightLoadPowerRate.setText("——");
+        mTvLightLoadRate.setText("——");
+        mTvHalfLoadCount.setText("——");
+        mTvHalfLoadPowerRate.setText("——");
+        mTvHalfLoadRate.setText("——");
+        mTvHeavyLoadCount.setText("——");
+        mTvHeavyLoadPowerRate.setText("——");
+        mTvHeavyLoadRate.setText("——");
+        mTvOverLoadCount.setText("——");
+        mTvOverLoadPowerRate.setText("——");
+        mTvOverLoadRate.setText("——");
+        mTvStopLoadCount.setText("——");
+        mTvStopLoadPowerRate.setText("——");
+        mTvStopLoadRate.setText("——");
+    }
 }

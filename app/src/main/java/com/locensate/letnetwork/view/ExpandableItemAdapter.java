@@ -94,9 +94,9 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                 holder.getView(R.id.tv_level1_title).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        path = new StringBuilder(lv1.subTitle).append("/").append(lv1.title).toString();
+                        path = lv1.title;
                         organizationId = lv1.getOrgnizationId();
-                        selectComplete.onSelectComplete(path,organizationId);
+                        selectComplete.onSelectComplete(path, organizationId);
                     }
                 });
                 break;
@@ -107,10 +107,10 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
                     @Override
                     public void onClick(View view) {
                         int pos = holder.getAdapterPosition();
-                        path = new StringBuilder(level2Item.subtitle).append("/").append(level2Item.title).toString();
+                        path = level2Item.title;
                         organizationId = level2Item.getOrganizationId();
 
-                        selectComplete.onSelectComplete(path,organizationId);
+                        selectComplete.onSelectComplete(path, organizationId);
                     }
                 });
                 break;
@@ -126,7 +126,7 @@ public class ExpandableItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEn
          *
          * @param path
          */
-        void onSelectComplete(String path,int organization);
+        void onSelectComplete(String path, int organization);
     }
 
     public void setSelectComplete(SelectComplete selectComplete) {

@@ -9,7 +9,6 @@ import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
@@ -28,37 +27,14 @@ public class DataAnalysisPresenter extends DataAnalysisContract.Presenter {
 
 
     @Override
-    public void setUp(long id, String rangeType, String tagName, Date startDate) {
+    public void setUp(long id, String tagName, long startTime, long endTime, String aggregator, String samplingValue, String interpolation) {
         if (App.isMock) {
             mView.fillChartData(mModel.getData());
             return;
         }
 
-        long startMill = startDate.getTime();
-        long endMill;
-        switch (rangeType) {
-            case "minute":
-                endMill = startMill + 600000L;
-                break;
-            case "hour":
-                endMill = startMill + 3600000L;
-                break;
-            case "day":
-                endMill = startMill + 86400000L;
-                break;
-            case "week":
-                endMill = startMill + 604800000L;
-                break;
-            case "mouth":
-                endMill = startMill + 2592000000L;
-                break;
-            default:
-                endMill = startMill + 600000L;
-                break;
-        }
 
-
-        mModel.getOriginData(id, rangeType, tagName, startMill, endMill).compose(RxSchedulers.<MonitorEquipmentHistoryData>applyObservableAsync()).map(new Function<MonitorEquipmentHistoryData, List<Entry>>() {
+        mModel.getOriginData(id, tagName, startTime, endTime, aggregator, samplingValue, interpolation).compose(RxSchedulers.<MonitorEquipmentHistoryData>applyObservableAsync()).map(new Function<MonitorEquipmentHistoryData, List<Entry>>() {
 
             @Override
             public List<Entry> apply(MonitorEquipmentHistoryData monitorEquipmentHistoryData) throws Exception {

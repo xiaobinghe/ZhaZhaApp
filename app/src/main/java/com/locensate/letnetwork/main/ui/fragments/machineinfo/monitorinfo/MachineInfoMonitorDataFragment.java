@@ -10,13 +10,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
+import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.main.ui.RemoteParameterActivity;
 import com.locensate.letnetwork.main.ui.dataanalysis.DataAnalysisActivity;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * @author xiaobinghe
@@ -27,15 +34,55 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
     @BindView(R.id.rv_machine_monitor)
     RecyclerView rvMachineMonitor;
     private MachineMonitorRvAdapter monitorRVAdapter;
-    private boolean isAddListener = false;
     private Bundle mMachineInfo;
     private String machineName;
-    private String machineId;
+    private long motorId;
     private boolean initComplete = false;
+    private CompositeDisposable mCompositeDisposable;
 
     @Override
     protected void initView() {
-        initComplete=true;
+        MachineInfoActivity context = (MachineInfoActivity) getActivity();
+        mMachineInfo = context.getMachineInfo();
+        machineName = mMachineInfo.getString("machineName");
+        motorId = mMachineInfo.getLong("motorId");
+        rvMachineMonitor.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        monitorRVAdapter = new MachineMonitorRvAdapter(R.layout.item_section_content, R.layout.item_section_head, new ArrayList<MonitoringData>(), getContext());
+        monitorRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                Bundle bundle = new Bundle();
+                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
+                if (!item.isHeader) {
+                    RunningStateEntity data = (RunningStateEntity) item.t;
+                    bundle.putSerializable("parameter", data);
+                    skipHistoryData(bundle);
+                }
+            }
+        });
+
+        monitorRVAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
+                skipRemoteParameter();
+            }
+        });
+
+        rvMachineMonitor.setAdapter(monitorRVAdapter);
+
+        mCompositeDisposable = new CompositeDisposable();
+
+        Observable<Long> observable = Observable.interval(10 * 1000, TimeUnit.MILLISECONDS).doOnNext(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                mPresenter.initData();
+            }
+        });
+        DisposableObserver disposable = getDisposable();
+        observable.compose(RxSchedulers.<Long>applyObservableAsync()).subscribe(disposable);
+        mCompositeDisposable.add(disposable);
+        initComplete = true;
     }
 
     @Override
@@ -46,39 +93,25 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
     @Override
     protected void lazyLoad() {
         if (initComplete) {
-            mPresenter.initData();
-        }
 
+        }
     }
 
     @Override
-    public void fillData(List<MonitoringData> datas) {
-        MachineInfoActivity context = (MachineInfoActivity) getActivity();
-        mMachineInfo = context.getMachineInfo();
-        machineName = mMachineInfo.getString("machineName");
-        machineId = mMachineInfo.getString("machineId");
-        rvMachineMonitor.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        monitorRVAdapter = new MachineMonitorRvAdapter(R.layout.item_section_content, R.layout.item_section_head, datas, getContext());
-        monitorRVAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                Bundle bundle = new Bundle();
-                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
-                if (!item.isHeader && i != 1) {
-                    RunningStateEntity data = (RunningStateEntity) item.t;
-                    bundle.putSerializable("parameter", data);
-                    skipHistoryData(bundle);
-                }
-            }
-        });
-        monitorRVAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                MonitoringData item = (MonitoringData) baseQuickAdapter.getItem(i);
-                skipRemoteParameter();
-            }
-        });
-        rvMachineMonitor.setAdapter(monitorRVAdapter);
+    public void fillData(List<MonitoringData> data) {
+        monitorRVAdapter.replaceData(data);
+    }
+
+    @Override
+    public long getMotorId() {
+        return motorId;
+    }
+
+    @Override
+    public void onDestroyView() {
+        rvMachineMonitor.setAdapter(null);
+        mCompositeDisposable.clear();
+        super.onDestroyView();
     }
 
     private void skipHistoryData(Bundle bundle) {
@@ -92,9 +125,23 @@ public class MachineInfoMonitorDataFragment extends BaseFragment<MachineInfoMoni
         startActivity(intent);
     }
 
-    @Override
-    public void onDestroyView() {
-        rvMachineMonitor.setAdapter(null);
-        super.onDestroyView();
+    private DisposableObserver getDisposable() {
+        return new DisposableObserver<Long>() {
+            @Override
+            public void onNext(Long kanBanDataEntity) {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
+
+
 }

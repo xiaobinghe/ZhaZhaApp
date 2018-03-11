@@ -14,6 +14,7 @@ import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.bean.MachineDataBean;
+import com.locensate.letnetwork.bean.MotorListEntity;
 import com.locensate.letnetwork.main.ui.fragments.machine.MachineListAdapter;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 import com.locensate.letnetwork.utils.LogUtil;
@@ -123,22 +124,12 @@ public class MachineListActivity extends BaseActivity {
     }
 
 
-    private List<MachineDataBean> getMachines() {
-        List<MachineDataBean> machines = new ArrayList<>();
+    private List<MotorListEntity.DataBean.ListBean> getMachines() {
+        List<MotorListEntity.DataBean.ListBean> machines = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            if (i % 4 == 0) {
-                machines.add(new MachineDataBean("皮带机", "SGY", "一车间/配电室", "380V", "55kW", "85", "0.85", true, true, String.valueOf(i)));
-            } else if (i % 4 == 1) {
-                machines.add(new MachineDataBean("除尘风机 ", "MM430", "一车间/配电室", "380V", "55kW", "68", "0.59", true, false, String.valueOf(i)));
-
-            } else if (i % 4 == 2) {
-                machines.add(new MachineDataBean("主抽风机", "Atv61", "一车间/配电室", "380V", "55kW", "75", "0.84", false, true, String.valueOf(i)));
-
-            } else {
-                machines.add(new MachineDataBean("机尾除尘风机", "GZBCK", "一车间/配电室", "380V", "55kW", "75", "0.90", true, true, String.valueOf(i)));
-
-            }
+            machines.add(new MotorListEntity.DataBean.ListBean(0.9,0,1,1,55,"工料车间","变频器",75,"除尘风机电机","380v","除尘风机"));
         }
+
 
         return machines;
     }

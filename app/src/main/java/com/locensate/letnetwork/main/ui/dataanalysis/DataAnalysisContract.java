@@ -6,7 +6,6 @@ import com.locensate.letnetwork.base.BasePresenter;
 import com.locensate.letnetwork.base.BaseView;
 import com.locensate.letnetwork.bean.MonitorEquipmentHistoryData;
 
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -37,15 +36,8 @@ public interface DataAnalysisContract {
 
         /**
          * 获取历史数据
-         *
-         * @param monitorEquipmentId
-         * @param rangeType
-         * @param tagName
-         * @param startTime
-         * @param endTime
-         * @return
          */
-        Observable<MonitorEquipmentHistoryData> getOriginData(long monitorEquipmentId, String rangeType, String tagName, long startTime, long endTime);
+        Observable<MonitorEquipmentHistoryData> getOriginData(long id, String tagName, long startTime, long endTime, String aggregator, String samplingValue, String interpolation);
 
         /**
          * 获取起始时间
@@ -58,14 +50,18 @@ public interface DataAnalysisContract {
 
     abstract class Presenter extends BasePresenter<Model, View> {
 
+
         /**
          * 刷新数据
          *
          * @param id
-         * @param rangeType
          * @param tagName
-         * @param startDate
+         * @param startTime
+         * @param endTime
+         * @param aggregator
+         * @param samplingValue
+         * @param interpolation
          */
-        abstract void setUp(long id, String rangeType, String tagName, Date startDate);
+        public abstract void setUp(long id, String tagName, long startTime, long endTime, String aggregator, String samplingValue, String interpolation);
     }
 }

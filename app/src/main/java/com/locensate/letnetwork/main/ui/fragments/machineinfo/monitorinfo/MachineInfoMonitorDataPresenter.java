@@ -1,59 +1,41 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.monitorinfo;
 
-import com.locensate.letnetwork.App;
+import com.locensate.letnetwork.R;
+import com.locensate.letnetwork.api.Api;
+import com.locensate.letnetwork.base.RxSchedulers;
+import com.locensate.letnetwork.bean.TestBean;
+import com.locensate.letnetwork.utils.LogUtil;
+import com.locensate.letnetwork.utils.ToastUtil;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * @author xiaobinghe
  */
 
 public class MachineInfoMonitorDataPresenter extends MachineInfoMonitorDataContract.Presenter {
+    private long motorId;
+
     @Override
     public void onStart() {
-
-
-
+        motorId = mView.getMotorId();
+        initData();
     }
 
     @Override
-    void initData() {
-        if (App.isMock) {
-            mView.fillData(mModel.getMonitorData());
-            mModel.getMonitorData();
-            return;
-        }
-
-/*
-        *//*1、读取依附的设备列表（控制设备，监测设备，滤波补偿设备）*//*
-        mModel.getEquipments().compose(RxSchedulers.<EquipmentsEntity>applyObservableAsync()).flatMap(new Function<EquipmentsEntity, ObservableSource<BaseSubEquipment>>() {
+    public void initData() {
+        Api.getInstance().service.getMotorLastData(motorId).compose(RxSchedulers.<TestBean>applyObservableAsync()).subscribe(new Consumer<TestBean>() {
             @Override
-            public ObservableSource<BaseSubEquipment> apply(EquipmentsEntity equipmentsEntity) throws Exception {
-                *//*2、获取各类设备的可读取参数*//*
-                //遍历equipmentsEntity中的设备，拿到Type判断是属于什么设备
-                for (int i = 0; i < 5; i++) {
-                    String type = "";
-                    if (type.equals("监测设备")) {
-                        MonitorEquipmentEntity monitor = (MonitorEquipmentEntity) equipmentsEntity.getData().get(i);
-                        return mModel.getMonitorLatestData(monitor.getId());
-                    } else if (type.equals("控制设备")) {
-                        ControlEquipmentEntity control = (ControlEquipmentEntity) equipmentsEntity.getData().get(i);
-                        return mModel.getControlLatestData(control.getId());
-                    } else if (type.equals("滤波补偿")) {
-                        FilterCompensationEntity filter = (FilterCompensationEntity) equipmentsEntity.getData().get(i);
-                        return mModel.getFilterCompensationLatestData(filter.getId());
-                    }
-                }
-                return null;
+            public void accept(TestBean motorLastDataEntity) throws Exception {
+                TestBean.DataBean data = motorLastDataEntity.getData();
+                mView.fillData(mModel.handleData(motorId, data));
             }
-        }).flatMap(new Function<BaseSubEquipment, ObservableSource<?>>() {
+        }, new Consumer<Throwable>() {
             @Override
-            public ObservableSource<?> apply(BaseSubEquipment baseSubEquipment) throws Exception {
-                return null;
+            public void accept(Throwable throwable) throws Exception {
+                LogUtil.e("getMotorLastData", "-------throwable=" + throwable.toString());
+                ToastUtil.show(R.string.data_load_fail);
             }
         });
-
-        *//*3、获取可读取参数的最新值*//*
-
-        *//*4、*/
-
     }
 }

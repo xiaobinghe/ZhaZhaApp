@@ -12,6 +12,11 @@ import com.locensate.letnetwork.base.BaseActivity;
 import com.locensate.letnetwork.main.ui.addorder.addmachine.AddMachineFragment;
 import com.locensate.letnetwork.utils.LogUtil;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -35,6 +40,13 @@ public class AddOrderActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
+        Map<String, String> str = new HashMap<>();
+        Set<String> set = str.keySet();
+        Iterator iterator=set.iterator();
+        while (iterator.hasNext()){
+            System.err.println("");
+
+        }
         return R.layout.activity_create_order;
     }
 
