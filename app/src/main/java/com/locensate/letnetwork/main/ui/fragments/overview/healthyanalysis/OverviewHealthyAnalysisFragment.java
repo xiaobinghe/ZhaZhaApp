@@ -264,6 +264,9 @@ public class OverviewHealthyAnalysisFragment extends BaseFragment<OverviewHealth
 
     @OnClick({R.id.ll_health, R.id.ll_good, R.id.ll_worse, R.id.ll_worst})
     public void onViewClicked(View view) {
+        if (true) {
+            return;
+        }
         String filter;
         String status;
         switch (view.getId()) {

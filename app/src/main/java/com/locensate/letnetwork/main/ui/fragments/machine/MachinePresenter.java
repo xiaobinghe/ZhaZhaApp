@@ -49,7 +49,7 @@ public class MachinePresenter extends MachineContract.Presenter {
         endMills = startAndEnd[1].getTime();
         mView.initTimeTypeAndValue("周", startAndEnd);
 
-        refreshList(1, 10, Constant.ASC);
+        refreshList(1, 10, Constant.DESC);
         refreshFilter();
         initOrganization();
     }

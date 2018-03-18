@@ -320,10 +320,12 @@ public class MachineInfoHealthyManagerFragment extends BaseFragment<MachineInfoH
         if (entries.get(0).getValue() == 100) {
             dataSet.setColors(getBlueColors());
         } else if (entries.get(0).getValue() > 80) {
-            dataSet.setColors(getOrangeColors());
+            dataSet.setColors(getYellowColors());
         } else if (entries.get(0).getValue() >50) {
+            dataSet.setColors(getOrangeColors());
+        } else if (entries.get(0).getValue()>0){
             dataSet.setColors(getRedColors());
-        } else {
+        }else {
             dataSet.setColors(getGrayColor());
         }
 
@@ -342,6 +344,14 @@ public class MachineInfoHealthyManagerFragment extends BaseFragment<MachineInfoH
         pieChart.invalidate();
     }
 
+    private ArrayList<Integer> getYellowColors() {
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.pie_yellow));
+        colors.add(getResources().getColor(R.color.pie_gray));
+        colors.add(getResources().getColor(R.color.pie_gray));
+        return colors;
+    }
+
     private int getGrayColor() {
         return getResources().getColor(R.color.gray_font);
     }
@@ -349,16 +359,16 @@ public class MachineInfoHealthyManagerFragment extends BaseFragment<MachineInfoH
     public ArrayList<Integer> getBlueColors() {
         ArrayList<Integer> colors = new ArrayList<>();
         colors.add(getResources().getColor(R.color.pie_blue_sky));
-        colors.add(getResources().getColor(R.color.pie_blue_sky_gray));
-        colors.add(getResources().getColor(R.color.pie_blue_sky_gray));
+        colors.add(getResources().getColor(R.color.pie_gray));
+        colors.add(getResources().getColor(R.color.pie_gray));
         return colors;
     }
 
     public ArrayList<Integer> getOrangeColors() {
         ArrayList<Integer> orangeColors = new ArrayList<>();
-        orangeColors.add(getResources().getColor(R.color.pie_orange_light));
         orangeColors.add(getResources().getColor(R.color.pie_orange_light_gray));
-        orangeColors.add(getResources().getColor(R.color.pie_orange_light_gray));
+        orangeColors.add(getResources().getColor(R.color.pie_gray));
+        orangeColors.add(getResources().getColor(R.color.pie_gray));
         return orangeColors;
     }
 

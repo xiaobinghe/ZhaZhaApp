@@ -6,17 +6,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.AppManager;
 import com.locensate.letnetwork.Constant;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.BaseActivity;
+import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.bean.Logout;
 import com.locensate.letnetwork.bean.OnlyMsg;
+import com.locensate.letnetwork.bean._User;
 import com.locensate.letnetwork.main.ui.login.LoginActivity;
 import com.locensate.letnetwork.utils.LogUtil;
-import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.utils.SpUtil;
 import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.ModernDialog;
@@ -78,6 +80,8 @@ public class AccountInfoActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        _User user = new Gson().fromJson(SpUtil.getString(App.getApplication(), Constant.USER, ""), _User.class);
+
         mCompositeDisposable = new CompositeDisposable();
         tvTitleOnlyBack.setText("账户信息");
     }

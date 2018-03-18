@@ -240,9 +240,9 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
         xAxis.setTextColor(getResources().getColor(R.color.font_content));
         xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(true);
+        xAxis.setLabelCount(4);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
-
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 long m = (long) (value * 1000 + startMills);
@@ -408,15 +408,15 @@ public class EnergyEfficiencyFragment extends BaseFragment<EnergyEfficiencyPrese
         if (stop_time < 1) {
             stop_time = 0;
         }
-        tvEnergyEfficiencyTime1.setText(df.format(economic_running_time / 3600) + "h");
-        tvEnergyEfficiencyTime2.setText(df.format(easonable_running_time / 3600) + "h");
-        tvEnergyEfficiencyTime3.setText(df.format(diseconomic_running_time / 3600) + "h");
-        tvEnergyEfficiencyTime4.setText(df.format(stop_time / 3600) + "h");
+        tvEnergyEfficiencyTime1.setText(df.format((float)economic_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime2.setText(df.format((float)easonable_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime3.setText(df.format((float)diseconomic_running_time / 3600) + "h");
+        tvEnergyEfficiencyTime4.setText(df.format((float)stop_time / 3600) + "h");
 
-        tvEnergyEfficiencyPercent1.setText((sumTime == 0 ? 0 : dfe.format(economic_running_time * 100 / sumTime)) + "%");
-        tvEnergyEfficiencyPercent2.setText((sumTime == 0 ? 0 : dfe.format(easonable_running_time * 100 / sumTime)) + "%");
-        tvEnergyEfficiencyPercent3.setText((sumTime == 0 ? 0 : dfe.format(diseconomic_running_time * 100 / sumTime)) + "%");
-        tvEnergyEfficiencyPercent4.setText((sumTime == 0 ? 0 : dfe.format(stop_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent1.setText((sumTime == 0 ? 0 : dfe.format((float)economic_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent2.setText((sumTime == 0 ? 0 : dfe.format((float)easonable_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent3.setText((sumTime == 0 ? 0 : dfe.format((float)diseconomic_running_time * 100 / sumTime)) + "%");
+        tvEnergyEfficiencyPercent4.setText((sumTime == 0 ? 0 : dfe.format((float)stop_time * 100 / sumTime)) + "%");
 
     }
 

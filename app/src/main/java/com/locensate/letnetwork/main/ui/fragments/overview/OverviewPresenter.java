@@ -66,7 +66,6 @@ public class OverviewPresenter extends OverviewContract.Presenter {
             mView.fillContain();
             return;
         }
-
         mModel.getBaseDate(organizationId).compose(RxSchedulers.<OverviewMotor>applyObservableAsync()).subscribe(new Consumer<OverviewMotor>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull OverviewMotor overviewMotor) throws Exception {
@@ -148,9 +147,8 @@ public class OverviewPresenter extends OverviewContract.Presenter {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-
                 LogUtil.e("throwable", "----" + throwable.getCause() + "---------" + throwable.getMessage().toString() + "----" + throwable.getMessage());
-                ToastUtil.show(R.string.load_fail);
+                mView.fillAllAnalysisData("——", "——", "——", "——");
             }
         });
 

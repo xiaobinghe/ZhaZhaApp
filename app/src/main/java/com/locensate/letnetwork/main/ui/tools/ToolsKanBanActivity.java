@@ -26,6 +26,7 @@ import com.locensate.letnetwork.bean.KanBanDataEntity;
 import com.locensate.letnetwork.bean.Organizations;
 import com.locensate.letnetwork.bean._User;
 import com.locensate.letnetwork.main.ui.fragments.overview.OverviewModel;
+import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
 import com.locensate.letnetwork.main.ui.search.SearchActivity;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.OrganizationsOption;
@@ -103,6 +104,20 @@ public class ToolsKanBanActivity extends BaseActivity {
         tvMachinePath.setText(organizationName);
         rvKanBan.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new KanBanRVAdapter(R.layout.layout_item_kan_ban, new ArrayList<KanBanDataEntity.DataBean.MotorListBean>());
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                KanBanDataEntity.DataBean.MotorListBean bean = (KanBanDataEntity.DataBean.MotorListBean) baseQuickAdapter.getData().get(i);
+                Intent intent = new Intent(App.getApplication(), MachineInfoActivity.class);
+                Bundle bundle = new Bundle();
+                LogUtil.e("motorId", "-----------" + bean.getElectric_motor_id());
+                bundle.putLong("motorId", bean.getElectric_motor_id());
+                bundle.putString("machineName", bean.getWhole_equipment_name());
+                bundle.putInt("pageNum", 3);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
         mAdapter.setEnableLoadMore(false);
         rvKanBan.setAdapter(mAdapter);
 
@@ -166,10 +181,19 @@ public class ToolsKanBanActivity extends BaseActivity {
                 KanBanDataEntity.DataBean data = kanBanDataEntity.getData();
                 handleData(data);
             }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtil.show("暂无数据");
+            }
         });
     }
 
     private void handleData(KanBanDataEntity.DataBean data) {
+        if (null == data) {
+            ToastUtil.show("暂无数据");
+            return;
+        }
         mTotalPage = data.getTotal_page();
         pageNum = data.getPage_num();
         if (mTotalPage == 0) {
@@ -286,6 +310,7 @@ public class ToolsKanBanActivity extends BaseActivity {
 //                    .setTextColor(R.id.tv_real_power_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
 //                    .setTextColor(R.id.tv_default_power_below, motorListBean.isInterrupt() ? getResources().getColor(R.color.font_gray) : getResources().getColor(R.color.font_content))
                     .setVisible(R.id.iv_interrupt, false)
+                    .addOnClickListener(R.id.ll_kanban_item)
                     .setBackgroundColor(R.id.ll_alert_level, selectColor(motorListBean.getRunning_status()));
         }
 

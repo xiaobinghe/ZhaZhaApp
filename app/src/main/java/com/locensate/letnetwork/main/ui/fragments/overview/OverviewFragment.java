@@ -1,6 +1,5 @@
 package com.locensate.letnetwork.main.ui.fragments.overview;
 
-import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -16,17 +15,16 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.lib.WheelView;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
 import com.locensate.letnetwork.bean.OverviewMotor;
 import com.locensate.letnetwork.main.ui.fragments.overview.healthyanalysis.OverviewHealthyAnalysisFragment;
 import com.locensate.letnetwork.main.ui.fragments.overview.loadanalysis.OverviewLoadAnalysisFragment;
 import com.locensate.letnetwork.main.ui.fragments.overview.rateanalysis.OverviewRateAnalysisFragment;
-import com.locensate.letnetwork.main.ui.message.MessageActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
+import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.timepick.MyTimePickerView;
 
@@ -290,24 +288,31 @@ public class OverviewFragment extends BaseFragment<OverviewPresenter, OverviewMo
                 showPickers(timeTypeContent.getText().toString());
                 break;
             case R.id.fl_alert:
-                Intent alertData = new Intent(App.getApplication(), MessageActivity.class);
-                alertData.putExtra("msgType", 0);
-                startActivity(alertData);
+                ToastUtil.show(R.string.remind_goodness);
+//                Intent alertData = new Intent(App.getApplication(), MessageActivity.class);
+//                alertData.putExtra("msgType", 0);
+//                startActivity(alertData);
                 break;
             case R.id.fl_energy:
-                Intent energyData = new Intent(App.getApplication(), MessageActivity.class);
-                energyData.putExtra("msgType", 1);
-                startActivity(energyData);
+                ToastUtil.show(R.string.remind_goodness);
+
+//                Intent energyData = new Intent(App.getApplication(), MessageActivity.class);
+//                energyData.putExtra("msgType", 1);
+//                startActivity(energyData);
                 break;
             case R.id.fl_order:
-                Intent orderData = new Intent(App.getApplication(), MessageActivity.class);
-                orderData.putExtra("msgType", 2);
-                startActivity(orderData);
+                ToastUtil.show(R.string.remind_goodness);
+
+//                Intent orderData = new Intent(App.getApplication(), MessageActivity.class);
+//                orderData.putExtra("msgType", 2);
+//                startActivity(orderData);
                 break;
             case R.id.fl_remind:
-                Intent remindData = new Intent(App.getApplication(), MessageActivity.class);
-                remindData.putExtra("msgType", 3);
-                startActivity(remindData);
+                ToastUtil.show(R.string.remind_goodness);
+
+//                Intent remindData = new Intent(App.getApplication(), MessageActivity.class);
+//                remindData.putExtra("msgType", 3);
+//                startActivity(remindData);
                 break;
             default:
                 break;

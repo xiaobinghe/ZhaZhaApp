@@ -130,19 +130,29 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
 
     @Override
     public void fillBaseData(MotorEfficiencyBaseEntity.DataBean data) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        double running_time = data.getRunning_time();
-        double electrical_fee = data.getElectrical_fee();
-        double estimate_save_power = data.getEstimate_save_power();
-        double no_loading_power = data.getNo_loading_power();
-        double power_use_ratio = data.getPower_use_ratio();
-        double power_consumption = data.getPower_consumption();
-        mTvRunningTime.setText(df.format(running_time / 3600) + "h");
-        mTvUsePower.setText(df.format(power_consumption) + "kWh");
-        mTvElectricFee.setText(df.format(electrical_fee) + "元");
-        mTvEmptyLoadElectricUsed.setText(df.format(no_loading_power) + "kWh");
-        mTvEstimationElectricCount.setText(df.format(estimate_save_power) + "kWh");
-        mTvEstimationElectricRate.setText(df.format(power_use_ratio * 100) + "%");
+
+        if (data != null) {
+            DecimalFormat df = new DecimalFormat("0.00");
+            double running_time = data.getRunning_time();
+            double electrical_fee = data.getElectrical_fee();
+            double estimate_save_power = data.getEstimate_save_power();
+            double no_loading_power = data.getNo_loading_power();
+            double power_use_ratio = data.getPower_use_ratio();
+            double power_consumption = data.getPower_consumption();
+            mTvRunningTime.setText(df.format((float)running_time / 3600) + "h");
+            mTvUsePower.setText(df.format(power_consumption) + "kWh");
+            mTvElectricFee.setText(df.format(electrical_fee) + "元");
+            mTvEmptyLoadElectricUsed.setText(df.format(no_loading_power) + "kWh");
+            mTvEstimationElectricCount.setText(df.format(estimate_save_power) + "kWh");
+            mTvEstimationElectricRate.setText(df.format(power_use_ratio * 100) + "%");
+        } else {
+            mTvRunningTime.setText("——");
+            mTvUsePower.setText("——");
+            mTvElectricFee.setText("——");
+            mTvEmptyLoadElectricUsed.setText("——");
+            mTvEstimationElectricCount.setText("——");
+            mTvEstimationElectricRate.setText("——");
+        }
     }
 
     @Override
@@ -267,7 +277,7 @@ public class MachineInfoEnergyManagerFragment extends BaseFragment<MachineInfoEn
                         public void onTimeSelect(Date date, View v) {
                             Date[] firstAndEnd = DateUtils.getFirstAndEndDayDateOfWeek(date);
                             mTvTimeValue.setText(DateUtils.getTime(firstAndEnd[0], timeShow) + "/" + DateUtils.getTime(firstAndEnd[1], timeShow));
-                            mPresenter.setTimeRange(firstAndEnd[0].getTime(), firstAndEnd[1].getTime()+86400000L);
+                            mPresenter.setTimeRange(firstAndEnd[0].getTime(), firstAndEnd[1].getTime() + 86400000L);
                         }
                     });
                 }

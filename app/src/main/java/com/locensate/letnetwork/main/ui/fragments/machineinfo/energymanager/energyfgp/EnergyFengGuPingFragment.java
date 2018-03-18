@@ -7,31 +7,15 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.locensate.letnetwork.App;
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
@@ -40,45 +24,12 @@ import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.Cust
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * @author xiaobinghe
  */
 
 public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPresenter, EnergyFengGuPingModel> implements EnergyFengGuPingConstract.View {
-    @BindView(R.id.pie_energy_feng_gu_ping)
-    PieChart pieChart;
-    @BindView(R.id.tv_energy_feng_eff)
-    TextView tvEnergyFengEff;
-    @BindView(R.id.tv_energy_feng_percent)
-    TextView tvEnergyFengPercent;
-    @BindView(R.id.textView4)
-    TextView textView4;
-    @BindView(R.id.tv_energy_gu_eff)
-    TextView tvEnergyGuEff;
-    @BindView(R.id.tv_energy_gu_percent)
-    TextView tvEnergyGuPercent;
-    @BindView(R.id.tv_energy_ping_eff)
-    TextView tvEnergyPingEff;
-    @BindView(R.id.tv_energy_ping_percent)
-    TextView tvEnergyPingPercent;
-    @BindView(R.id.rb_energy_1)
-    RadioButton rbEnergy1;
-    @BindView(R.id.rb_energy_2)
-    RadioButton rbEnergy2;
-    @BindView(R.id.rg_energy_feng_gu_ping)
-    RadioGroup rgEnergyFengGuPing;
-    @BindView(R.id.lc_energy_feng_gu_ping)
-    LineChart lineChart;
-    @BindView(R.id.cbc_energy_feng_gu_ping)
-    CombinedChart combinedChart;
-    @BindView(R.id.ll_energy_feng_gu_ping_time_compare)
-    LinearLayout llEnergyTimeCompare;
-    @BindView(R.id.ll_energy_feng_gu_ping_electric)
-    LinearLayout llEnergyLoseElectric;
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Typeface tf;
@@ -100,31 +51,32 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
     }*/
     @Override
     public int getInflaterView() {
-        return R.layout.fragment_energy_feng_gu_ping;
+        return R.layout.fragment_no_data;
+//        return R.layout.fragment_energy_feng_gu_ping;
     }
 
     @Override
     protected void initView() {
-        rgEnergyFengGuPing.check(R.id.rb_energy_1);
-        rgEnergyFengGuPing.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_energy_1 && llEnergyLoseElectric.getVisibility() != View.VISIBLE) {
-                    llEnergyLoseElectric.setVisibility(View.VISIBLE);
-                    llEnergyTimeCompare.setVisibility(View.GONE);
-                } else if (checkedId == R.id.rb_energy_2 && llEnergyTimeCompare.getVisibility() != View.VISIBLE) {
-                    llEnergyLoseElectric.setVisibility(View.GONE);
-                    llEnergyTimeCompare.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        initLineData();
-        initPieChart();
-        fillCombineData();
+//        rgEnergyFengGuPing.check(R.id.rb_energy_1);
+//        rgEnergyFengGuPing.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                if (checkedId == R.id.rb_energy_1 && llEnergyLoseElectric.getVisibility() != View.VISIBLE) {
+//                    llEnergyLoseElectric.setVisibility(View.VISIBLE);
+//                    llEnergyTimeCompare.setVisibility(View.GONE);
+//                } else if (checkedId == R.id.rb_energy_2 && llEnergyTimeCompare.getVisibility() != View.VISIBLE) {
+//                    llEnergyLoseElectric.setVisibility(View.GONE);
+//                    llEnergyTimeCompare.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+//        initLineData();
+//        initPieChart();
+//        fillCombineData();
     }
 
 
-    private void fillCombineData() {
+   /* private void fillCombineData() {
         combinedChart.getDescription().setEnabled(false);
         combinedChart.setBackgroundColor(Color.WHITE);
         combinedChart.setDrawGridBackground(false);
@@ -183,7 +135,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         combinedChart.setData(data);
         combinedChart.invalidate();
 
-    }
+    }*/
 
     private LineData generateLineData() {
 
@@ -248,7 +200,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         return d;
     }
 
-    private void initLineData() {
+   /* private void initLineData() {
         // 设置描述是否可用
         lineChart.getDescription().setEnabled(false);
 
@@ -317,7 +269,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawZeroLine(false);
         rightAxis.setGranularityEnabled(false);
-    }
+    }*/
 
     private ArrayList<Entry> getEntry3() {
 
@@ -375,7 +327,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         return data1;
     }
 
-    private void setLineData(int count, float range, String[] dataSets, ArrayList<Entry> entries1, ArrayList<Entry> entries2, ArrayList<Entry> entries3, int[] dataColors) {
+  /*  private void setLineData(int count, float range, String[] dataSets, ArrayList<Entry> entries1, ArrayList<Entry> entries2, ArrayList<Entry> entries3, int[] dataColors) {
 
 
         LineDataSet set1, set2, set3;
@@ -443,13 +395,13 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
             lineChart.setData(data);
         }
     }
-
+*/
     @Override
     protected void lazyLoad() {
 
     }
 
-    private void initPieChart() {
+  /*  private void initPieChart() {
         pieChart.setUsePercentValues(true);
         //添加饼图的描述是否可用
         pieChart.getDescription().setEnabled(false);
@@ -521,7 +473,7 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
         l.setDrawInside(false);
         l.setEnabled(false);
     }
-
+*/
 
     private SpannableString generateCenterSpannableText() {
 
@@ -540,42 +492,42 @@ public class EnergyFengGuPingFragment extends BaseFragment<EnergyFengGuPingPrese
     @Override
     public void setPieData(ArrayList<PieEntry> entries) {
 
-
-        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
-        dataSet.setDrawValues(false);
-
-        dataSet.setSliceSpace(0f);
-        dataSet.setSelectionShift(5f);
-
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(getResources().getColor(R.color.pie_green));
-        colors.add(getResources().getColor(R.color.pie_yellow));
-        colors.add(getResources().getColor(R.color.pie_red));
-        colors.add(getResources().getColor(R.color.pie_gray));
-
-        colors.add(ColorTemplate.getHoloBlue());
-        dataSet.setColors(colors);
-        //dataSet.setSelectionShift(0f);
-
-        dataSet.setValueLinePart1OffsetPercentage(80.f);
-        dataSet.setValueLinePart1Length(0.2f);
-        dataSet.setValueLinePart2Length(0.4f);
-        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-
-        PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(6f);
-        data.setValueTextColor(Color.BLACK);
-        data.setValueTypeface(tf);
-        pieChart.setData(data);
-
-        // undo all highlights
-        pieChart.highlightValues(null);
-
-        pieChart.invalidate();
+//
+//        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+//        dataSet.setDrawValues(false);
+//
+//        dataSet.setSliceSpace(0f);
+//        dataSet.setSelectionShift(5f);
+//
+//        // add a lot of colors
+//
+//        ArrayList<Integer> colors = new ArrayList<Integer>();
+//        colors.add(getResources().getColor(R.color.pie_green));
+//        colors.add(getResources().getColor(R.color.pie_yellow));
+//        colors.add(getResources().getColor(R.color.pie_red));
+//        colors.add(getResources().getColor(R.color.pie_gray));
+//
+//        colors.add(ColorTemplate.getHoloBlue());
+//        dataSet.setColors(colors);
+//        //dataSet.setSelectionShift(0f);
+//
+//        dataSet.setValueLinePart1OffsetPercentage(80.f);
+//        dataSet.setValueLinePart1Length(0.2f);
+//        dataSet.setValueLinePart2Length(0.4f);
+//        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//
+//        PieData data = new PieData(dataSet);
+//        data.setValueFormatter(new PercentFormatter());
+//        data.setValueTextSize(6f);
+//        data.setValueTextColor(Color.BLACK);
+//        data.setValueTypeface(tf);
+//        pieChart.setData(data);
+//
+//        // undo all highlights
+//        pieChart.highlightValues(null);
+//
+//        pieChart.invalidate();
     }
 
     public String[] getDataSets() {

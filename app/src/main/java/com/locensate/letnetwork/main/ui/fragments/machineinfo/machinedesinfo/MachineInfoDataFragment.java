@@ -286,6 +286,7 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
     @Override
     public void dispatchData(MachineInfoEntity.DataBean data) {
         DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat dfL = new DecimalFormat("0.000");
         MachineInfoEntity.DataBean.WholeEquipmentInfoBean whole_equipment_info = data.getWhole_equipment_info();
         MachineInfoEntity.DataBean.MotorInfoBean motor_info = data.getMotor_info();
         MachineInfoEntity.DataBean.ControlMachineInfoBean control_machine_info = data.getControl_machine_info();
@@ -312,7 +313,7 @@ public class MachineInfoDataFragment extends BaseFragment<MachineInfoDataPresent
             mTvMotorDefaultPower.setText(motor_info.getRated_power() + "kW");
             mTvMotorDefaultVoltage.setText(motor_info.getRated_voltage_name());
             mTvMotorDefaultCurrent.setText(df.format(motor_info.getRated_current()) + "A");
-            mTvMotorDefaultEfficiency.setText(df.format(motor_info.getRated_efficiency()));
+            mTvMotorDefaultEfficiency.setText(dfL.format(motor_info.getRated_efficiency()));
             mTvMotorModel.setText(motor_info.getModel_number_name());
             mTvMotorType.setText(motor_info.getEquipment_type_name());
             mTvMotorEnergyEfficiencyLevel.setText(motor_info.getEnergy_efficiency_grade_name());

@@ -36,6 +36,7 @@ import com.locensate.letnetwork.main.ui.search.SearchActivity;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.utils.PickViewUtils;
+import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.CustomLoadingView;
 import com.locensate.letnetwork.view.ExpandablePopWindow;
 import com.locensate.letnetwork.view.ModernDialog;
@@ -134,6 +135,8 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
         mFilterView.setCloseMenuCallBack(new RightSideslipLay.CloseMenuCallBack() {
             @Override
             public void setupCloseMean() {
+                ToastUtil.show(R.string.remind_goodness);
+
                 closeMenu();
             }
         });
@@ -174,7 +177,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
             @Override
             public boolean onItemLongClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 MotorListEntity.DataBean.ListBean item = (MotorListEntity.DataBean.ListBean) baseQuickAdapter.getItem(i);
-                isMarkImportantMachine(item);
+//                isMarkImportantMachine(item);
                 return false;
             }
         });
@@ -241,7 +244,9 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
                 mPresenter.showPop();
                 break;
             case R.id.iv_title_search:
-                startSearch();
+                ToastUtil.show(R.string.remind_goodness);
+
+//                startSearch();
                 break;
             case R.id.tv_machine_head_power_sort:
                 powerSort();
@@ -537,7 +542,7 @@ public class MachineFragment extends BaseFragment<MachinePresenter, MachineModel
 
     private void openMenu() {
         mDrawer.openDrawer(GravityCompat.END);
-        mPresenter.refreshFilter();
+//        mPresenter.refreshFilter();
     }
 
     private void closeMenu() {

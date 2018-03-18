@@ -187,7 +187,7 @@ public class HealthDetailActivity extends BaseActivity {
             LogUtil.e(TAG, "------------mType==" + mType);
 
             DecimalFormat df = new DecimalFormat("0.0");
-            baseViewHolder.setText(R.id.tv_time, healthDetailBean.getTime());
+            baseViewHolder.setText(R.id.tv_time, healthDetailBean.getTime().substring(2));
 
             switch (mType) {
                 case "over_temp":

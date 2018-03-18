@@ -14,6 +14,6 @@ public class MachineInfoFixManagerPresenter extends MachineInfoFixManagerContrac
 
     @Override
     void initData() {
-        mView.fillData(mModel.getFragments());
+//        mView.fillData(mModel.getFragments());
     }
 }

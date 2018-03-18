@@ -35,10 +35,16 @@ public class MachineListAdapter extends BaseQuickAdapter<MotorListEntity.DataBea
                 .setText(R.id.tv_machine_item_path, machineBean.getOrganization())
                 .setText(R.id.tv_machine_item_control_machine, "控制设备：" + machineBean.getControl_equipment_model())
                 .setText(R.id.tv_machine_item_average_efficiency, machineBean.getIs_measure() == 1 ? df.format(machineBean.getAverage_efficiency()) : "--")
-                .setText(R.id.tv_machine_item_default_power, String.valueOf(machineBean.getRated_power()))
+                .setText(R.id.tv_machine_item_default_power, isInt(machineBean)?dfInt.format(machineBean.getRated_power()):String.valueOf(machineBean.getRated_power()))
                 .setText(R.id.tv_machine_item_health_code, machineBean.getIs_measure() == 1 ? dfInt.format(machineBean.getHealth_score()) : "--")
                 .setVisible(R.id.iv_machine_item_is_impotent, machineBean.getIs_important() == 1)
                 .setVisible(R.id.tv_machine_item_is_measure, machineBean.getIs_measure() == 1)
                 .addOnClickListener(R.id.cv_machine);
+    }
+
+    private boolean isInt(MotorListEntity.DataBean.ListBean machineBean) {
+        double rated_power = machineBean.getRated_power();
+        int power = (int) rated_power;
+        return rated_power==power;
     }
 }

@@ -230,6 +230,9 @@ public class OverviewLoadAnalysisFragment extends BaseFragment<OverviewLoadAnaly
 
     @OnClick({R.id.ll_empty, R.id.ll_light, R.id.ll_half, R.id.ll_heavy, R.id.ll_over, R.id.ll_stop})
     public void onViewClicked(View view) {
+        if (true){
+            return;
+        }
         String filter;
         String status;
         switch (view.getId()) {

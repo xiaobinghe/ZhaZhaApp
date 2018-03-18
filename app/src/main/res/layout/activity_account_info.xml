@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="风清扬"
+                android:text="jingyegangtie"
                 android:textColor="@color/font_black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="李俊"
+                android:text="张工"
                 android:textColor="@color/font_black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="13252546655"
+                android:text=""
                 android:textColor="@color/font_black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="54548545163@qq.com"
+                android:text=""
                 android:textColor="@color/font_black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -205,7 +205,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="北京罗圣森特节能科技有限公司"
+                android:text="河北敬业集团"
                 android:textColor="@color/font_black"
                 android:textSize="14sp" />
         </LinearLayout>

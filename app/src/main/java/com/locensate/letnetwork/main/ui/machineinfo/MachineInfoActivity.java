@@ -15,6 +15,7 @@ import com.locensate.letnetwork.main.ui.AddRemindActivity;
 import com.locensate.letnetwork.main.ui.AddRepairActivity;
 import com.locensate.letnetwork.main.ui.CreateRiPlanActivity;
 import com.locensate.letnetwork.main.ui.addorder.AddOrderActivity;
+import com.locensate.letnetwork.utils.ToastUtil;
 import com.locensate.letnetwork.view.MachineInfoPop;
 
 import butterknife.BindView;
@@ -45,6 +46,7 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
 
     private MachineInfoPop machineInfoPop;
     private Bundle mExtras;
+    private int pageNum=-1;
 
     @Override
     public int getLayoutId() {
@@ -56,6 +58,7 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
         mExtras = getIntent().getExtras();
         machineName = mExtras.getString("machineName");
         motorId = mExtras.getLong("motorId");
+        pageNum = mExtras.getInt("pageNum");
         tvNormalTitleContent.setText(machineName);
     }
 
@@ -70,6 +73,9 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
                 tlMachineInfo.setTabGravity(TabLayout.GRAVITY_FILL);
             }
         });
+        if (pageNum!=-1){
+            vpMachineInfoContent.setCurrentItem(pageNum);
+        }
         tlMachineInfo.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -128,7 +134,9 @@ public class MachineInfoActivity extends BaseActivity<MachineInfoPresenter, Mach
                 finish();
                 break;
             case R.id.iv_normal_title_more:
-                mPresenter.showPop();
+                ToastUtil.show(R.string.remind_goodness);
+
+//                mPresenter.showPop();
                 break;
             default:
                 break;

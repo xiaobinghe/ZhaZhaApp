@@ -3,7 +3,6 @@ package com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager;
 
 import android.support.v4.app.Fragment;
 
-import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.api.Api;
 import com.locensate.letnetwork.base.RxSchedulers;
 import com.locensate.letnetwork.bean.MotorEfficiencyBaseEntity;
@@ -12,7 +11,6 @@ import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.ener
 import com.locensate.letnetwork.main.ui.fragments.machineinfo.energymanager.energyfgp.EnergyFengGuPingFragment;
 import com.locensate.letnetwork.utils.DateUtils;
 import com.locensate.letnetwork.utils.LogUtil;
-import com.locensate.letnetwork.utils.ToastUtil;
 
 import java.util.Date;
 
@@ -46,14 +44,15 @@ public class MachineInfoEnergyManagerPresenter extends MachineInfoEnergyManagerC
             public void accept(MotorEfficiencyBaseEntity motorEfficiencyBaseEntity) throws Exception {
                 LogUtil.e("motorEfficiencyData", "---" + motorEfficiencyBaseEntity.toString());
                 MotorEfficiencyBaseEntity.DataBean data = motorEfficiencyBaseEntity.getData();
-                if (null != data) {
-                    mView.fillBaseData(data);
-                }
+
+                mView.fillBaseData(data);
+
             }
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                ToastUtil.show(R.string.data_load_fail);
+                mView.fillBaseData(null);
+
             }
         });
     }
@@ -62,9 +61,9 @@ public class MachineInfoEnergyManagerPresenter extends MachineInfoEnergyManagerC
     public void notifyChild() {
         baseData();
         Fragment[] childFragments = mView.getChildFragments();
-        ((EnergyEfficiencyFragment) childFragments[0]).notifyData(mMotorId, startMills, endMills,mView.getTimeType());
-        ((EnergyLoadFragment) childFragments[1]).notifyData(mMotorId, startMills, endMills,mView.getTimeType());
-        ((EnergyFengGuPingFragment) childFragments[2]).notifyData(mMotorId, startMills, endMills,mView.getTimeType());
+        ((EnergyEfficiencyFragment) childFragments[0]).notifyData(mMotorId, startMills, endMills, mView.getTimeType());
+        ((EnergyLoadFragment) childFragments[1]).notifyData(mMotorId, startMills, endMills, mView.getTimeType());
+        ((EnergyFengGuPingFragment) childFragments[2]).notifyData(mMotorId, startMills, endMills, mView.getTimeType());
     }
 
     @Override

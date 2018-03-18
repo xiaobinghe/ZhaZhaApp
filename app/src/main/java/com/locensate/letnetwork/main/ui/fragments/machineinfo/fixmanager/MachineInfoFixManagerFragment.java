@@ -1,36 +1,28 @@
 package com.locensate.letnetwork.main.ui.fragments.machineinfo.fixmanager;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.utils.LogUtil;
 import com.locensate.letnetwork.main.ui.machineinfo.MachineInfoActivity;
-import com.locensate.letnetwork.view.SmoothViewPage;
+import com.locensate.letnetwork.utils.LogUtil;
 
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * @author xiaobinghe
  */
 
 public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixManagerPresenter, MachineInfoFixManagerModel> implements MachineInfoFixManagerContract.View, ViewPager.OnPageChangeListener {
-    @BindView(R.id.vp_machine_fix_manager)
-    SmoothViewPage vpMachineFixManager;
-    @BindView(R.id.tl_machine_fix_manager)
-    TabLayout tlMachineFixManager;
 
     private boolean hasStop = false;
     private String machineName;
     private Bundle mMachineInfo;
     private String machineId;
     private boolean initComplete = false;
-    private boolean loadC=false;
+    private boolean loadC = false;
 
 
     @Override
@@ -41,14 +33,18 @@ public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixMa
 
     @Override
     public int getInflaterView() {
-        return R.layout.fragment_fix_recrd;
+
+//            return R.layout.fragment_fix_recrd;
+
+            return R.layout.fragment_no_data;
+
     }
 
     @Override
     protected void lazyLoad() {
-        if (initComplete&&!loadC) {
+        if (initComplete && !loadC) {
             mPresenter.initData();
-            loadC=true;
+            loadC = true;
         }
     }
 
@@ -59,14 +55,14 @@ public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixMa
         machineName = mMachineInfo.getString("machineName");
         machineId = mMachineInfo.getString("machineId");
         LogUtil.e("hasStop", "++++++++++++++++++++=======" + hasStop);
-        vpMachineFixManager.setAdapter(new MachineInfoFixManagerVpAdapter(getChildFragmentManager(), fragments));
-        vpMachineFixManager.addOnPageChangeListener(this);
-        tlMachineFixManager.post(new Runnable() {
-            @Override
-            public void run() {
-                tlMachineFixManager.setupWithViewPager(vpMachineFixManager);
-            }
-        });
+//        vpMachineFixManager.setAdapter(new MachineInfoFixManagerVpAdapter(getChildFragmentManager(), fragments));
+//        vpMachineFixManager.addOnPageChangeListener(this);
+//        tlMachineFixManager.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                tlMachineFixManager.setupWithViewPager(vpMachineFixManager);
+//            }
+//        });
     }
 
 
@@ -110,7 +106,7 @@ public class MachineInfoFixManagerFragment extends BaseFragment<MachineInfoFixMa
 
     @Override
     public void onDestroyView() {
-        vpMachineFixManager.setAdapter(null);
+//        vpMachineFixManager.setAdapter(null);
         super.onDestroyView();
     }
 }

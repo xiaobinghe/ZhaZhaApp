@@ -7,20 +7,13 @@ import android.widget.TextView;
 
 import com.locensate.letnetwork.R;
 import com.locensate.letnetwork.base.BaseFragment;
-import com.locensate.letnetwork.main.ui.tools.ToolsFengGuPingActivity;
 import com.locensate.letnetwork.main.ui.tools.ToolsKanBanActivity;
-import com.locensate.letnetwork.main.ui.tools.ToolsRemindActivity;
-import com.locensate.letnetwork.main.ui.tools.ToolsRepairActivity;
-import com.locensate.letnetwork.main.ui.tools.ToolsAlertActivity;
-import com.locensate.letnetwork.main.ui.tools.toolsgroupenergy.ToolsEnergyAnalysisActivity;
-import com.locensate.letnetwork.main.ui.tools.toolsorder.ToolsOrderActivity;
-import com.locensate.letnetwork.main.ui.tools.toolsriplan.ToolsRiPlanActivity;
+import com.locensate.letnetwork.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- *
  * @author xiaobinghe
  */
 
@@ -77,32 +70,49 @@ public class ToolsFragment extends BaseFragment {
                 startActivity(new Intent(mContext, ToolsKanBanActivity.class));
                 break;
             case R.id.tv_tools_feng_gu_ping:
-                startActivity(new Intent(mContext, ToolsFengGuPingActivity.class));
+                ToastUtil.show("敬请期待");
+//                startActivity(new Intent(mContext, ToolsFengGuPingActivity.class));
                 break;
             case R.id.tv_tools_group_energy_efficiency:
-                startActivity(new Intent(mContext, ToolsEnergyAnalysisActivity.class));
+                ToastUtil.show("敬请期待");
+
+//                startActivity(new Intent(mContext, ToolsEnergyAnalysisActivity.class));
                 break;
             case R.id.tv_tools_alert:
-                startActivity(new Intent(mContext, ToolsAlertActivity.class));
+                ToastUtil.show("敬请期待");
+
+//                startActivity(new Intent(mContext, ToolsAlertActivity.class));
                 break;
             case R.id.tv_tools_energy_efficiency:
-                Intent energyDate = new Intent(mContext, ToolsOrderActivity.class);
-                energyDate.putExtra("orderType", "energyEfficiency");
-                startActivity(energyDate);
+                ToastUtil.show("敬请期待");
+
+//                Intent energyDate = new Intent(mContext, ToolsOrderActivity.class);
+//                energyDate.putExtra("orderType", "energyEfficiency");
+//                startActivity(energyDate);
                 break;
             case R.id.tv_tools_order:
-                Intent orderData = new Intent(mContext, ToolsOrderActivity.class);
-                orderData.putExtra("orderType", "order");
-                startActivity(orderData);
+                ToastUtil.show("敬请期待");
+
+//                Intent orderData = new Intent(mContext, ToolsOrderActivity.class);
+//                orderData.putExtra("orderType", "order");
+//                startActivity(orderData);
                 break;
             case R.id.tv_tools_remind:
-                startActivity(new Intent(mContext, ToolsRemindActivity.class));
+                ToastUtil.show("敬请期待");
+
+//                startActivity(new Intent(mContext, ToolsRemindActivity.class));
                 break;
             case R.id.tv_tools_repair:
-                startActivity(new Intent(mContext, ToolsRepairActivity.class));
+                ToastUtil.show("敬请期待");
+
+//                startActivity(new Intent(mContext, ToolsRepairActivity.class));
                 break;
             case R.id.tv_tools_routing:
-                startActivity(new Intent(mContext, ToolsRiPlanActivity.class));
+                ToastUtil.show("敬请期待");
+
+//                startActivity(new Intent(mContext, ToolsRiPlanActivity.class));
+                break;
+            default:
                 break;
         }
     }

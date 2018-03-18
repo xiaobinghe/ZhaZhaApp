@@ -430,7 +430,7 @@ public class TestBean {
 
                 private String unit;
                 private String name;
-                private int value;
+                private double value;
                 private String desc;
 
                 public String getUnit() {
@@ -449,11 +449,11 @@ public class TestBean {
                     this.name = name;
                 }
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -544,7 +544,7 @@ public class TestBean {
                 private String sn;
                 private int ratedVoltageId;
                 private String ratedVoltageName;
-                private int ratedCurrent;
+                private double ratedCurrent;
                 private String monitorEquipmentInstallationTime;
                 private String monitorEquipmentDescription;
 
@@ -732,11 +732,11 @@ public class TestBean {
                     this.ratedVoltageName = ratedVoltageName;
                 }
 
-                public int getRatedCurrent() {
+                public double getRatedCurrent() {
                     return ratedCurrent;
                 }
 
-                public void setRatedCurrent(int ratedCurrent) {
+                public void setRatedCurrent(double ratedCurrent) {
                     this.ratedCurrent = ratedCurrent;
                 }
 
@@ -767,7 +767,7 @@ public class TestBean {
 
                 private String unit;
                 private String name;
-                private int value;
+                private double value;
                 private String desc;
 
                 public String getUnit() {
@@ -786,11 +786,11 @@ public class TestBean {
                     this.name = name;
                 }
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -1075,7 +1075,7 @@ public class TestBean {
 
                 private String unit;
                 private String name;
-                private int value;
+                private double value;
                 private String desc;
 
                 public String getUnit() {
@@ -1094,11 +1094,11 @@ public class TestBean {
                     this.name = name;
                 }
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -1393,7 +1393,7 @@ public class TestBean {
 
                 private String unit;
                 private String name;
-                private int value;
+                private double value;
                 private String desc;
 
                 public String getUnit() {
@@ -1412,11 +1412,11 @@ public class TestBean {
                     this.name = name;
                 }
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -1691,7 +1691,7 @@ public class TestBean {
 
                 private String unit;
                 private String name;
-                private int value;
+                private double value;
                 private String desc;
 
                 public String getUnit() {
@@ -1710,11 +1710,11 @@ public class TestBean {
                     this.name = name;
                 }
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 

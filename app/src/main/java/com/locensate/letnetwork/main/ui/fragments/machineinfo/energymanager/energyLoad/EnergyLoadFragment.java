@@ -112,7 +112,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
     private long startMills;
     private long endMills;
     //    private String[] barChartX = {"10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", ">120"};
-    private String[] barChartX = {"0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100", "100-110", "110-120", ">120"};
+    private String[] barChartX = {"0-10", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "110", ">120"};
     private boolean isCompleteInitUI = false;
     private String timeType;
     private String mAgg;
@@ -308,7 +308,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(true);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
-            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH:mm");
+            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd HH");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -328,18 +328,6 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         rightAxis.setDrawZeroLine(false);
         rightAxis.setGranularityEnabled(false);
 
-        YAxis leftAxis = mLcEnergyLoad.getAxisLeft();
-        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
-        leftAxis.setDrawAxisLine(true);
-
-        leftAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return (int) value * 100 + "%";
-            }
-        });
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);
 
     }
 
@@ -440,30 +428,22 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         // "def", "ghj", "ikl", "mno" });
 
         CommonMarkerView mv = new CommonMarkerView(getContext(), R.layout.custom_marker_view);
-        mv.setChartView(mBarChart); // For bounds control
-        mBarChart.setMarker(mv); // Set the marker to the charts
+        mv.setChartView(mBarChart);
+        mBarChart.setMarker(mv);
 
 
         BarDataSet set1;
-
-        if (mBarChart.getData() != null &&
-                mBarChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) mBarChart.getData().getDataSetByIndex(0);
-            set1.setValues(barData);
-            mBarChart.getData().notifyDataChanged();
-            mBarChart.notifyDataSetChanged();
-        } else {
-            set1 = new BarDataSet(barData, "负载百分比");
-            set1.setColors(getContext().getResources().getColor(R.color.font_blue_tab));
-            set1.setDrawValues(false);
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
+        set1 = new BarDataSet(barData, "负载百分比");
+        set1.setColors(getContext().getResources().getColor(R.color.font_blue_tab));
+        set1.setDrawValues(false);
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1);
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
 //            data.setValueTypeface(mTfLight);
-            data.setBarWidth(0.6f);
-            mBarChart.setData(data);
-        }
+        data.setBarWidth(0.6f);
+        mBarChart.setData(data);
+
     }
 
     @Override
@@ -509,6 +489,13 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         mLcEnergyLoad.resetTracking();
         LineDataSet set1;
 
+        float maxY = 0;
+        for (int i = 0; i < lineData.size(); i++) {
+            float y = lineData.get(i).getY();
+            if (y > maxY) {
+                maxY = y;
+            }
+        }
         // create a dataset and give it a type
         set1 = new LineDataSet(lineData, dataLabels[0]);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -534,6 +521,20 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         // set data
         mLcEnergyLoad.setData(data);
 
+        YAxis leftAxis = mLcEnergyLoad.getAxisLeft();
+        leftAxis.setTextColor(getResources().getColor(R.color.font_content));
+        leftAxis.setDrawAxisLine(true);
+        leftAxis.setAxisMaximum(maxY);
+        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return (int) value * 100 + "%";
+            }
+        });
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+
+
         mLcEnergyLoad.animateX(2000);
         MyMarkerView mv = new MyMarkerView(getContext(), R.layout.layout_my_marker_view, startMills);
         mv.setChartView(mLcEnergyLoad);
@@ -545,7 +546,7 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         mTvEnergyLoadCurrentEfficiency.setText(current_loading);
         mTvEnergyLoadAverageEfficiency.setText(average_loading);
         DecimalFormat df = new DecimalFormat("0.0");
-        DecimalFormat dfh = new DecimalFormat("0.0");
+        DecimalFormat dfh = new DecimalFormat("0.00");
         long no_loading_time = data.getNo_loading_time();
         long light_loading_time = data.getLight_loading_time();
         long half_load_time = data.getHalf_load_time();
@@ -555,12 +556,12 @@ public class EnergyLoadFragment extends BaseFragment<EnergyLoadPresenter, Energy
         if (stop_time < 0) {
             stop_time = 0;
         }
-        mTvNoLoadPercent.setText((sumSecond == 0 ? 0 : df.format((no_loading_time * 100) / sumSecond)) + "%");
-        mTvLightPercent.setText((sumSecond == 0 ? 0 : df.format((light_loading_time * 100) / sumSecond)) + "%");
-        mTvHalfLoadPercent.setText((sumSecond == 0 ? 0 : df.format((half_load_time * 100) / sumSecond)) + "%");
-        mTvHeavyLoadPercent.setText((sumSecond == 0 ? 0 : df.format((heavy_loading_time * 100) / sumSecond)) + "%");
-        mTvOverloadPercent.setText((sumSecond == 0 ? 0 : df.format((over_loading_time * 100) / sumSecond)) + "%");
-        mTvStopPercent.setText((sumSecond == 0 ? 0 : df.format((stop_time * 100) / sumSecond)) + "%");
+        mTvNoLoadPercent.setText((sumSecond == 0 ? 0 : df.format(((float) no_loading_time * 100) / sumSecond)) + "%");
+        mTvLightPercent.setText((sumSecond == 0 ? 0 : df.format(((float) light_loading_time * 100) / sumSecond)) + "%");
+        mTvHalfLoadPercent.setText((sumSecond == 0 ? 0 : df.format(((float) half_load_time * 100) / sumSecond)) + "%");
+        mTvHeavyLoadPercent.setText((sumSecond == 0 ? 0 : df.format(((float) heavy_loading_time * 100) / sumSecond)) + "%");
+        mTvOverloadPercent.setText((sumSecond == 0 ? 0 : df.format(((float) over_loading_time * 100) / sumSecond)) + "%");
+        mTvStopPercent.setText((sumSecond == 0 ? 0 : df.format(((float) stop_time * 100) / sumSecond)) + "%");
 
 
         mTvNoLoadTime.setText(dfh.format(no_loading_time / (float) 3600) + "h");

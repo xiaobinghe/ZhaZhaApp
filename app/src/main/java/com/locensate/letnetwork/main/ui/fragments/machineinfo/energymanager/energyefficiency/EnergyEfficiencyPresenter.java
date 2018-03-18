@@ -105,8 +105,8 @@ public class EnergyEfficiencyPresenter extends EnergyEfficiencyContract.Presente
 
         List<List<Entry>> lists = new ArrayList<>();
         lists.add(set0);
-        lists.add(set1);
         lists.add(set2);
+        lists.add(set1);
         mView.setLineData(lists, mModel.getLineLabels());
     }
 
@@ -143,6 +143,4 @@ public class EnergyEfficiencyPresenter extends EnergyEfficiencyContract.Presente
         mView.setPieData(pieEntries);
         mView.setPieDesData(data, sumMills);
     }
-
-
 }
